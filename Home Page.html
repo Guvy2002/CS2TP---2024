@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="HomePageCSS.css">
+  <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"> -->
+</head>
+
+<body>
+
+  <div class="grad3" style="text-align:center;">
+    <h1>GamePoint</h1>
+  </div><br>
+  <style>
+    .grad3 {
+      height: 100px;
+      background-color: red;
+      /* For browsers that do not support gradients */
+      background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
+    }
+  </style>
+
+
+  <!-- Navigation Bar  -->
+  <div class="topnav">
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#Sony">SONY</a></li>
+      <li><a href="#Microsoft">MICROSOFT</a></li>
+      <li style="float:right"><a class="active" href="#about">LOG IN</a></li>
+      <li style="float:right"><a class="active" href="#about">BASKET</a></li>
+      <li><a href="#VR">VR</a></li>
+      <li><a href="#">PC</a></li>
+      <input type="text" placeholder="Search..">
+    </ul>
+  </div>
+
+  <h1>Trending Deals</h1>
+
+
+
+  <div class="slideshow-container">
+
+    <div class="mySlides fade">
+      <!--  <div class="numbertext">1 / 3</div> -->
+      <img src="Images/Nitendo deal.jpeg" style="width:50%">
+      <!-- <div class="text">Caption Text</div> -->
+      <style>
+        img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      </style>
+    </div>
+
+    <div class="mySlides fade">
+      <!--  <div class="numbertext">1 / 3</div> -->
+      <img src="Images/ps5 deal.png" style="width:50%">
+      <!-- <div class="text">Caption Text</div> -->
+      <style>
+        img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      </style>
+    </div>
+
+    <div class="mySlides fade">
+      <!--  <div class="numbertext">1 / 3</div> -->
+      <img src="Images/xbox deal.png" style="width:50%" im>
+      <!-- <div class="text">Caption Text</div> -->
+      <style>
+        img {
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      </style>
+
+    </div>
+    <br>
+
+    <div style="text-align:center">
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+      <span class="dot" onclick="currentSlide(3)"></span>
+    </div>
+
+    <script>
+      let slideIndex = 0;
+      showSlides();
+
+      function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        setTimeout(showSlides, 2000); // Change image every 2 seconds
+      }
+    </script>
+
+<h1>New Releases</h1>
+     
+    <div class="gallery">
+      <a target="_blank" href="images/salad.jpg">
+          <img src="images/salad.jpg" alt="salad">
+      </a>
+      <div class="description">Salads</div>
+  </div>
+
+  <div class="gallery">
+      <a target="_blank" href="images/soup.jpg">
+          <img src="images/soup.jpg" alt="soup">
+      </a>
+      <div class="description">Soups</div>
+  </div>
+
+  <div class="gallery">
+      <a target="_blank" href="images/pizza.jpg">
+          <img src="images/pizza.jpg" alt="pizza">
+      </a>
+      <div class="description">Pizzas</div>
+  </div>
+
+    <div class="gallery">
+      <a target="_blank" href="images/pizza.jpg">
+          <img src="images/pizza.jpg" alt="pizza">
+      </a>
+      <div class="description">Pizzas</div>
+  </div>
+
+
+  <h1>Coming Soon</h1>
+     
+  <div class="gallery">
+    <a target="_blank" href="images/salad.jpg">
+        <img src="images/salad.jpg" alt="salad">
+    </a>
+    <div class="description">Salads</div>
+</div>
+
+<div class="gallery">
+    <a target="_blank" href="images/soup.jpg">
+        <img src="images/soup.jpg" alt="soup">
+    </a>
+    <div class="description">Soups</div>
+</div>
+
+<div class="gallery">
+    <a target="_blank" href="images/pizza.jpg">
+        <img src="images/pizza.jpg" alt="pizza">
+    </a>
+    <div class="description">Pizzas</div>
+</div>
+
+  <div class="gallery">
+    <a target="_blank" href="images/pizza.jpg">
+        <img src="images/pizza.jpg" alt="pizza">
+    </a>
+    <div class="description">Pizzas</div>
+</div>
+
+<h1>Our Biggest Brands</h1>
+     
+    <div class="gallery">
+      <a target="_blank" href="images/salad.jpg">
+          <img src="images/salad.jpg" alt="salad">
+      </a>
+      <div class="description">Salads</div>
+  </div>
+
+  <div class="gallery">
+      <a target="_blank" href="images/soup.jpg">
+          <img src="images/soup.jpg" alt="soup">
+      </a>
+      <div class="description">Soups</div>
+  </div>
+
+  <div class="gallery">
+      <a target="_blank" href="images/pizza.jpg">
+          <img src="images/pizza.jpg" alt="pizza">
+      </a>
+      <div class="description">Pizzas</div>
+  </div>
+
+    <div class="gallery">
+      <a target="_blank" href="images/pizza.jpg">
+          <img src="images/pizza.jpg" alt="pizza">
+      </a>
+      <div class="description">Pizzas</div>
+  </div>
+
+
+
+
+<!-- FOOTER -->
+<style> 
+    .footer {
+      height: 200px;
+      background-color: red;
+      /* For browsers that do not support gradients */
+      background-image: linear-gradient(180deg, rgb(249, 244, 244), rgb(50, 50, 50));
+    }
+  </style>
+   <!-- Section: Links -->
+    <section class="footer">
+      <!-- Section: Form -->
+      <section class="">
+        <form action="">
+          <!--Grid row-->
+          <div class="row d-flex justify-content-center">
+            <!--Grid column-->
+            <div class="col-auto">
+              <p class="pt-2">
+                <strong>Sign up to our newsletter</strong>
+              </p>
+            </div>
+            <div class="col-md-5 col-12">
+              <!-- Email input -->
+              <div class="form-outline form-white mb-4">
+                <input type="email" id="form5Example21" class="form-control" />
+                <label class="form-label" for="form5Example21">Email address</label>
+              </div>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-auto">
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-outline-light mb-4">
+                Subscribe
+              </button>
+            </div>
+        </form>
+      </section>
+      <!-- Section: Form -->
+
+      <!-- Section: Text -->
+      <div class="mb-4">
+        <p>
+          Thank you for visiting our website ! Please checkout our products and get the most exclusive and trending
+          games at the best and most affordable prices !
+
+      </p>
+
+
+      
+
+
+  <!-- Copyright -->
+  <div class="copyright" style="background-color: rgba(0, 0, 0, 0.2);">
+    © 2024 Copyright:
+    <a class="text-white" href="#">GamePoint</a>
+  </div>
+  <!-- Copyright -->
