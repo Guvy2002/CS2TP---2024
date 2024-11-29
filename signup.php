@@ -6,18 +6,20 @@ if (isset($_POST['submit'])){
     $name = $_POST['name'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     $confirm_password = $_POST['confirm_password'];
+    $hashed_Confirm_Password = password_hash($confirm_password, PASSWORD_DEFAULT);
     $registration_date = date("d-m-Y");
 
     try{
-        if ($password != $confirm_password) {
+        if ($hashedPassword != $hashed_Confirm_Password) {
             throw new Exception("Passwords do not match");
         }
-        if (strlen($password) < 7) {
+        if (strlen($hashedPassword) < 7) {
             throw new Exception("Password needs to be at least 8 characters long");
         }
         $stat = $conn->prepare("INSERT INTO RegisteredCustomer (Name, Email, Password, RegistrationDate) VALUES (?, ?, ?, ?)");
-        $stat->execute([$name, $email, $password, $registration_date]);
+        $stat->execute([$name, $email, $hashedPassword, $registration_date]);
     }
     catch (Exception $e){
         echo $e->getMessage();
