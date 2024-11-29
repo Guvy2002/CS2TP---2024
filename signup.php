@@ -1,4 +1,5 @@
-?php
+<?php
+require_once('DBconnection.php');
 
 if (isset($_POST['submit'])){
 
@@ -6,16 +7,23 @@ if (isset($_POST['submit'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    $registration_date = date("d-m-Y");
 
     try{
-
-        need database for this bit
+        if ($password != $confirm_password) {
+            throw new Exception("Passwords do not match");
+        }
+        if (strlen($password) < 7) {
+            throw new Exception("Password needs to be at least 8 characters long");
+        }
+        $stat = $conn->prepare("INSERT INTO RegisteredCustomer (Name, Email, Password, RegistrationDate) VALUES (?, ?, ?, ?)");
+        $stat->execute([$name, $email, $password, $registration_date]);
     }
-    catch (PDOexception $ex){
-        echo "Database error, Please Try Again. <br>";
-        echo "Error in details: <em>". $ex->getMessage(),"</em>"
+    catch (Exception $e){
+        echo $e->getMessage();
     }
 }
+?>
 
 <!DOCTYPE html>
 <html lang="en">
