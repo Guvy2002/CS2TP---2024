@@ -1,3 +1,4 @@
+<?php
 function openConnect() {
     //put in database ID's to connect to database
     $conn = mysqli_connect(IDs);
@@ -15,3 +16,4 @@ function checkConnect ($conn) {
 function closeConnect ($conn) {
     mysqli_close($conn);
 }
+?>
