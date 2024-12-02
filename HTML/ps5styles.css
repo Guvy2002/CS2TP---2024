@@ -152,13 +152,31 @@ h1 {
 }
 
 .navbar .right-section a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    /* Space between icon and text */
     margin-left: 20px;
-    /* Spacing between "Sign In" and "Basket" */
     text-decoration: none;
     color: white;
     font-size: 16px;
     font-weight: bold;
     transition: color 0.3s ease;
+}
+
+.navbar .right-section a i {
+    font-size: 20px;
+    /* Makes the icons slightly larger */
+}
+
+.navbar .right-section a:hover {
+    color: #f7f9fc;
+}
+
+/* Optional: Add a subtle animation on hover */
+.navbar .right-section a:hover i {
+    transform: scale(1.1);
+    transition: transform 0.2s ease;
 }
 
 /* Search Box in Navigation */
