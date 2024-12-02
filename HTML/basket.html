@@ -59,17 +59,23 @@
         <h1> Your Shopping Basket</h1>
 
         <div class="basket-item">
-            <img src="PS5IMAGES/ps5-slim.jpg" alt="PS5 Slim">
+            <img src="PS5IMAGES/fc25.jpg" alt="FC 25">
             <div class="item-details">
-                <div class="item-title">PlayStation 5 Slim (Digital Edition)</div>
-                <div class="item-price">£479.99</div>
+                <div class="item-title">FC 25</div>
+                <div class="item-price">£69.99</div>
                 <div class="quantity-controls">
-                    <button class="quantity-btn">-</button>
+                    <button class="quantity-btn">
+                        <i class="bi bi-dash-square-fill"></i>
+                    </button>
                     <span>1</span>
-                    <button class="quantity-btn">+</button>
+                    <button class="quantity-btn">
+                        <i class="bi bi-plus-square-fill"></i>
+                    </button>
                 </div>
             </div>
-            <button class="remove-button">Remove</button>
+            <button class="remove-button">
+                <i class="bi bi-trash"></i>
+            </button>
         </div>
 
         <div class="basket-item">
@@ -78,12 +84,18 @@
                 <div class="item-title">FC 25</div>
                 <div class="item-price">£69.99</div>
                 <div class="quantity-controls">
-                    <button class="quantity-btn">-</button>
+                    <button class="quantity-btn">
+                        <i class="bi bi-dash-square-fill"></i>
+                    </button>
                     <span>1</span>
-                    <button class="quantity-btn">+</button>
+                    <button class="quantity-btn">
+                        <i class="bi bi-plus-square-fill"></i>
+                    </button>
                 </div>
             </div>
-            <button class="remove-button">Remove</button>
+            <button class="remove-button">
+                <i class="bi bi-trash"></i>
+            </button>
         </div>
 
         <div class="basket-summary">
@@ -184,5 +196,91 @@
             <!-- Copyright -->
 </body>
 
+<script>
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        // Function to update the order summary totals
+        function updateTotals() {
+            let subtotal = 0;
+            // Get all basket items
+            const basketItems = document.querySelectorAll('.basket-item');
 
-</html>
+            basketItems.forEach(item => {
+                // Get the price (remove £ symbol and convert to number)
+                const price = parseFloat(item.querySelector('.item-price').textContent.replace('£', ''));
+                // Get the quantity
+                const quantity = parseInt(item.querySelector('.quantity-controls span').textContent);
+                // Add to subtotal
+                subtotal += price * quantity;
+            });
+
+            // Update the displayed totals
+            const subtotalDisplay = document.querySelector('.basket-summary div:nth-child(2) span:last-child');
+            const totalDisplay = document.querySelector('.basket-summary div:nth-child(5) span:last-child');
+
+            subtotalDisplay.textContent = `£${subtotal.toFixed(2)}`;
+            totalDisplay.textContent = `£${subtotal.toFixed(2)}`; // Same as subtotal since shipping is free
+        }
+
+        // Add event listeners to quantity buttons
+        document.querySelectorAll('.quantity-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const quantitySpan = this.parentElement.querySelector('span');
+                let quantity = parseInt(quantitySpan.textContent);
+
+                // Check if it's plus or minus button
+                if (this.querySelector('.bi-plus-square-fill')) {
+                    quantity++;
+                } else if (this.querySelector('.bi-dash-square-fill') && quantity > 1) {
+                    quantity--;
+                }
+
+                // Update the displayed quantity
+                quantitySpan.textContent = quantity;
+
+                // Update totals
+                updateTotals();
+            });
+        });
+
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-button').forEach(button => {
+            button.addEventListener('click', function () {
+                // Add fade-out animation
+                const basketItem = this.closest('.basket-item');
+                basketItem.style.transition = 'opacity 0.3s ease';
+                basketItem.style.opacity = '0';
+
+                // Remove the item after animation
+                setTimeout(() => {
+                    basketItem.remove();
+                    // Update totals after removing
+                    updateTotals();
+
+                    // Check if basket is empty
+                    const remainingItems = document.querySelectorAll('.basket-item');
+                    if (remainingItems.length === 0) {
+                        const basketContainer = document.querySelector('.basket-container');
+                        const emptyMessage = document.createElement('div');
+                        emptyMessage.textContent = 'Your basket is empty';
+                        emptyMessage.style.textAlign = 'center';
+                        emptyMessage.style.padding = '20px';
+                        emptyMessage.style.fontSize = '18px';
+                        basketContainer.insertBefore(emptyMessage, document.querySelector('.basket-summary'));
+                    }
+                }, 300);
+            });
+        });
+
+        // Add event listener to checkout button
+        document.querySelector('.checkout-button').addEventListener('click', function () {
+            // You can add checkout logic here
+            alert('Proceeding to checkout...');
+        });
+
+        // Initial calculation of totals
+        updateTotals();
+    });
+</script>
+
+</html >

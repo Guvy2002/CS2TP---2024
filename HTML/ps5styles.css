@@ -84,6 +84,9 @@ h1 {
 
 /* Navigation Bar */
 .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -510,39 +513,63 @@ img {
     font-weight: bold;
 }
 
+/* Quantity Controls Styling */
 .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;  /* Increased gap for better spacing */
     margin: 10px 0;
 }
 
-.quantity-button {
-    background-color: #0078d7;
-    color: white;
+.quantity-btn {
+    background: none;
     border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
+    padding: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.quantity-button:hover {
-    background-color: #005bb5;
+/* Style for the plus and minus icons */
+.bi-plus-square-fill,
+.bi-dash-square-fill {
+    font-size: 24px;  
+    color: #0078d7;   
+    transition: color 0.3s ease;
 }
 
+.quantity-btn:hover .bi-plus-square-fill,
+.quantity-btn:hover .bi-dash-square-fill {
+    color: #005bb5;  
+}
+
+.quantity-controls span {
+    font-size: 18px; 
+    font-weight: bold;
+    color: #333;
+    min-width: 30px;  
+    text-align: center;
+}
+
+/* Remove button styling */
 .remove-button {
-    background-color: #dc3545;
-    color: white;
+    background: none;
     border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
 }
 
-.remove-button:hover {
-    background-color: #c82333;
+.bi-trash {
+    font-size: 24px;  
+    color: #dc3545;   
+}
+
+.remove-button:hover .bi-trash {
+    color: #c82333;  
 }
 
 .basket-summary {
