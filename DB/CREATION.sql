@@ -1,6 +1,5 @@
-CREATE DATABASE GAMEPOINT;
 
-USE GAMEPOINT;
+USE cs2team8_db;
 
 -- registered customers table
 
@@ -170,7 +169,7 @@ CREATE TABLE Wishlist (
     wishlistID INT PRIMARY KEY AUTO_INCREMENT,
     customerID INT NOT NULL,
     createdDate DATE NOT NULL,
-    FOREIGN KEY (customerID) REFERENCES regCustomer(regCustomerID)
+    FOREIGN KEY (customerID) REFERENCES RegCustomer(regCustomerID)
 );
 -- wishlist item table
 
