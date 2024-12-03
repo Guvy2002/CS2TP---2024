@@ -1,9 +1,10 @@
 <?php
 require_once('DBconnection.php');
 
+if(isset($_POST['submit'])){
+    $name = $_POST['name'];
 
-
-
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +14,7 @@ require_once('DBconnection.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./CSS/HomePage.css">
+    <link rel="stylesheet" href="/CSS/HomePage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
     <title>Complete your purchase</title>
 </head>
@@ -69,7 +70,7 @@ require_once('DBconnection.php');
                 <input type="text" name="name" id="name" placeholder="***">
             </div>
         </div>
-        <input type="button" value="Complete purchase">
+        <input type="submit" value="Complete purchase">
     </form>
 </div>
 
