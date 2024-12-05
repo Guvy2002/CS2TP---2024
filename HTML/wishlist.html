@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
+</head>
+<body>
+    <div class="grad3">
+        <img src="Images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
+        <h2>GamePoint</h2>
+    </div>
+
+    <style>
+        .grad3 {
+            height: 100px;
+            background-color: red;
+            /* For browsers that do not support gradients */
+            background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
+        }
+    </style>
+
+    <div class="navbar">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">PlayStation</a></li>
+            <li><a href="#">Xbox</a></li>
+            <li><a href="#">Nintendo</a></li>
+            <li><a href="#">PC</a></li>
+            <li><a href="#">VR</a></li>
+            <li><a href="preorder.html">Pre-order</a></li>
+            <li><a href="sb.html">Special Bundles</a></li>
+        </ul>
+
+        <div class="right-section">
+            <div class="search-box">
+                <input type="text" class="search-bar" placeholder="Search...">
+                <button class="search-button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            <a href="signup.php">
+                <i class="bi bi-person-circle"></i>
+                Sign Up
+            </a>
+            <a href="login.php">
+                <i class="bi bi-person-circle"></i>
+                Log In
+            </a>
+            <a href="basket.html">
+                <i class="bi bi-cart3"></i>
+                Basket
+            </a>
+            <a href="wishlist.html">
+                <i class="fa-regular fa-heart"></i>
+                Wishlist
+            </a>
+        </div>
+    </div>
+
+    <section class="section-container">
+        <h1>Your Wishlist</h1>
+        <p class="text">Here are the items you've saved to your wishlist:</p>
+
+        <div class="wishlist-item">
+            <img src="images/c1.png" alt="Playstation 6">
+            <div class="item-details">
+                <div class="item-title">Playstation 6</div>
+                <div class="item-price">£499.99</div>
+                <div class="release-date">Release Date: 15 September 2025</div>
+                <div class="delivery-estimate">Delivery: 7-14 Days</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn">
+                        <i class="bi bi-dash-square-fill"></i>
+                    </button>
+                    <span>1</span>
+                    <button class="quantity-btn">
+                        <i class="bi bi-plus-square-fill"></i>
+                    </button>
+                    <button class="btn add-to-basket">Add to Basket</button>
+                </div>
+            </div>
+            <button class="remove-button">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+
+        <div class="wishlist-item">
+            <img src="images/xboxa.png" alt="Xbox Series X with FC 24 game">
+            <div class="item-details">
+                <div class="item-title">Xbox Series X with FC 24 game</div>
+                <div class="item-price">£499.99</div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn">
+                        <i class="bi bi-dash-square-fill"></i>
+                    </button>
+                    <span>1</span>
+                    <button class="quantity-btn">
+                        <i class="bi bi-plus-square-fill"></i>
+                    </button>
+                    <button class="btn add-to-basket">Add to Basket</button>
+                </div>
+            </div>
+            <button class="remove-button">
+                <i class="bi bi-trash"></i>
+            </button>
+        </div>
+
+    </section>
+
+    <script>
+                document.querySelectorAll('.quantity-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const quantitySpan = this.parentElement.querySelector('span');
+                let quantity = parseInt(quantitySpan.textContent);
+
+                // Check if it's plus or minus button
+                if (this.querySelector('.bi-plus-square-fill')) {
+                    quantity++;
+                } else if (this.querySelector('.bi-dash-square-fill') && quantity > 1) {
+                    quantity--;
+                }
+
+                // Update the displayed quantity
+                quantitySpan.textContent = quantity;
+
+                // Update totals
+                updateTotals();
+            });
+        });
+
+        document.querySelectorAll('.remove-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const basketItem = this.closest('.basket-item');
+                basketItem.style.transition = 'opacity 0.3s ease';
+                basketItem.style.opacity = '0';
+                setTimeout(() => {
+                    basketItem.remove();
+                    updateTotals();
+                    const remainingItems = document.querySelectorAll('.basket-item');
+                    if (remainingItems.length === 0) {
+                        const basketContainer = document.querySelector('.basket-container');
+                        const emptyMessage = document.createElement('div');
+                        emptyMessage.textContent = 'Your basket is empty';
+                        emptyMessage.style.textAlign = 'center';
+                        emptyMessage.style.padding = '20px';
+                        emptyMessage.style.fontSize = '18px';
+                        basketContainer.insertBefore(emptyMessage, document.querySelector('.basket-summary'));
+                    }
+                }, 300);
+            });
+        });
+    </script>
+</body>
+</html>
