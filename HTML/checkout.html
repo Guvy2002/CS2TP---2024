@@ -1,68 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="ps5styles.css">
-    <title>Complete your purchase</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - GamePoint</title>
+  <link rel="stylesheet" href="ps5styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
 </head>
+
 <body>
 
-    <header>
-        <h1 class="logo">Shopping</h1>
-        <ul class="menu-container">
-            <li class="menu-item">Home</li>
-            <li class="menu-item">Collections</li>
-            <li class="menu-item">Products</li>
-            <li class="menu-item red">For Sale</li>
-        </ul>
-        <div class="menu-icons-container">
-           <img src="Resources/Search.svg" alt="" class="icon"> 
-           <img src="Resources/Profile.svg" alt="" class="icon"> 
-           <img src="Resources/Cart.svg" alt="" class="icon"> 
-        </div>
-    </header>
+  <!-- Header -->
+  <div class="grad3">
+    <img src="Images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
+    <h2>GamePoint</h2>
+  </div>
 
-    <div class="progress-checkout-container">
-        <div class="progress-step-container">
-            <div class="step-check"></div>
-            <span class="step-title">Shipping</span>
-        </div>
-        <div class="progress-step-container">
-            <div class="step-check"></div>
-            <span class="step-title">Payment</span>
-        </div>
-        <div class="progress-step-container">
-            <div class="step-check"></div>
-            <span class="step-title">Review</span>
-        </div>
+  <style>
+    .grad3 {
+      height: 100px;
+      background-color: red;
+      background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
+    }
+
+    .checkout-container {
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .section {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+
+    .section h3 {
+      margin-bottom: 15px;
+    }
+
+    .input-group {
+      margin-bottom: 10px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .order-summary {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .order-summary li {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background-color: darkred;
+    }
+  </style>
+
+  <!-- Checkout Container -->
+  <div class="checkout-container">
+    <h1>Checkout</h1>
+
+    <!-- Cart Summary -->
+    <div class="section">
+      <h3>Order Summary</h3>
+      <ul class="order-summary">
+        <li>
+          <span>PlayStation 5</span>
+          <span>£389.99</span>
+        </li>
+        <li>
+          <span>Gran Turismo 7</span>
+          <span>£49.99</span>
+        </li>
+        <li>
+          <strong>Total</strong>
+          <strong>£439.98</strong>
+        </li>
+      </ul>
     </div>
-    
-    <div class="form-container">
-        <h2 class="form-title">Payment Details</h2>
-        <form action="" class="checkout-form">
-            <div class="input-line">
-                <label for="name">Name on card</label>
-                <input type="text" name="name" id="name" placeholder="Your name and surname">
-            </div>
-            <div class="input-line">
-                <label for="name">Card number</label>
-                <input type="text" name="name" id="name" placeholder="1111-2222-3333-4444">
-            </div>
-            <div class="input-container">
-                <div class="input-line">
-                    <label for="name">Expiring Date</label>
-                    <input type="text" name="name" id="name" placeholder="09-21">
+
+    <!-- Shipping Information -->
+    <div class="section">
+      <h3>Shipping Information</h3>
+      <form>
+        <div class="input-group">
+          <label for="full-name">Full Name</label>
+          <input type="text" id="full-name" name="full-name" required>
+        </div>
+        <div class="input-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address" required>
+        </div>
+        <div class="input-group">
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" required>
+        </div>
+        <div class="input-group">
+          <label for="postal-code">Postal Code</label>
+          <input type="text" id="postal-code" name="postal-code" required>
+        </div>
+        <div class="input-group">
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="uk">United Kingdom</option>
+            <option value="us">United States</option>
+            <option value="ca">Canada</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <!-- Payment Information -->
+    <div class="section">
+      <h3>Payment Information</h3>
+      <form>
+        <div class="input-group">
+          <label for="card-name">Name on Card</label>
+          <input type="text" id="card-name" name="card-name" required>
+        </div>
+        <div class="input-group">
+          <label for="card-number">Card Number</label>
+          <input type="text" id="card-number" name="card-number" required>
+        </div>
+        <div class="input-group">
+          <label for="expiry">Expiry Date</label>
+          <input type="month" id="expiry" name="expiry" required>
+        </div>
+        <div class="input-group">
+          <label for="cvv">CVV</label>
+          <input type="text" id="cvv" name="cvv" required>
+        </div>
+      </form>
+    </div>
+
+    <!-- Confirm Order Button -->
+    <button class="confirm-order-btn">Confirm Order</button>
+  </div>
+
+ <!-- FOOTER -->
+ <style>
+    .footer {
+        height: 200px;
+        background-color: red;
+        /* For browsers that do not support gradients */
+        background-image: linear-gradient(180deg, rgb(249, 244, 244), rgb(50, 50, 50));
+    }
+</style>
+<!-- Section: Links -->
+<section class="footer">
+    <!-- Section: Form -->
+    <section class="">
+        <form action="">
+            <!--Grid row-->
+            <div class="row d-flex justify-content-center">
+                <!--Grid column-->
+                <div class="col-auto">
+                    <p class="pt-2">
+                        <strong>Sign up to our newsletter by entering your email address</strong>
+                    </p>
                 </div>
-                <div class="input-line">
-                    <label for="name">CVC</label>
-                    <input type="text" name="name" id="name" placeholder="***">
+                <div class="col-md-5 col-12">
+                    <!-- Email input -->
+                    <div class="form-outline form-white mb-4">
+                        <input type="email" id="form5Example21" class="form-control" />
+                        <label class="form-label" for="form5Example21"> <button type="submit"
+                                class="btn btn-outline-light mb-4">
+                                Subscribe
+                            </button></label>
+                    </div>
+                    <!--Grid column-->
                 </div>
-            </div>
-            <input type="button" value="Complete purchase">
         </form>
+    </section>
+    <!-- Section: Form -->
+
+    <!-- Section: Text -->
+    <div class="mb-4">
+        <p>
+            Thank you for visiting our website ! Please checkout our products and get the most exclusive and
+            trending
+            games at the best and most affordable prices !
+
+        </p>
+
+
+        <!-- Social Media Section -->
+        <div class="social-media">
+            <h5>Follow Us on Social Media</h5>
+            <div class="social-icons">
+                <a href="https://www.instagram.com" target="_blank">
+                    <i class="bi bi-instagram"></i>
+                    <!-- <img src="Images/insta logo.webp" alt="Instagram" class="social-icon"> -->
+                </a>
+                <a href="https://www.twitter.com" target="_blank">
+                    <i class="bi bi-twitter-x"></i>
+                    <!-- <img src="Images/twitter logo.png" alt="Twitter" class="social-icon"> -->
+                </a>
+                <a href="https://www.facebook.com" target="_blank">
+                    <i class="bi bi-facebook"></i>
+                    <!-- <img src="Images/facebook logo.png" alt="Facebook" class="social-icon"> -->
+                </a>
+                <a href="https://www.tiktok.com" target="_blank">
+                    <i class="bi bi-tiktok"></i>
+                    <!-- <img src="Images/tiktok logo.webp" alt="TikTok" class="social-icon"> -->
+                </a>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="copyright" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2024 Copyright:
+            <a class="text-white" href="#">GamePoint</a>
+        </div>
+        <!-- Copyright -->
     </div>
+</section>
+</body>
+
+</html>
 
 </body>
+
 </html>
