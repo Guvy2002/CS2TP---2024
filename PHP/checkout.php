@@ -152,19 +152,19 @@ if(isset($_POST['submit'])){
       <h3>Shipping Information</h3>
       <form>
         <div class="input-group">
-          <label for="full-name">Full Name</label>
+          <label for="full-name">Full Name*</label>
           <input type="text" id="full-name" name="full-name" required>
         </div>
         <div class="input-group">
-          <label for="number">Contact Number</label>
+          <label for="number">Contact Number*</label>
           <input type="tel" id="number" name="number" required>
         </div>
         <div class="input-group">
-          <label for="address">Address Line 1</label>
+          <label for="address">Address Line 1*</label>
           <input type="text" id="address" name="address" required>
         </div>
         <div class="input-group">
-          <label for="address2">Address Line 2</label>
+          <label for="address2">Address Line 2*</label>
           <input type="text" id="address2" name="address2" required>
         </div>
         <div class="input-group">
@@ -172,11 +172,11 @@ if(isset($_POST['submit'])){
           <input type="text" id="city" name="city" required>
         </div>
         <div class="input-group">
-          <label for="postal-code">Postal Code</label>
+          <label for="postal-code">Postal Code*</label>
           <input type="text" id="postal-code" name="postal-code" required>
         </div>
         <div class="input-group">
-          <label for="country">Country</label>
+          <label for="country">Country*</label>
           <select id="country" name="country" required>
             <option value="uk">United Kingdom</option>
             <option value="us">United States</option>
@@ -191,7 +191,7 @@ if(isset($_POST['submit'])){
       <h3>Payment Information</h3>
       <form>
         <div class="input-group">
-          <label for="card-name">Name on Card</label>
+          <label for="card-name">Name on Card*</label>
           <input type="text" id="card-name" name="card-name" required>
         </div>
         <div class="input-group">
