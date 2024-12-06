@@ -18,8 +18,8 @@ if (isset($_POST['submit'])){
         if (strlen($hashedPassword) < 7) {
             throw new Exception("Password needs to be at least 8 characters long");
         }
-        //$stat = $conn->prepare("INSERT INTO RegisteredCustomer (Name, Email, Password, RegistrationDate) VALUES (?, ?, ?, ?)");
-        //$stat->execute([$name, $email, $hashedPassword, $registration_date]);
+        $conn = ("INSERT INTO RegisteredCustomer (Name, Email, Password, RegistrationDate) VALUES ($name,$email,$hashedPassword,$registration_date)");
+
     }
     catch (Exception $e){
         echo $e->getMessage();
