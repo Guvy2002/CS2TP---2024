@@ -39,174 +39,190 @@ if(isset($_POST['submit'])){
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - GamePoint</title>
-    <link rel="stylesheet" href="ps5styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - GamePoint</title>
+  <link rel="stylesheet" href="ps5styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
 </head>
 
 <body>
 
-<!-- Header -->
-<div class="grad3">
+  <!-- Header -->
+  <div class="grad3">
     <img src="Images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
     <h2>GamePoint</h2>
-</div>
+  </div>
 
-<style>
+  <style>
     .grad3 {
-        height: 100px;
-        background-color: red;
-        background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
+      height: 100px;
+      background-color: red;
+      background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
     }
 
     .checkout-container {
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
+      max-width: 800px;
+      margin: auto;
+      padding: 20px;
     }
 
     .section {
-        margin-bottom: 20px;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        background: #f9f9f9;
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background: #f9f9f9;
     }
 
     .section h3 {
-        margin-bottom: 15px;
+      margin-bottom: 15px;
     }
 
     .input-group {
-        margin-bottom: 10px;
+      margin-bottom: 10px;
     }
 
     .input-group label {
-        display: block;
-        margin-bottom: 5px;
+      display: block;
+      margin-bottom: 5px;
     }
 
     .input-group input,
     .input-group select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
     }
 
     .order-summary {
-        list-style-type: none;
-        padding: 0;
+      list-style-type: none;
+      padding: 0;
     }
 
     .order-summary li {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
     }
 
     .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: red;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        text-align: center;
-        cursor: pointer;
-        font-size: 16px;
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 16px;
     }
 
     .btn:hover {
-        background-color: darkred;
+      background-color: darkred;
     }
-</style>
+  </style>
 
-<!-- Checkout Container -->
-<div class="checkout-container">
+  <!-- Checkout Container -->
+  <div class="checkout-container">
     <h1>Checkout</h1>
 
     <!-- Cart Summary -->
     <div class="section">
-        <h3>Order Summary</h3>
-        <ul class="order-summary">
-            <li>
-                <span>PlayStation 5</span>
-                <span>£389.99</span>
-            </li>
-            <li>
-                <span>Gran Turismo 7</span>
-                <span>£49.99</span>
-            </li>
-            <li>
-                <strong>Total</strong>
-                <strong>£439.98</strong>
-            </li>
-        </ul>
+      <h3>Order Summary</h3>
+      <ul class="order-summary">
+        <li>
+          <span>PlayStation 5</span>
+          <span>£389.99</span>
+        </li>
+        <li>
+          <span>Gran Turismo 7</span>
+          <span>£49.99</span>
+        </li>
+        <li>
+          <strong>Total</strong>
+          <strong>£439.98</strong>
+        </li>
+      </ul>
     </div>
 
     <!-- Shipping Information -->
     <div class="section">
-        <h3>Shipping Information</h3>
-        <form>
-            <div class="input-group">
-                <label for="full-name">Full Name</label>
-                <input type="text" id="full-name" name="full-name" required>
-            </div>
-            <div class="input-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" required>
-            </div>
-            <div class="input-group">
-                <label for="city">City</label>
-                <input type="text" id="city" name="city" required>
-            </div>
-            <div class="input-group">
-                <label for="postal-code">Postal Code</label>
-                <input type="text" id="postal-code" name="postal-code" required>
-            </div>
-            <div class="input-group">
-                <label for="country">Country</label>
-                <select id="country" name="country" required>
-                    <option value="uk">United Kingdom</option>
-                    <option value="us">United States</option>
-                    <option value="ca">Canada</option>
-                </select>
-            </div>
-        </form>
+      <h3>Shipping Information</h3>
+      <form>
+        <div class="input-group">
+          <label for="full-name">Full Name</label>
+          <input type="text" id="full-name" name="full-name" required>
+        </div>
+        <div class="input-group">
+          <label for="number">Contact Number</label>
+          <input type="tel" id="number" name="number" required>
+        </div>
+        <div class="input-group">
+          <label for="address">Address Line 1</label>
+          <input type="text" id="address" name="address" required>
+        </div>
+        <div class="input-group">
+          <label for="address2">Address Line 2</label>
+          <input type="text" id="address2" name="address2" required>
+        </div>
+        <div class="input-group">
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" required>
+        </div>
+        <div class="input-group">
+          <label for="postal-code">Postal Code</label>
+          <input type="text" id="postal-code" name="postal-code" required>
+        </div>
+        <div class="input-group">
+          <label for="country">Country</label>
+          <select id="country" name="country" required>
+            <option value="uk">United Kingdom</option>
+            <option value="us">United States</option>
+            <option value="ca">Canada</option>
+          </select>
+        </div>
+      </form>
     </div>
 
     <!-- Payment Information -->
     <div class="section">
-        <h3>Payment Information</h3>
-        <form>
-            <div class="input-group">
-                <label for="card-name">Name on Card</label>
-                <input type="text" id="card-name" name="card-name" required>
-            </div>
-            <div class="input-group">
-                <label for="card-number">Card Number</label>
-                <input type="text" id="card-number" name="card-number" required>
-            </div>
-            <div class="input-group">
-                <label for="expiry">Expiry Date</label>
-                <input type="month" id="expiry" name="expiry" required>
-            </div>
-            <div class="input-group">
-                <label for="cvv">CVV/CVC</label>
-                <input type="text" id="cvv" name="cvv" required>
-            </div>
-        </form>
+      <h3>Payment Information</h3>
+      <form>
+        <div class="input-group">
+          <label for="card-name">Name on Card</label>
+          <input type="text" id="card-name" name="card-name" required>
+        </div>
+        <div class="input-group">
+          <label for="card-number">Card Number</label>
+          <input type="text" id="card-number" name="card-number" required>
+        </div>
+        <div class="input-group">
+          <label for="card-address">Address Line 1</label>
+          <input type="text" id="card-address" name="card-address" required>
+        </div>
+        <div class="input-group">
+          <label for="card-address2">Address Line 2</label>
+          <input type="text" id="card-address2" name="card-address2" required>
+        </div>
+        <div class="input-group">
+          <label for="expiry">Expiry Date</label>
+          <input type="month" id="expiry" name="expiry" required>
+        </div>
+        <div class="input-group">
+          <label for="cvv">CVV</label>
+          <input type="number" id="cvv" name="cvv" required>
+        </div>
+      </form>
     </div>
 
     <!-- Confirm Order Button -->
     <button class="confirm-order-btn">Confirm Order</button>
-</div>
+  </div>
 
-<!-- FOOTER -->
-<style>
+ <!-- FOOTER -->
+ <style>
     .footer {
         height: 200px;
         background-color: red;
@@ -232,7 +248,7 @@ if(isset($_POST['submit'])){
                     <div class="form-outline form-white mb-4">
                         <input type="email" id="form5Example21" class="form-control" />
                         <label class="form-label" for="form5Example21"> <button type="submit"
-                                                                                class="btn btn-outline-light mb-4">
+                                class="btn btn-outline-light mb-4">
                                 Subscribe
                             </button></label>
                     </div>
