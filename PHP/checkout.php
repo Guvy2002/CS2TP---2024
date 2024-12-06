@@ -1,14 +1,17 @@
 <?php
-require_once('DBconnection.php');
+//require_once('DBconnection.php');
 
 if(isset($_POST['submit'])){
     $fullName = $_POST['full-name'];
+    $contactNumber = $_POST['number'];
     $address = $_POST['address'];
+    $address2 = $_POST['address2'];
     $city = $_POST['city'];
     $postcode = $_POST['postal-code'];
     $country = $_POST['country'];
     $cardName = $_POST['card-name'];
     $cardAddress  = $_POST['card-address'];
+    $cardAddress2  = $_POST['card-address2'];
     $cardNumber = $_POST['card-number'];
     $expiryMonth = $_POST['expiry'];
     $cvv = $_POST['cvv'];
@@ -23,10 +26,8 @@ if(isset($_POST['submit'])){
         if ($cvv > 3){
             throw new exception("CVV/CVC is to long");
         }
-        $conn = ("INSERT INTO Orders (totalPrice, OrderDate, Order")
-            values
-        $stat = $conn->prepare("INSERT INTO Payment (paymentDate, Amount, paymentMethod) VALUES (?, ?, ?)");
-        $stat->execute([$name, $email, $hashedPassword, $registration_date]);
+        $conn = ("INSERT INTO Orders (totalPrice, OrderDate, Order) VALUES (?, ?,?)");
+        $conn = ("INSERT INTO Payment (paymentDate, Amount, paymentMethod) VALUES (?, ?, ?)");
     }
     catch (Exception $e){
         echo $e->getMessage();
@@ -211,7 +212,7 @@ if(isset($_POST['submit'])){
           <input type="month" id="expiry" name="expiry" required>
         </div>
         <div class="input-group">
-          <label for="cvv">CVV</label>
+          <label for="cvv">CVV/CVC</label>
           <input type="number" id="cvv" name="cvv" required>
         </div>
       </form>
