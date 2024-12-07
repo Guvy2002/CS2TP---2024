@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>GamePoint | Login</title>
   <link rel="icon" href="images/favicon1.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="ps5styles.css" />
   <script defer src="script.js"></script>
 </head>
 <body>
