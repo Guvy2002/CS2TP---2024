@@ -333,6 +333,28 @@ img {
     display: block;
 }
 
+.release-date,
+.delivery-estimate {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 0;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    background-color: #f0f0f0; /* Light gray background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.release-date {
+    border-left: 4px solid #007bff; /* Blue border for release date */
+}
+
+.delivery-estimate {
+    border-left: 4px solid #28a745; /* Green border for delivery estimate */
+}
+
+
 /* Styling for Add to Basket and Add to Wishlist Buttons */
 .buttons {
     display: flex;
@@ -511,6 +533,35 @@ img {
     font-size: 16px;
     color: #001D3D;
     font-weight: bold;
+}
+
+/* Wishlist styles */
+
+.wishlist-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.wishlist-container h1{
+    margin-bottom: 20px;
+}
+
+.wishlist-item {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.wishlist-item img {
+    width: 120px;
+    height: auto;
+    margin-right: 20px;
+    border-radius: 4px;
 }
 
 /* Quantity Controls Styling */
