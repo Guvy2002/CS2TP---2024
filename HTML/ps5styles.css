@@ -284,32 +284,26 @@ img {
 .section-container {
     display: flex;
     flex-wrap: wrap;
-    /* Allow wrapping for responsiveness */
     justify-content: center;
-    /* Center-align the items */
     gap: 20px;
-    /* Spacing between boxes */
-    padding: 20px 0;
-    /* Add padding around the section */
+    padding: 20px 40px;
+    max-width: 1800px;
 }
 
 /* Individual Gallery Box Styling */
 .gallery {
     display: flex;
     flex-direction: column;
-    /* Ensure content is stacked */
     align-items: center;
-    /* Center content horizontally */
     border: 1px solid #ddd;
-    /* Light border */
     margin: 10px;
-    width: 200px;
+    width: 300px;
+    min-height: 400px;
     background-color: white;
     border-radius: 8px;
-    /* Rounded corners */
     overflow: hidden;
-    /* Clip overflowing content */
     transition: box-shadow 0.3s ease, transform 0.3s ease;
+    padding-bottom: 15px;
 }
 
 .gallery:hover {
@@ -324,13 +318,16 @@ img {
     text-align: center;
     font-weight: bold;
     color: #0078d7;
+    width: 100%;
+    min-height: 40px;
     /* Light blue text */
 }
 
 .gallery img {
     width: 100%;
-    height: auto;
+    height: 250px;
     display: block;
+    object-fit: contain;
 }
 
 .release-date,
@@ -342,16 +339,20 @@ img {
     padding: 5px 10px;
     border-radius: 5px;
     display: inline-block;
-    background-color: #f0f0f0; /* Light gray background */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #f0f0f0;
+    /* Light gray background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
 }
 
 .release-date {
-    border-left: 4px solid #007bff; /* Blue border for release date */
+    border-left: 4px solid #007bff;
+    /* Blue border for release date */
 }
 
 .delivery-estimate {
-    border-left: 4px solid #28a745; /* Green border for delivery estimate */
+    border-left: 4px solid #28a745;
+    /* Green border for delivery estimate */
 }
 
 
@@ -360,14 +361,16 @@ img {
     display: flex;
     justify-content: space-between;
     /* Space out the buttons */
-    width: 80%;
-    /* Limit the width of buttons inside the gallery */
-    margin-top: 10px;
-    /* Add space between the image/description and buttons */
+    width: 90%;
+    /* Slightly wider buttons */
+    margin-top: auto;
+    /* Push buttons to bottom */
+    gap: 10px;
+    /* Space between buttons */
 }
 
 .btn {
-    padding: 8px 16px;
+    padding: 10px 20px;
     /* Add padding inside buttons */
     font-size: 14px;
     font-weight: bold;
@@ -408,58 +411,167 @@ img {
 
 
 /* Footer Styling */
-.footer {
-    height: auto;
-    padding: 20px;
-    background-image: linear-gradient(180deg, #f7f9fc, #0078d7);
-    /* Light blue gradient */
+.footer-container {
+    background: linear-gradient(180deg, #0078d7, #005bb5);
     color: white;
-    text-align: center;
-}
-
-.footer form {
+    padding: 20px 10px;
+    font-family: Arial, sans-serif;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    gap: 40px;
     flex-wrap: wrap;
-    margin-bottom: 10px;
 }
 
-.footer input[type="text"] {
-    padding: 5px 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-left: 10px;
-    transition: border-color 0.3s ease;
+/* Newsletter Section */
+.newsletter-section {
+    max-width: 800px;
+    margin: 0 60px;
+    text-align: center;
+    margin-bottom: 20px;
+    flex: 0 1 400px;
 }
 
-.footer button {
-    padding: 5px 5px;
-    border: none;
-    background-color: white;
-    color: #0078d7;
-    font-weight: bold;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.newsletter-section h2 {
+    font-size: 20px;
+    margin-bottom: 5px;
 }
 
-.footer button:hover {
-    background-color: #005bb5;
-    color: white;
-}
-
-.footer p {
+.signup-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
     margin: 10px 0;
 }
 
-.copyright {
-    background-color: #005bb5;
-    padding: 10px;
-    color: white;
-    font-size: 14px;
+.form-group {
+    flex: 1;
+    min-width: 200px;
 }
+
+.form-group label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid black;
+    background-color: #f7f9fc;
+    color: white;
+}
+
+.signup-button {
+    width: 100%;
+    padding: 10px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.signup-button:hover {
+    background-color: white;
+    color: black;
+}
+
+.disclaimer {
+    font-size: 10px;
+    margin: 10px 0;
+    color: #999;
+}
+
+/* Social Icons */
+.social-icons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.social-icons a {
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    color: #999;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: flex-start;
+    gap: 100px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+}
+
+.footer-column {
+    flex-shrink: 0;
+    padding-bottom: 50px;
+}
+
+.footer-column h3 {
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: white;
+    font-weight: bold;
+}
+
+.footer-column ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 5px;
+}
+
+.footer-column ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.2s ease;
+}
+
+.footer-column ul li a:hover {
+    color: #999;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-links {
+        justify-content: center;
+        gap: 20px;
+        padding: 10px;
+        flex-wrap: wrap;
+    }
+
+    .newsletter-section {
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .footer-column {
+        text-align: center;
+    }
+}
+
 
 
 .social-media {
@@ -489,6 +601,30 @@ img {
     transform: scale(1.2);
 }
 
+
+/* Back to Top Button */
+.back-to-top-container {
+    text-align: right;
+    padding: 10px;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.back-to-top-button {
+    color: white;
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid white;
+    transition: all 0.3s ease;
+}
+
+.back-to-top-button:hover {
+    background-color: white;
+    color: black;
+}
+
+
 /* Basket styles */
 
 .basket-container {
@@ -497,7 +633,7 @@ img {
     padding: 0 20px;
 }
 
-.basket-container h1{
+.basket-container h1 {
     margin-bottom: 20px;
 }
 
@@ -543,7 +679,7 @@ img {
     padding: 0 20px;
 }
 
-.wishlist-container h1{
+.wishlist-container h1 {
     margin-bottom: 20px;
 }
 
@@ -568,7 +704,8 @@ img {
 .quantity-controls {
     display: flex;
     align-items: center;
-    gap: 15px;  /* Increased gap for better spacing */
+    gap: 15px;
+    /* Increased gap for better spacing */
     margin: 10px 0;
 }
 
@@ -585,21 +722,21 @@ img {
 /* Style for the plus and minus icons */
 .bi-plus-square-fill,
 .bi-dash-square-fill {
-    font-size: 24px;  
-    color: #0078d7;   
+    font-size: 24px;
+    color: #0078d7;
     transition: color 0.3s ease;
 }
 
 .quantity-btn:hover .bi-plus-square-fill,
 .quantity-btn:hover .bi-dash-square-fill {
-    color: #005bb5;  
+    color: #005bb5;
 }
 
 .quantity-controls span {
-    font-size: 18px; 
+    font-size: 18px;
     font-weight: bold;
     color: #333;
-    min-width: 30px;  
+    min-width: 30px;
     text-align: center;
 }
 
@@ -615,12 +752,12 @@ img {
 }
 
 .bi-trash {
-    font-size: 24px;  
-    color: #dc3545;   
+    font-size: 24px;
+    color: #dc3545;
 }
 
 .remove-button:hover .bi-trash {
-    color: #c82333;  
+    color: #c82333;
 }
 
 .basket-summary {
@@ -631,7 +768,7 @@ img {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.basket-summary h2{
+.basket-summary h2 {
     text-align: center;
     margin-left: 50px;
 }

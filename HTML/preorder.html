@@ -1,366 +1,431 @@
 <!DOCTYPE html>
 <html>
- 
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preorder</title>
-    <link rel="stylesheet" href="ps5styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preorder</title>
+  <link rel="stylesheet" href="ps5styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
 </head>
 
 <body>
 
-    <div class="grad3">
-        <img src="images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
-        <h2>GamePoint</h2>
+  <div class="grad3">
+    <img src="images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
+    <h2>GamePoint</h2>
+  </div>
+
+  <style>
+    .grad3 {
+      height: 100px;
+      background-color: red;
+      background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
+    }
+  </style>
+
+  <div class="navbar">
+    <ul>
+      <li><a href="homepage.html">Home</a></li>
+      <li><a href="ps5.html">PlayStation</a></li>
+      <li><a href="xbox.html">XBOX</a></li>
+      <li><a href="nintendo.html">Nintendo</a></li>
+      <li><a href="VR.html">VR</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="sb.html">Special Bundles</a></li>
+      <li><a href="preorder.html">Pre order</a></li>
+    </ul>
+
+
+    <!-- Right Section: Sign In and Basket -->
+    <div class="right-section">
+      <div class="search-box">
+        <input type="text" class="search-bar" placeholder="Search...">
+        <button class="search-button">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+      <a href="wishlist.html">
+        <i class="bi bi-heart"></i>
+      </a>
+      <a href="basket.html">
+        <i class="bi bi-cart3"></i>
+      </a>
+      <a href="login.html">
+        <i class="bi bi-person-circle"></i>
+      </a>
     </div>
+  </div>
 
-    <style>
-        .grad3 {
-            height: 100px;
-            background-color: red;
-            background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
-        }
-    </style>
+  <div class="video-container">
+    <video autoplay muted loop>
+      <source src="images/preorder.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
 
-    <div class="navbar">
-      <ul>
-        <li><a href="homepage.html">Home</a></li>
-        <li><a href="ps5.html">PlayStation</a></li>
-        <li><a href="xbox.html">XBOX</a></li>
-        <li><a href="nintendo.html">Nintendo</a></li>
-        <li><a href="vrstore.html">VR</a></li>
-        <li><a href="pc.html">PC</a></li>
-        <li><a href="sb.html">Special Bundles</a></li>
-        <li><a href="preorder.html">Pre order</a></li>
-      </ul>
+  <h1>MOST PREORDERED PRODUCTS</h1>
 
-
-        <div class="right-section">
-            <div class="search-box">
-                <input type="text" placeholder="Search...">
-            </div>
-            <a href="login.php">Log In</a>
-            <a href="signup.php">Sign Up</a>
-            <a href="basket.php">Basket</a>
-            <a href="wishlist.html">Wishlist</a>
-        </div>
-    </div>
-
-    <div class="video-container">
-        <video autoplay muted loop>
-            <source src="images/preorder.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <h1>MOST PREORDERED PRODUCTS</h1>
-    
-    <div class="section-container">
-        <div class="gallery">
-            <a target="_blank" href="images/ch5.png">
-              <img src="images/ch5.png" alt="Razer Huntsman V3 Pro Keyboard"></a>
-            <div class="description">Razer Huntsman V3 Pro Keyboard</div>
-            <div class="description">£229.99</div>
-            <div class="release-date">Release Date: 23 September 2025</div>
-            <div class="delivery-estimate">Estimated Delivery: 28 September 2025</div>
-            <div class="buttons">
-              <button class="btn add-to-basket">Add to Basket</button>
-              <button class="btn add-to-wishlist">Add to Wishlist</button>
-            </div>
-          </div>
-          <div class="gallery">
-            <a target="_blank" href="images/g1.png">
-              <img src="images/g1.png" alt="Assassin's Creed Shadows"></a>
-            <div class="description">Assassin's Creed Shadows</div>
-            <div class="description">£34.99</div>
-            <div class="release-date">Release Date: 16 November 2025</div>
-            <div class="delivery-estimate">Estimated Delivery: 25 November 2025</div>
-            <div class="buttons">
-              <button class="btn add-to-basket">Add to Basket</button>
-              <button class="btn add-to-wishlist">Add to Wishlist</button>
-            </div>
-          </div>
-          <div class="gallery">
-            <a target="_blank" href="images/c1.png">
-              <img src="images/c1.png" alt="Playstation 6"></a>
-            <div class="description">Playstation 6</div>
-            <div class="description">£499.99</div>
-            <div class="release-date">Release Date: 15 September 2025</div>
-            <div class="delivery-estimate">Estimated Delivery: 26 September 2025</div>
-            <div class="buttons">
-              <button class="btn add-to-basket">Add to Basket</button>
-              <button class="btn add-to-wishlist">Add to Wishlist</button>
-            </div>
-          </div>
-          <div class="gallery">
-            <a target="_blank" href="images/ch6.png">
-              <img src="images/ch6.png" alt="ASTRO A50 (Gen 5) LIGHTSPEED Wireless Gaming Headset"></a>
-            <div class="description">ASTRO A50 (Gen 5) LIGHTSPEED Wireless Gaming Headset</div>
-            <div class="description">£259.99</div>
-            <div class="release-date">Release Date: 7 October 2025</div>
-            <div class="delivery-estimate">Estimated Delivery: 14 October 2025</div>
-            <div class="buttons">
-              <button class="btn add-to-basket">Add to Basket</button>
-              <button class="btn add-to-wishlist">Add to Wishlist</button>
-            </div>
-          </div>
-          <div class="gallery">
-            <a target="_blank" href="images/g3.png">
-              <img src="images/g3.png" alt="Doom: The Dark Ages"></a>
-            <div class="description">Doom: The Dark Ages</div>
-            <div class="description">£69.99</div>
-            <div class="release-date">Release Date: 29 January 2025</div>
-            <div class="delivery-estimate">Estimated Delivery: 12 February 2025</div>
-            <div class="buttons">
-              <button class="btn add-to-basket">Add to Basket</button>
-              <button class="btn add-to-wishlist">Add to Wishlist</button>
-            </div>
-          </div>
-          <div class="gallery">
-            <a target="_blank" href="images/c3.png">
-              <img src="images/c3.png" alt="Nintendo Switch 2"></a>
-            <div class="description">Nintendo Switch 2</div>
-                <div class="description">£319.99</div>
-                <div class="release-date">Release Date: 18 April 2025</div>
-                <div class="delivery-estimate">Estimated Delivery: 28 April 2025</div>
-            <div class="buttons">
-              <button class="btn add-to-basket">Add to Basket</button>
-              <button class="btn add-to-wishlist">Add to Wishlist</button>
-            </div>
-          </div>
-     </div>
-    
-    <h1>Devices</h1>
-    
-    <div class="section-container">
-      <div class="gallery">
-        <a target="_blank" href="images/c1.png">
-          <img src="images/c1.png" alt="Playstation 6"></a>
-        <div class="description">Playstation 6</div>
-        <div class="description">£499.99</div>
-        <div class="release-date">Release Date: 15 September 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 26 September 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/c2.png">
-          <img src="images/c2.png" alt="All-digital XBOX Series X"></a>
-        <div class="description">All-digital XBOX Series X</div>
-            <div class="description">£279.99</div>
-            <div class="release-date">Release Date: December 11, 2025</div>
-            <div class="delivery-estimate">Estimated Delivery: December 13, 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/c3.png">
-          <img src="images/c3.png" alt="Nintendo Switch 2"></a>
-        <div class="description">Nintendo Switch 2</div>
-            <div class="description">£319.99</div>
-            <div class="release-date">Release Date: 18 April 2025</div>
-            <div class="delivery-estimate">Estimated Delivery: 28 April 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/c4.png">
-          <img src="images/c4.png" alt="Cougar Gaming PC"></a>
-        <div class="description">Cougar Gaming PC</div>
-        <div class="description">£599.99</div>
-        <div class="release-date">Release Date: 8 January 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 14 January 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/c5.png">
-          <img src="images/c5.png" alt="Apple Vision Pro 2"></a>
-        <div class="description">Apple Vision Pro 2</div>
-        <div class="description">£3599.99</div>
-        <div class="release-date">Release Date: 14 February 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 19 February 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/c6.png">
-          <img src="images/c6.png" alt="Meta Quest 4"></a>
-        <div class="description">Meta Quest 4</div>
-        <div class="description">£599.99</div>
-        <div class="release-date">Release Date: 15 December 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 24 December 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
+  <div class="section-container">
+    <div class="gallery">
+      <a target="_blank" href="images/ch5.png">
+        <img src="images/ch5.png" alt="Razer Huntsman V3 Pro Keyboard"></a>
+      <div class="description">Razer Huntsman V3 Pro Keyboard</div>
+      <div class="description">£229.99</div>
+      <div class="release-date">Release Date: 23 September 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 28 September 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
       </div>
     </div>
-    
-    <h1>Games</h1>
-    
-    <div class="section-container">
-      <div class="gallery">
-        <a target="_blank" href="images/g1.png">
-          <img src="images/g1.png" alt="Assassin's Creed Shadows"></a>
-        <div class="description">Assassin's Creed Shadows</div>
-        <div class="description">£34.99</div>
-        <div class="release-date">Release Date: 16 November 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 25 November 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/g2.png">
-          <img src="images/g2.png" alt="Corpse Party II: Darkness Distortion"></a>
-        <div class="description">Corpse Party II: Darkness Distortion</div>
-        <div class="description">£44.99</div>
-        <div class="release-date">Release Date: 19 June 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 29 June 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/g3.png">
-          <img src="images/g3.png" alt="Doom: The Dark Ages"></a>
-        <div class="description">Doom: The Dark Ages</div>
-        <div class="description">£69.99</div>
-        <div class="release-date">Release Date: 29 January 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 12 February 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/g4.png">
-          <img src="images/g4.png" alt="Cuisineer"></a>
-        <div class="description">Cuisineer</div>
-        <div class="description">£34.99</div>
-        <div class="release-date">Release Date: 3 July 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 10 July 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/g5.png">
-          <img src="images/g5.png" alt="Avowed"></a>
-        <div class="description">Avowed</div>
-        <div class="description">£64.99</div>
-        <div class="release-date">Release Date: 30 May 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 5 June 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
-      </div>
-      <div class="gallery">
-        <a target="_blank" href="images/g6.png">
-          <img src="images/g6.png" alt="Atomfall"></a>
-        <div class="description">Atomfall
-        </div>
-        <div class="description">£49.99</div>
-        <div class="release-date">Release Date: 24 February 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 9 March 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
+    <div class="gallery">
+      <a target="_blank" href="images/g1.png">
+        <img src="images/g1.png" alt="Assassin's Creed Shadows"></a>
+      <div class="description">Assassin's Creed Shadows</div>
+      <div class="description">£34.99</div>
+      <div class="release-date">Release Date: 16 November 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 25 November 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
       </div>
     </div>
-    
-    
-    
-    <h1>Controllers/Headsets</h1>
-    
-    <div class="section-container">
-      <div class="gallery">
-        <a target="_blank" href="images/ch1.png">
-          <img src="images/ch1.png" alt="Xbox Adaptive Joystick"></a>
-        <div class="description">Xbox Adaptive Joystick</div>
-        <div class="description">£49.99</div>
-        <div class="release-date">Release Date: 19 April 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 24 April 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
+    <div class="gallery">
+      <a target="_blank" href="images/c1.png">
+        <img src="images/c1.png" alt="Playstation 6"></a>
+      <div class="description">Playstation 6</div>
+      <div class="description">£499.99</div>
+      <div class="release-date">Release Date: 15 September 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 26 September 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
       </div>
-      <div class="gallery">
-        <a target="_blank" href="images/ch2.png">
-          <img src="images/ch2.png" alt="DualSense Wireless Controller"></a>
-        <div class="description">DualSense Wireless Controller</div>
-        <div class="description">£49.99</div>
-        <div class="release-date">Release Date: 31 March 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 13 April 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/ch6.png">
+        <img src="images/ch6.png" alt="ASTRO A50 (Gen 5) LIGHTSPEED Wireless Gaming Headset"></a>
+      <div class="description">ASTRO A50 (Gen 5) LIGHTSPEED Wireless Gaming Headset</div>
+      <div class="description">£259.99</div>
+      <div class="release-date">Release Date: 7 October 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 14 October 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
       </div>
-      <div class="gallery">
-        <a target="_blank" href="images/ch3.png">
-          <img src="images/ch3.png" alt="Nintendo Switch Pro Controller"></a>
-        <div class="description">Nintendo Switch Pro Controller</div>
-        <div class="description">£49.99</div>
-        <div class="release-date">Release Date: 7 February 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 17 February 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/g3.png">
+        <img src="images/g3.png" alt="Doom: The Dark Ages"></a>
+      <div class="description">Doom: The Dark Ages</div>
+      <div class="description">£69.99</div>
+      <div class="release-date">Release Date: 29 January 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 12 February 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
       </div>
-      <div class="gallery">
-        <a target="_blank" href="images/ch4.png">
-          <img src="images/ch4.png" alt="PlayStation VR2"></a>
-        <div class="description">PlayStation VR2</div>
-        <div class="description">£529.99</div>
-        <div class="release-date">Release Date: 17 August 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 30 August 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/c3.png">
+        <img src="images/c3.png" alt="Nintendo Switch 2"></a>
+      <div class="description">Nintendo Switch 2</div>
+      <div class="description">£319.99</div>
+      <div class="release-date">Release Date: 18 April 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 28 April 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
       </div>
-      <div class="gallery">
-        <a target="_blank" href="images/ch5.png">
-          <img src="images/ch5.png" alt="Razer Huntsman V3 Pro Keyboard"></a>
-        <div class="description">Razer Huntsman V3 Pro Keyboard</div>
-        <div class="description">£229.99</div>
-        <div class="release-date">Release Date: 23 September 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 28 September 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
+    </div>
+  </div>
+
+  <h1>Devices</h1>
+
+  <div class="section-container">
+    <div class="gallery">
+      <a target="_blank" href="images/c1.png">
+        <img src="images/c1.png" alt="Playstation 6"></a>
+      <div class="description">Playstation 6</div>
+      <div class="description">£499.99</div>
+      <div class="release-date">Release Date: 15 September 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 26 September 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
       </div>
-      <div class="gallery">
-        <a target="_blank" href="images/ch6.png">
-          <img src="images/ch6.png" alt="ASTRO A50 (Gen 5) LIGHTSPEED Wireless Gaming Headset"></a>
-        <div class="description">ASTRO A50 (Gen 5) LIGHTSPEED Wireless Gaming Headset</div>
-        <div class="description">£259.99</div>
-        <div class="release-date">Release Date: 7 October 2025</div>
-        <div class="delivery-estimate">Estimated Delivery: 14 October 2025</div>
-        <div class="buttons">
-          <button class="btn add-to-basket">Add to Basket</button>
-          <button class="btn add-to-wishlist">Add to Wishlist</button>
-        </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/c2.png">
+        <img src="images/c2.png" alt="All-digital XBOX Series X"></a>
+      <div class="description">All-digital XBOX Series X</div>
+      <div class="description">£279.99</div>
+      <div class="release-date">Release Date: December 11, 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: December 13, 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
       </div>
-    </div>    
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/c3.png">
+        <img src="images/c3.png" alt="Nintendo Switch 2"></a>
+      <div class="description">Nintendo Switch 2</div>
+      <div class="description">£319.99</div>
+      <div class="release-date">Release Date: 18 April 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 28 April 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/c4.png">
+        <img src="images/c4.png" alt="Cougar Gaming PC"></a>
+      <div class="description">Cougar Gaming PC</div>
+      <div class="description">£599.99</div>
+      <div class="release-date">Release Date: 8 January 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 14 January 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/c5.png">
+        <img src="images/c5.png" alt="Apple Vision Pro 2"></a>
+      <div class="description">Apple Vision Pro 2</div>
+      <div class="description">£3599.99</div>
+      <div class="release-date">Release Date: 14 February 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 19 February 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/c6.png">
+        <img src="images/c6.png" alt="Meta Quest 4"></a>
+      <div class="description">Meta Quest 4</div>
+      <div class="description">£599.99</div>
+      <div class="release-date">Release Date: 15 December 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 24 December 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+  </div>
+
+  <h1>Games</h1>
+
+  <div class="section-container">
+    <div class="gallery">
+      <a target="_blank" href="images/g1.png">
+        <img src="images/g1.png" alt="Assassin's Creed Shadows"></a>
+      <div class="description">Assassin's Creed Shadows</div>
+      <div class="description">£34.99</div>
+      <div class="release-date">Release Date: 16 November 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 25 November 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/g2.png">
+        <img src="images/g2.png" alt="Corpse Party II: Darkness Distortion"></a>
+      <div class="description">Corpse Party II: Darkness Distortion</div>
+      <div class="description">£44.99</div>
+      <div class="release-date">Release Date: 19 June 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 29 June 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/g3.png">
+        <img src="images/g3.png" alt="Doom: The Dark Ages"></a>
+      <div class="description">Doom: The Dark Ages</div>
+      <div class="description">£69.99</div>
+      <div class="release-date">Release Date: 29 January 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 12 February 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/g4.png">
+        <img src="images/g4.png" alt="Cuisineer"></a>
+      <div class="description">Cuisineer</div>
+      <div class="description">£34.99</div>
+      <div class="release-date">Release Date: 3 July 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 10 July 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/g5.png">
+        <img src="images/g5.png" alt="Avowed"></a>
+      <div class="description">Avowed</div>
+      <div class="description">£64.99</div>
+      <div class="release-date">Release Date: 30 May 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 5 June 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/g6.png">
+        <img src="images/g6.png" alt="Atomfall"></a>
+      <div class="description">Atomfall
+      </div>
+      <div class="description">£49.99</div>
+      <div class="release-date">Release Date: 24 February 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 9 March 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+  </div>
+
+
+
+  <h1>Controllers/Headsets</h1>
+
+  <div class="section-container">
+    <div class="gallery">
+      <a target="_blank" href="images/ch1.png">
+        <img src="images/ch1.png" alt="Xbox Adaptive Joystick"></a>
+      <div class="description">Xbox Adaptive Joystick</div>
+      <div class="description">£49.99</div>
+      <div class="release-date">Release Date: 19 April 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 24 April 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/ch2.png">
+        <img src="images/ch2.png" alt="DualSense Wireless Controller"></a>
+      <div class="description">DualSense Wireless Controller</div>
+      <div class="description">£49.99</div>
+      <div class="release-date">Release Date: 31 March 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 13 April 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/ch3.png">
+        <img src="images/ch3.png" alt="Nintendo Switch Pro Controller"></a>
+      <div class="description">Nintendo Switch Pro Controller</div>
+      <div class="description">£49.99</div>
+      <div class="release-date">Release Date: 7 February 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 17 February 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/ch4.png">
+        <img src="images/ch4.png" alt="PlayStation VR2"></a>
+      <div class="description">PlayStation VR2</div>
+      <div class="description">£529.99</div>
+      <div class="release-date">Release Date: 17 August 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 30 August 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/ch5.png">
+        <img src="images/ch5.png" alt="Razer Huntsman V3 Pro Keyboard"></a>
+      <div class="description">Razer Huntsman V3 Pro Keyboard</div>
+      <div class="description">£229.99</div>
+      <div class="release-date">Release Date: 23 September 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 28 September 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+    <div class="gallery">
+      <a target="_blank" href="images/ch6.png">
+        <img src="images/ch6.png" alt="ASTRO A50 (Gen 5) LIGHTSPEED Wireless Gaming Headset"></a>
+      <div class="description">ASTRO A50 (Gen 5) LIGHTSPEED Wireless Gaming Headset</div>
+      <div class="description">£259.99</div>
+      <div class="release-date">Release Date: 7 October 2025</div>
+      <div class="delivery-estimate">Estimated Delivery: 14 October 2025</div>
+      <div class="buttons">
+        <button class="btn add-to-basket">Add to Basket</button>
+        <button class="btn add-to-wishlist">Add to Wishlist</button>
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer class="footer-container">
+    <!-- Newsletter Section -->
+    <div class="newsletter-section">
+      <h2>Don't Miss Out</h2>
+      <p>Sign up for the latest Tech news and offers!</p>
+
+      <form class="signup-form">
+        <div class="form-group">
+          <label for="email">EMAIL ADDRESS*</label>
+          <input type="email" id="email" placeholder="Enter Your Email Address" required>
+        </div>
+        <button type="submit" class="signup-button">SIGN UP</button>
+      </form>
+
+      <p class="disclaimer"> *By signing up, you understand and agree that your data will be collected and used subject
+        to our Privacy Policy and Terms of Use.</p>
+
+      <div class="social-icons">
+        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+        <a href="#" aria-label="Youtube"><i class="bi bi-youtube"></i></a>
+        <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+      </div>
+    </div>
+
+    <!-- Footer Links -->
+    <div class="footer-links">
+      <div class="footer-column">
+        <h3>COMPANY</h3>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Experts and Spokemodels</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-column">
+        <h3>CUSTOMER SERVICE</h3>
+        <ul>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">My Account</a></li>
+          <li><a href="#">Store Location</a></li>
+          <li><a href="#">Redeem rewards</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top-container">
+      <a href="preorder.html" class="back-to-top-button">BACK TO TOP ↑</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,4 +1,3 @@
-
 USE cs2team8_db;
 
 -- registered customers table
