@@ -1,6 +1,6 @@
-CREATE DATABASE GAMEPOINT;
+CREATE DATABASE cs2team8_db;
 
-USE GAMEPOINT;
+USE cs2team8_db;
 
 -- registered customers table
 
