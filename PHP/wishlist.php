@@ -83,7 +83,7 @@
                 <button class="btn add-to-basket">Add to Basket</button>
             </div>
         </div>
-        <button class="remove-button"> HERE
+        <button class="remove-button"
             <i class="bi bi-trash"></i>
         </button>
     </div>
@@ -195,6 +195,7 @@
             setTimeout(() => {
                 basketItem.remove();
                 updateTotals();
+                fetch("remove.php");
                 const remainingItems = document.querySelectorAll('.basket-item');
                 if (remainingItems.length === 0) {
                     const basketContainer = document.querySelector('.basket-container');
@@ -208,6 +209,27 @@
             }, 300);
         });
     });
+    async function remove(button) {
+        const gallery = button.closest('.gallery');
+        const description = gallery.querySelector('.description[data-id]');
+        const id = description.getAttribute('data-id');
+        const name = description.getAttribute('data-name');
+        const price = description.getAttribute('data-price');
+
+        const Data_Wishlist = {id: id,name: name,price: price};
+
+        try{
+            fetch('addToWishlist.php'), {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_wishlist)});
+            const data = await resp.json();
+            if (data.status === "success"){
+                alert("Item has been added to wishlist");
+            }else{
+                alert("error : " + data.message);
+            }
+        }catch(error){
+            console.error("error : " + error);
+        }
+    }
 </script>
 </body>
 
