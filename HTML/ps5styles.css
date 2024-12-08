@@ -790,3 +790,24 @@ img {
 .checkout-button:hover {
     background-color: #0056b3;
 }
+
+.team-section {
+    padding-right: 20px;
+}
+
+.team-section p {
+    text-align: center;
+    color: #003366;
+    font-size: 1em;
+    margin: 10px 0;
+    font-weight: 500;
+  }
+
+  .team-section strong {
+    display: block;
+    text-align: center;
+    color: #003366;
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }

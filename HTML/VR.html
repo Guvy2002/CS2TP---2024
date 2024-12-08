@@ -69,7 +69,7 @@
     <div class="section-container">
         <div class="gallery">
             <img src="images/psvr2.jpg" alt="PlayStation VR 2">
-            <div class="description">PlayStation VR 2</div>
+            <div data-id="VRFHB1" data-name="PSVR2" data-price="529.99" class="description">PlayStation VR 2</div>
             <div class="description">£529.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -79,7 +79,7 @@
 
         <div class="gallery">
             <img src="images/quest3.jpg" alt="Meta Quest 3">
-            <div class="description">Meta Quest 3 (128GB)</div>
+            <div data-id="VRFHB2" data-name="MetaQuest3128GB" data-price="529.99" class="description">Meta Quest 3 (128GB)</div>
             <div class="description">£529.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -89,7 +89,7 @@
 
         <div class="gallery">
             <img src="images/vive.jpg" alt="HTC Vive Pro 2">
-            <div class="description">HTC Vive Pro 2</div>
+            <div data-id="VRFHB3" data-name="HTCVivePro2" data-price="719.99" class="description">HTC Vive Pro 2</div>
             <div class="description">£719.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -99,7 +99,7 @@
 
         <div class="gallery">
             <img src="images/quest2.jpg" alt="Meta Quest 2">
-            <div class="description">Meta Quest 2 (128GB)</div>
+            <div data-id="VRFHB4" data-name="MetaQuest2128GB" data-price="489.99" class="description">Meta Quest 2 (128GB)</div>
             <div class="description">£489.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -114,7 +114,7 @@
 
         <div class="gallery">
             <img src="images/beat-saber.jpg" alt="Beat Saber">
-            <div class="description">Beat Saber</div>
+            <div data-id="VRPG1" data-name="BeatSaber" data-price="29.99" class="description">Beat Saber</div>
             <div class="description">£29.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -124,7 +124,7 @@
 
         <div class="gallery">
             <img src="images/arizona.jpg" alt="Arizona Sunshine 2">
-            <div class="description">Arizona Sunshine 2</div>
+            <div data-id="VRPG2" data-name="ArizonaSunshine2" data-price="49.99" class="description">Arizona Sunshine 2</div>
             <div class="description">£49.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -134,7 +134,7 @@
 
         <div class="gallery">
             <img src="images/among-us-vr.png" alt="Among Us VR">
-            <div class="description">Among Us VR</div>
+            <div data-id="VRPG3" data-name="AmongUs" data-price="14.99" class="description">Among Us VR</div>
             <div class="description">£14.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -144,7 +144,7 @@
 
         <div class="gallery">
             <img src="images/resident-evil-4.jpg" alt="Resident Evil 4 VR">
-            <div class="description">Resident Evil 4 VR</div>
+            <div data-id="VRPG4" data-name="ResidentEvil4" data-price="39.99" class="description">Resident Evil 4 VR</div>
             <div class="description">£39.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -158,7 +158,7 @@
         
         <div class="gallery">
             <img src="images/vr-facial-interface.png" alt="VR Facial Interface">
-            <div class="description">Premium VR Facial Interface</div>
+            <div data-id="VRA1" data-name="PremiumVRFacialInterview" data-price="29.99" class="description">Premium VR Facial Interface</div>
             <div class="description">£29.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -168,7 +168,7 @@
 
         <div class="gallery">
             <img src="images/vr-headstrap.jpg" alt="Elite Head Strap">
-            <div class="description">Elite Head Strap with Battery</div>
+            <div data-id="VRA2" data-name="EliteStrapwBattery" data-price="89.99" class="description">Elite Head Strap with Battery</div>
             <div class="description">£89.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -178,7 +178,7 @@
 
         <div class="gallery">
             <img src="images/vr-case.jpg" alt="VR Carrying Case">
-            <div class="description">Premium VR Carrying Case</div>
+            <div data-id="VRA3" data-name="PremiumVRCarryingCase" data-price="49.99" class="description">Premium VR Carrying Case</div>
             <div class="description">£49.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -188,7 +188,7 @@
 
         <div class="gallery">
             <img src="images/vr-powerbank.jpeg" alt="VR Power Bank">
-            <div class="description">10000mAh VR Power Bank</div>
+            <div data-id="VRA4" data-name="10kmAhVRPowerBank" data-price="69.99" class="description">10000mAh VR Power Bank</div>
             <div class="description">£69.99</div>
             <div class="buttons">
                 <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
@@ -196,6 +196,49 @@
             </div>
         </div>
     </div>
+
+    <script>
+        async function addToBasket(button) {
+          const gallery = button.closest('.gallery');
+          const description = gallery.querySelector('.description[data-id]');
+          const id = description.getAttribute('data-id');
+          const name = description.getAttribute('data-name');
+          const price = description.getAttribute('data-price');
+          const Data_Basket = {id: id,name: name,price: price};
+          try{
+            const resp = fetch('addToBasket.php', {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_Basket)});
+            const data = await resp.json(); 
+            if (data.status === "success"){
+              alert("Item has been added to basket");
+            }else{
+              alert("error : " + data.message);
+            }
+          }catch(error){
+            console.error("error : " + error);
+          }
+        }
+        async function addToWishlist(button) {
+          const gallery = button.closest('.gallery');
+          const description = gallery.querySelector('.description[data-id]');
+          const id = description.getAttribute('data-id');
+          const name = description.getAttribute('data-name');
+          const price = description.getAttribute('data-price');
+        
+          const Data_Wishlist = {id: id,name: name,price: price};
+      
+          try{
+            const resp = fetch('addToWishlist.php', {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_wishlist)});
+            const data = await resp.json(); 
+            if (data.status === "success"){
+              alert("Item has been added to wishlist");
+            }else{
+              alert("error : " + data.message);
+            }
+          }catch(error){
+            console.error("error : " + error);
+          }
+        }
+    </script>
 
     <!-- Footer -->
     <footer class="footer-container">
@@ -223,49 +266,6 @@
                 <a href="https://uk.pinterest.com/" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
             </div>
         </div>
-
-        <script>
-            async function addToBasket(button) {
-              const gallery = button.closest('.gallery');
-              const description = gallery.querySelector('.description[data-id]');
-              const id = description.getAttribute('data-id');
-              const name = description.getAttribute('data-name');
-              const price = description.getAttribute('data-price');
-              const Data_Basket = {id: id,name: name,price: price};
-              try{
-                const resp = fetch('addToBasket.php', {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_Basket)});
-                const data = await resp.json(); 
-                if (data.status === "success"){
-                  alert("Item has been added to basket");
-                }else{
-                  alert("error : " + data.message);
-                }
-              }catch(error){
-                console.error("error : " + error);
-              }
-            }
-            async function addToWishlist(button) {
-              const gallery = button.closest('.gallery');
-              const description = gallery.querySelector('.description[data-id]');
-              const id = description.getAttribute('data-id');
-              const name = description.getAttribute('data-name');
-              const price = description.getAttribute('data-price');
-            
-              const Data_Wishlist = {id: id,name: name,price: price};
-          
-              try{
-                const resp = fetch('addToWishlist.php', {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_wishlist)});
-                const data = await resp.json(); 
-                if (data.status === "success"){
-                  alert("Item has been added to wishlist");
-                }else{
-                  alert("error : " + data.message);
-                }
-              }catch(error){
-                console.error("error : " + error);
-              }
-            }
-        </script>
         
         <!-- Footer Links -->
         <div class="footer-links">
