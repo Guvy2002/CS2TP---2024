@@ -13,6 +13,8 @@ try {
             $productsResult = $conn->query($products);
         }
         echo json_encode([$productsResult]);
+    } else {
+        throw new exception("Empty or Invalid message");
     }
 
 } catch (Exception $e) {
