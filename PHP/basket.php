@@ -1,5 +1,40 @@
 <?php
+//require_once ('DBconnection.php');
+
+$basketIDs = "SELECT basketID, customerID FROM Basket";
+$product = "SELECT productID, imgURL, fullName, Price FROM Products";
+$basket = "SELECT basketID, productID, Quantity FROM BasketItems";
+$basketIDsResult = mysqli_query->query($conn, $basketIDs);
+if (isset($_COOKIE["customerID"])){
+    $customerID = $_COOKIE["customerID"];
+    if (mysqli_num_rows($basketIDsResult) > 0) {
+        while ($row = mysqli_fetch_assoc($basketIDsResult)) {
+            if ($row['customerID'] == $customerID) {
+                $basketID = $row['basketID'];
+                $basketResult = mysqli_query->query($conn, $basket);
+                while ($row = mysqli_fetch_assoc($basketIDsResult)) {
+                    if ($row['basketID'] == $basketID) {
+                        $productID = $row['productID'];
+                        $quantity = $row['Quantity'];
+                        $productResult = mysqli_query->query($conn, $product);
+                        if (mysqli_num_rows($productResult) > 0) {
+                            while ($row = mysqli_fetch_assoc($productResult)) {
+                                $img = $row["imgURL"];
+                                $fullName = $row["fullName"];
+                                $price = $row["Price"];
+                            }
+                        } else{
+                            $message = 'Basket is empty';
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
  ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -61,11 +96,12 @@
 <div class="basket-container">
     <h1> Your Shopping Basket</h1>
 
+
     <div class="basket-item">
-        <img src="PS5IMAGES/fc25.jpg" alt="FC 25">
+        <img src="<?php $img?>" alt="FC 25">
         <div class="item-details">
-            <div class="item-title">FC 25</div>
-            <div class="item-price">£69.99</div>
+            <div class="item-title"><?php echo $fullName?></div>
+            <div class="item-price"><?php echo $price?></div>
             <div class="quantity-controls">
                 <button class="quantity-btn">
                     <i class="bi bi-dash-square-fill"></i>
