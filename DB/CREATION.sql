@@ -1,21 +1,14 @@
 USE cs2team8_db;
 
--- registered customers table
+-- customers table
 
-CREATE TABLE RegCustomer (
-    regCustomerID INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE Customer (
+    customerID INT PRIMARY KEY AUTO_INCREMENT,
     fullName VARCHAR(255) NOT NULL,
     Email VARCHAR(255) UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
-    RegistrationDate DATE NOT NULL
-);
-
--- unregistered customers table
-
-CREATE TABLE UnregCustomer (
-    unregCustomerID INT PRIMARY KEY AUTO_INCREMENT,
-    fullName VARCHAR(255) NOT NULL,
-    Email VARCHAR(255) NOT NULL
+    RegistrationDate DATE NOT NULL,
+    customerType ENUM('registered','unregistered') NOT  NULL
 );
 
 -- employee table
@@ -51,16 +44,17 @@ CREATE TABLE Basket (
     basketID INT PRIMARY KEY AUTO_INCREMENT,
     customerID INT NOT NULL,
     createdDate DATE NOT NULL
+    FOREIGN KEY (customerID) REFERENCES Customer(customerID)
 );
 
--- discounts table
+-- -- discounts table
 
-CREATE TABLE Discount (
-    discountID INT PRIMARY KEY AUTO_INCREMENT,
-    Rate DECIMAL(5, 2) NOT NULL,
-    Description TEXT,
-    validUntil DATE
-);
+-- CREATE TABLE Discount (
+--     discountID INT PRIMARY KEY AUTO_INCREMENT,
+--     Rate DECIMAL(5, 2) NOT NULL,
+--     Description TEXT,
+--     validUntil DATE
+-- );
 
 -- products table
 
@@ -119,7 +113,8 @@ CREATE TABLE Orders (
     orderStatus VARCHAR(50) NOT NULL,
     shippingDate DATE,
     paymentID INT,
-    FOREIGN KEY (paymentID) REFERENCES Payment(paymentID)
+    FOREIGN KEY (paymentID) REFERENCES Payment(paymentID),
+    FOREIGN KEY (customerID) REFERENCES Customer(customerID)
 );
 
 -- order item table
@@ -159,7 +154,7 @@ CREATE TABLE OrderHistory (
     orderID INT NOT NULL,
     Action VARCHAR(50),
     ActionDate DATE NOT NULL,
-    FOREIGN KEY (customerID) REFERENCES RegCustomer(regCustomerID),
+    FOREIGN KEY (customerID) REFERENCES Customer(customerID),
     FOREIGN KEY (orderID) REFERENCES Orders(orderID)
 );
 -- wishlist table
@@ -168,7 +163,7 @@ CREATE TABLE Wishlist (
     wishlistID INT PRIMARY KEY AUTO_INCREMENT,
     customerID INT NOT NULL,
     createdDate DATE NOT NULL,
-    FOREIGN KEY (customerID) REFERENCES RegCustomer(regCustomerID)
+    FOREIGN KEY (customerID) REFERENCES Customer(customerID)
 );
 -- wishlist item table
 
