@@ -19,10 +19,23 @@ if (isset($_POST['submit'])){
             throw new Exception("Password needs to be at least 8 characters long");
         }
         $conn = ("INSERT INTO RegisteredCustomer (Name, Email, Password, RegistrationDate) VALUES ($name,$email,$hashedPassword,$registration_date)");
-        mysqli_close($conn);
-        echo "<script type=\"text/javascript\">
+        $customerIDs = "SELECT Email, customerID FROM RegisteredCustomer";
+        $customerIDsResult = mysqli_query->query($conn, $customerIDs);
+        if (mysqli_num_rows($customerIDsResult) > 0) {
+            while ($row = mysqli_fetch_assoc($customerIDsResult)) {
+                if ($row['Email'] == $email) {
+                    $customerID = $row['customerID'];
+                    echo "<script type=\"text/javascript\">
+                    document.cookie = 'customerID=" . $customerID . "';
+                    </script>";
+                }
+            }
+            mysqli_close($conn);
+
+            echo "<script type=\"text/javascript\">
         document.cookie=('logged = true');
         </script>";
+        }
     }
     catch (Exception $e){
         echo $e->getMessage();
