@@ -1,5 +1,5 @@
 <?php
-//require_once('DBconnection.php');
+require_once('DBconnection.php');
 
 if(isset($_POST['submit'])){
     $fullName = $_POST['full-name'];
@@ -15,6 +15,8 @@ if(isset($_POST['submit'])){
     $cardNumber = $_POST['card-number'];
     $expiryMonth = $_POST['expiry'];
     $cvv = $_POST['cvv'];
+    $customerID = $_COOKIE["quantity"];
+    $customerID = $_COOKIE["subtotal"];
 
     try {
         if ($postcode > 10){
@@ -301,10 +303,6 @@ if(isset($_POST['submit'])){
         <!-- Copyright -->
     </div>
 </section>
-</body>
-
-</html>
-
 </body>
 
 </html>

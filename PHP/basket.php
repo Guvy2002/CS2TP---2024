@@ -1,5 +1,5 @@
 <?php
-//require_once ('DBconnection.php');
+require_once ('DBconnection.php');
 
 $basketIDs = "SELECT basketID, customerID FROM Basket";
 $product = "SELECT productID, imgURL, fullName, Price FROM Products";
@@ -23,14 +23,17 @@ if (isset($_COOKIE["customerID"])){
                                 $fullName = $row["fullName"];
                                 $price = $row["Price"];
                             }
-                        } else{
-                            $message = 'Basket is empty';
                         }
                     }
+
                 }
             }
         }
+    }else{
+        $message = 'Basket is empty';
     }
+}else{
+    $message = 'Not Logged in';
 }
  ?>
 
@@ -95,7 +98,7 @@ if (isset($_COOKIE["customerID"])){
 
 <div class="basket-container">
     <h1> Your Shopping Basket</h1>
-
+    <div class="items-details"><?php message?></div>
 
     <div class="basket-item">
         <img src="<?php $img?>" alt="FC 25">
@@ -313,8 +316,9 @@ if (isset($_COOKIE["customerID"])){
 
         // Add event listener to checkout button
         document.querySelector('.checkout-button').addEventListener('click', function () {
-            // You can add checkout logic here
-            alert('Proceeding to checkout...');
+            document.cookie = "quantity="quantity";path=/";
+            document.cookie = "subtotal="subtotal";path=/";
+            window.location.href = "checkout.php";
         });
 
         // Initial calculation of totals
