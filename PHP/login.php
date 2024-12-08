@@ -16,10 +16,10 @@
   </header>
   <section id="sign-in">
     <h2>Login</h2>
-    <form id="login-form">
+    <form id="login-form" method="POST" action="">
       <input type="email" name="email" placeholder="Email" required/>
       <input type="password" name="password" placeholder="Password" required/>
-      <input type="submit" value="Login"/>
+      <input type="submit" name="submit" value="Login"/>
     </form>
   </section>
 
@@ -29,17 +29,21 @@ if (isset($_POST['submit'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    require_once("DBconnection.php");
+    $conn = mysqli_connect("localhost", "cs2team8", "ZAUzatil5V99EcF", "cs2team8_db");
+
+    if(!$conn){
+        die("Database Failed to Connect: " . mysqli_connect_error());
+    }
 
     try{
         // will replace with actual table names
         
-        $sql = $conn->prepare("SELECT email, password FROM users WHERE email = ___");
+        $sql = $conn->prepare("SELECT email, password FROM users WHERE email = ?");
         $sql->bind_param("s", $email);
         $sql->execute();
         $result = $sql->get_result();
 
-        if ($result->num_of_rows > 0){
+        if ($result->num_rows > 0){
             $row = $result->fetch_assoc();
             if (password_verify($password, $row["password"])){
                 header("Location: Home Page.html");
@@ -50,12 +54,23 @@ if (isset($_POST['submit'])){
         } else{
             echo "email not found";
         }
-        $sql->close();
+        $customerIDs = "SELECT Email, customerID FROM RegisteredCustomer";
+        $customerIDsResult = $conn->query($customerIDs);
+        if ($customerIDsResult->num_rows > 0) {
+          while ($row = $customerIDsResult->fetch_assoc()) {
+            if ($row['Email'] == $email) {
+              $customerID = $row['customerID'];
+              echo "<script type=\"text/javascript\">
+              document.cookie = 'customerID=" . $customerID . ";path=/';
+              </script>";
+    
+            }
+          }
+        }
 
-    }
-    catch (exception $ex){
+    } catch (exception $ex){
         echo "Error: " . $ex->getMessage();
-    }
+    } mysqli_close($conn);
 
 }
 
