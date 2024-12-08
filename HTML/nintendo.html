@@ -344,6 +344,49 @@
     </div>
   </div>
 
+  <script>
+      async function addToBasket(button) {
+        const gallery = button.closest('.gallery');
+        const description = gallery.querySelector('.description[data-id]');
+        const id = description.getAttribute('data-id');
+        const name = description.getAttribute('data-name');
+        const price = description.getAttribute('data-price');
+        const Data_Basket = {id: id,name: name,price: price};
+        try{
+          const resp = fetch('addToBasket.php', {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_Basket)});
+          const data = await resp.json(); 
+          if (data.status === "success"){
+            alert("Item has been added to basket");
+          }else{
+            alert("error : " + data.message);
+          }
+        }catch(error){
+          console.error("error : " + error);
+        }
+      }
+      async function addToWishlist(button) {
+        const gallery = button.closest('.gallery');
+        const description = gallery.querySelector('.description[data-id]');
+        const id = description.getAttribute('data-id');
+        const name = description.getAttribute('data-name');
+        const price = description.getAttribute('data-price');
+      
+        const Data_Wishlist = {id: id,name: name,price: price};
+    
+        try{
+          const resp = fetch('addToWishlist.php', {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_wishlist)});
+          const data = await resp.json(); 
+          if (data.status === "success"){
+            alert("Item has been added to wishlist");
+          }else{
+            alert("error : " + data.message);
+          }
+        }catch(error){
+          console.error("error : " + error);
+        }
+      }
+  </script>
+
     <!-- Footer -->
     <footer class="footer-container">
       <!-- Newsletter Section -->
