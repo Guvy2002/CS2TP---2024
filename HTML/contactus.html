@@ -1,86 +1,194 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - GamePoint</title>
   <link rel="stylesheet" href="ps5styles.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
-  <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"> -->
-</head>
-
-<body>
-
-  <div class="grad3">
-    <img src="images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
-    <h2>GamePoint</h2>
-  </div>
-  
   <style>
     .grad3 {
       height: 100px;
       background-color: red;
-      /* For browsers that do not support gradients */
-      background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
+      background-image: linear-gradient(180deg, rgb(26, 25, 25), rgb(248, 244, 249));
+    }
+
+    .logo {
+      height: 80px;
+      vertical-align: middle;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #0078d7;
+      padding: 10px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar ul li {
+      margin: 0 10px;
+    }
+
+    .navbar ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .right-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .right-section a {
+      color: white;
+      font-size: 20px;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f4f4f4;
+      border-radius: 8px;
+    }
+
+    .container label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    .container input,
+    .container textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .container input[type="submit"] {
+      background-color: red;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .container input[type="submit"]:hover {
+      background-color: darkred;
+    }
+
+    .footer-container {
+      background-color: #2c2c2c;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .footer-container h2,
+    .footer-container h3 {
+      color: rgb(5, 5, 5);
+    }
+
+    .footer-container a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .footer-container .social-icons a {
+      margin: 0 10px;
+      font-size: 24px;
+    }
+
+    .back-to-top-container {
+      margin-top: 20px;
+    }
+
+    .back-to-top-button {
+      color: white;
+      text-decoration: none;
+      background-color: red;
+      padding: 10px 15px;
+      border-radius: 5px;
+    }
+
+    .back-to-top-button:hover {
+      background-color: darkred;
     }
   </style>
+</head>
 
-
-<div class="navbar">
-  <ul>
-    <li><a href="homepage.html">Home</a></li>
-    <li><a href="ps5.html">PlayStation</a></li>
-    <li><a href="xbox.html">XBOX</a></li>
-    <li><a href="nintendo.html">Nintendo</a></li>
-    <li><a href="VR.html">VR</a></li>
-    <li><a href="pc.html">PC</a></li>
-    <li><a href="sb.html">Special Bundles</a></li>
-    <li><a href="preorder.html">Pre order</a></li>
-  </ul>
-  
-  
-  <div class="right-section">
-    <div class="search-box">
-      <input type="text" class="search-bar" placeholder="Search...">
-      <button class="search-button">
-        <i class="bi bi-search"></i>
-      </button>
-    </div>
-    <a href="wishlist.html">
-      <i class="bi bi-heart"></i>
-    </a>
-    <a href="basket.html">
-      <i class="bi bi-cart3"></i>
-    </a>
-    <a href="login.html">
-      <i class="bi bi-person-circle"></i>
-    </a>
+<body>
+  <!-- Header -->
+  <div class="grad3">
+    <img src="images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
+    <h2>GamePoint</h2>
   </div>
-</div>
 
-<h1>How to Contact Us</h1>
-
-
-    </head>
-    <body>
-    
-    <h3>Please fill out the form below and we will get in contact with you in 3-5 working days</h3>
-    
-    <div class="container">
-      <form action="/action_page.php">
-        <label for="fname">First Name</label>
-        <input type="text" id="fname" name="firstname" placeholder="Your name..">
-    
-        <label for="lname">Last Name</label>
-        <input type="text" id="lname" name="lastname" placeholder="Your last name..">
-
-        <label for="lname">Phone number</label>
-        <input type="text" id="lname" name="lastname" placeholder="Your last name..">
-    
-        <label for="subject">Why are you contacting us?</label>
-        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
-    
-        <input type="submit" value="Submit">
-      </form>
+  <!-- Navbar -->
+  <div class="navbar">
+    <ul>
+      <li><a href="homepage.html">Home</a></li>
+      <li><a href="ps5.html">PlayStation</a></li>
+      <li><a href="xbox.html">XBOX</a></li>
+      <li><a href="nintendo.html">Nintendo</a></li>
+      <li><a href="VR.html">VR</a></li>
+      <li><a href="pc.html">PC</a></li>
+      <li><a href="sb.html">Special Bundles</a></li>
+      <li><a href="preorder.html">Pre order</a></li>
+    </ul>
+    <div class="right-section">
+      <div class="search-box">
+        <input type="text" class="search-bar" placeholder="Search...">
+        <button class="search-button">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+      <a href="wishlist.html">
+        <i class="bi bi-heart"></i>
+      </a>
+      <a href="basket.html">
+        <i class="bi bi-cart3"></i>
+      </a>
+      <a href="login.html">
+        <i class="bi bi-person-circle"></i>
+      </a>
     </div>
+  </div>
+    
+<!-- Main Content -->
+<h1>Contact Us</h1>
+    <h3>How can we help you?</h3>
+
+<div class="container">
+  <form action="/action_page.php">
+    <label for="fname">First Name</label>
+    <input type="text" id="fname" name="firstname" placeholder="Your name..." required>
+
+    <label for="lname">Last Name</label>
+    <input type="text" id="lname" name="lastname" placeholder="Your last name..." required>
+
+    <label for="phone">Phone Number</label>
+    <input type="text" id="phone" name="phone" placeholder="Your phone number..." required>
+
+    <label for="subject">Why are you contacting us?</label>
+    <textarea id="subject" name="subject" placeholder="Write something..." style="height:200px" required></textarea>
+
+    <input type="submit" value="Submit">
+  </form>
+</div>
 
 
 
