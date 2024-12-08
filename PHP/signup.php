@@ -31,10 +31,6 @@ if (isset($_POST['submit'])){
                 }
             }
             mysqli_close($conn);
-
-            echo "<script type=\"text/javascript\">
-        document.cookie=('logged = true');
-        </script>";
         }
     }
     catch (Exception $e){
