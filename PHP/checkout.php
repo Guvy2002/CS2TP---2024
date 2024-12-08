@@ -28,6 +28,7 @@ if(isset($_POST['submit'])){
         }
         $conn = ("INSERT INTO Orders (totalPrice, OrderDate, Order) VALUES (?, ?,?)");
         $conn = ("INSERT INTO Payment (paymentDate, Amount, paymentMethod) VALUES (?, ?, ?)");
+        mysqli_close($conn);
     }
     catch (Exception $e){
         echo $e->getMessage();
