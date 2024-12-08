@@ -26,8 +26,9 @@ if (isset($_POST['submit'])){
                 if ($row['Email'] == $email) {
                     $customerID = $row['customerID'];
                     echo "<script type=\"text/javascript\">
-                    document.cookie = 'customerID=" . $customerID . "';
+                    document.cookie = 'customerID=" . $customerID . ";path=/';
                     </script>";
+
                 }
             }
             mysqli_close($conn);
