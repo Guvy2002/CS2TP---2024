@@ -1,4 +1,5 @@
 <?php
+
 require_once('DBconnection.php');
 
 if(isset($_POST['submit'])){
@@ -15,8 +16,8 @@ if(isset($_POST['submit'])){
     $cardNumber = $_POST['card-number'];
     $expiryMonth = $_POST['expiry'];
     $cvv = $_POST['cvv'];
-    $customerID = $_COOKIE["quantity"];
-    $customerID = $_COOKIE["subtotal"];
+    $quantity = $_COOKIE["quantity"];
+    $subtotal = $_COOKIE["subtotal"];
 
     try {
         if ($postcode > 10){
@@ -146,7 +147,7 @@ if(isset($_POST['submit'])){
         </li>
         <li>
           <strong>Total</strong>
-          <strong>£439.98</strong>
+          <strong><?php echo $subtotal ?></strong>
         </li>
       </ul>
     </div>
@@ -168,11 +169,11 @@ if(isset($_POST['submit'])){
           <input type="text" id="address" name="address" required>
         </div>
         <div class="input-group">
-          <label for="address2">Address Line 2*</label>
+          <label for="address2">Address Line 2</label>
           <input type="text" id="address2" name="address2" required>
         </div>
         <div class="input-group">
-          <label for="city">City</label>
+          <label for="city">City*</label>
           <input type="text" id="city" name="city" required>
         </div>
         <div class="input-group">
@@ -199,11 +200,11 @@ if(isset($_POST['submit'])){
           <input type="text" id="card-name" name="card-name" required>
         </div>
         <div class="input-group">
-          <label for="card-number">Card Number</label>
+          <label for="card-number">Card Number*</label>
           <input type="text" id="card-number" name="card-number" required>
         </div>
         <div class="input-group">
-          <label for="card-address">Address Line 1</label>
+          <label for="card-address">Address Line 1*</label>
           <input type="text" id="card-address" name="card-address" required>
         </div>
         <div class="input-group">
@@ -211,11 +212,11 @@ if(isset($_POST['submit'])){
           <input type="text" id="card-address2" name="card-address2" required>
         </div>
         <div class="input-group">
-          <label for="expiry">Expiry Date</label>
+          <label for="expiry">Expiry Date*</label>
           <input type="month" id="expiry" name="expiry" required>
         </div>
         <div class="input-group">
-          <label for="cvv">CVV/CVC</label>
+          <label for="cvv">CVV/CVC*</label>
           <input type="number" id="cvv" name="cvv" required>
         </div>
       </form>
