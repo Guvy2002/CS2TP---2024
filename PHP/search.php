@@ -1,4 +1,10 @@
 <?php
+
+
+$suggestions = ['apple', 'banana', 'grape', 'orange', 'watermelon', 'mango'];
+echo "myFunc(".$suggestions[0].")";
+
+/*
 require_once 'DBconnect.php';
 
 try {
@@ -21,4 +27,5 @@ try {
     echo $e->getMessage();
 }
 mysqli_close($conn);
+*/
 ?>

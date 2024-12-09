@@ -9,6 +9,15 @@ body {
     max-width: 100%;
 }
 
+body {
+    font-family: Arial, sans-serif;
+}
+
+.dropdown {
+    position: absolute;
+    background-color:#0078d7;
+}
+
 .video-container {
     position: relative;
     max-width: 100%;
@@ -125,12 +134,6 @@ h1 {
     /* Darker blue on hover */
     color: #f7f9fc;
     /* Light text */
-}
-
-/* Search Box in Navigation */
-.navbar .search-box {
-    display: flex;
-    align-items: center;
 }
 
 .navbar input[type="text"] {

@@ -18,6 +18,7 @@ try {
 
     $stmt = $conn->prepare("INSERT INTO Basket (customerID, createdDate) VALUES (?,?)");
     $stmt->bind_param("ss", $customerID, $date);
+    $stmt->execute();
     $basketIDs = "SELECT basketId, productID FROM Basket";
     $ordersIDsResult = mysqli_query->query($conn, $basketIDs);
     if (mysqli_num_rows($ordersIDsResult) > 0) {
@@ -29,6 +30,7 @@ try {
     }
     $stmt = $conn->prepare("INSERT INTO BasketItem (basketID, productID, Quantity) VALUES (?,?,?)");
     $stmt->bind_param("sss", $basketID, $productID, $quantity);
+    $stmt->execute();
 
 
     echo json_encode(["status" => "success", "message" => "Item has been added to basket"]);

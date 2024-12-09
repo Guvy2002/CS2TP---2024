@@ -42,10 +42,8 @@
     <!-- Right Section: Sign In and Basket -->
     <div class="right-section">
       <div class="search-box">
-        <input type="text" class="search-bar" placeholder="Search...">
-        <button class="search-button">
-          <i class="bi bi-search"></i>
-        </button>
+        <input type="text" id="search-bar" placeholder="Search" onkeyup="fetchSuggestions(this.value)">
+        <ul id="dropdown" class="dropdown"></ul>
       </div>
       <a href="wishlist.html">
         <i class="bi bi-heart"></i>
@@ -338,7 +336,7 @@
         const price = description.getAttribute('data-price');
         const Data_Basket = {id,name,price};
         try{
-          const resp = await fetch('/CS2TP---2024/PHP/addToBasket.php', {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_Basket)});
+          const resp = await fetch('addToBasket.php', {method: 'POST',headers: {'Content-Type': 'application/json',},body: JSON.stringify(Data_Basket)});
           const data = await resp.json(); 
           if (data.status === "success"){
             alert("Item has been added to basket");
@@ -370,6 +368,46 @@
           console.error("error : " + error);
         }
       }
+      function myFunc(myObj) {
+        const suggestions = document.getElementById("demo").innerHTML = myObj.name;
+      }
+      function fetchSuggestions(query) {
+        const dropdown = document.getElementById('dropdown');
+        dropdown.innerHTML = ''; // Clear previous suggestions
+
+        if (query.trim() === '') {
+          dropdown.style.display = 'none';
+          return;
+        }
+
+        myFunc();
+        // Fetch suggestions from your PHP backend (mock data used here)
+        //const mockSuggestions = ['apple', 'banana', 'grape', 'orange', 'watermelon', 'mango'];
+        //const suggestions = mockSuggestions.filter(item => item.toLowerCase().includes(query.toLowerCase()));
+
+
+        if (suggestions.length > 0) {
+          dropdown.style.display = 'block';
+          suggestions.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            li.onclick = () => selectSuggestion(item);
+            dropdown.appendChild(li);
+          });
+        } else {
+          dropdown.style.display = 'none';
+        }
+      }
+
+      function selectSuggestion(value) {
+        const searchBar = document.getElementById('search-bar');
+        searchBar.value = value;
+
+        const dropdown = document.getElementById('dropdown');
+        dropdown.style.display = 'none';
+      }
+
+
     </script>
 
     <!-- Footer -->
