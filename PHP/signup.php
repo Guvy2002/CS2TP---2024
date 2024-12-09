@@ -66,7 +66,79 @@ if (isset($_POST['submit'])) {
 
 include 'header.php';
 ?>
+<style>
+    #sign-up {
+       max-width: 500px;
+       margin: 0 auto;
+       padding: 20px;
+       border: 1px solid #ccc;
+       border-radius: 8px;
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   }
 
+   #sign-up h2 {
+       text-align: center;
+       margin-bottom: 20px;
+       font-family: Arial, sans-serif;
+   }
+
+   #sign-up .error {
+       color: red;
+       margin-bottom: 15px;
+       text-align: center;
+   }
+
+   #login-form label {
+       font-weight: bold;
+       margin-top: 10px;
+       display: block;
+       font-family: Arial, sans-serif;
+   }
+
+   #login-form input {
+       width: 100%;
+       padding: 10px;
+       margin: 8px 0;
+       border: 1px solid #ccc;
+       border-radius: 6px;
+       font-size: 14px;
+   }
+
+   #login-form input:focus {
+       border-color: #0078d7;
+       box-shadow: 0 0 8px rgba(0, 120, 215, 0.3);
+   }
+
+   .login-button {
+       width: 100%;
+       background-color: #0078d7;
+       color: white;
+       padding: 10px 15px;
+       border: none;
+       border-radius: 6px;
+       font-size: 16px;
+       cursor: pointer;
+       transition: background-color 0.3s ease;
+   }
+
+   .login-button:hover {
+       background-color: #005bb5;
+   }
+
+   .register-user {
+       text-align: center;
+       margin-top: 10px;
+   }
+
+   .register-user a {
+       color: #0078d7;
+       text-decoration: none;
+   }
+
+   .register-user a:hover {
+       text-decoration: underline;
+   }
+</style>
 <section id="sign-up">
    <h2>Register</h2>
    <?php if(isset($error_message)): ?>
