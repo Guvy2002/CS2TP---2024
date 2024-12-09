@@ -44,18 +44,18 @@ if (isset($_POST['submit'])){
 
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="HTML/CSS/HomePage.css">
+<link rel="stylesheet" href="HTML/ps5styles.css">
 <head>
 
     <head>
-        <link rel="stylesheet" href="HTML/CSS/HomePage.css">
+        <link rel="stylesheet" href="HTML/ps5styles.css">
         <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"> -->
     </head>
 
 <body>
 
 <div class="grad3">
-    <img src="Images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
+    <img src="images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
     <h2>GamePoint</h2>
 </div>
 
