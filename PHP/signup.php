@@ -1,202 +1,97 @@
 <?php
-require_once('DBconnection.php');
+require_once("dbconnection.php");
 
-if (isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
+   $name = trim($_POST['name']);
+   $email = trim($_POST['email']);
+   $password = $_POST['password'];
+   $confirm_password = $_POST['confirm_password'];
+   $registration_date = date("Y-m-d");
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-    $confirm_password = $_POST['confirm_password'];
-    $hashed_Confirm_Password = password_hash($confirm_password, PASSWORD_DEFAULT);
-    $registration_date = date("d-m-Y");
+   try {
+       // Validate inputs
+       if (empty($name) || empty($email) || empty($password)) {
+           throw new Exception("All fields are required");
+       }
 
-    try{
-        if ($hashedPassword != $hashed_Confirm_Password) {
-            throw new Exception("Passwords do not match");
-        }
-        if (strlen($hashedPassword) < 7) {
-            throw new Exception("Password needs to be at least 8 characters long");
-        }
-        $conn = ("INSERT INTO RegisteredCustomer (Name, Email, Password, RegistrationDate) VALUES ($name,$email,$hashedPassword,$registration_date)");
-        $customerIDs = "SELECT Email, customerID FROM RegisteredCustomer";
-        $customerIDsResult = mysqli_query->query($conn, $customerIDs);
-        if (mysqli_num_rows($customerIDsResult) > 0) {
-            while ($row = mysqli_fetch_assoc($customerIDsResult)) {
-                if ($row['Email'] == $email) {
-                    $customerID = $row['customerID'];
-                    echo "<script type=\"text/javascript\">
-                    document.cookie = 'customerID=" . $customerID . ";path=/';
-                    </script>";
+       if ($password !== $confirm_password) {
+           throw new Exception("Passwords do not match");
+       }
 
-                }
-            }
-            mysqli_close($conn);
-        }
-    }
-    catch (Exception $e){
-        echo $e->getMessage();
-    }
+       if (strlen($password) < 8) {
+           throw new Exception("Password needs to be at least 8 characters long");
+       }
+
+       // Hash password after validation
+       $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+       // Check if email already exists
+       $checkEmail = $conn->prepare("SELECT Email FROM Customer WHERE Email = ?");
+       $checkEmail->bind_param("s", $email);
+       $checkEmail->execute();
+       $result = $checkEmail->get_result();
+       
+       if ($result->num_rows > 0) {
+           throw new Exception("Email already exists");
+       }
+
+       // Insert new customer
+       $stmt = $conn->prepare("INSERT INTO Customer (fullName, Email, Password, RegistrationDate) VALUES (?, ?, ?, ?)");
+       $stmt->bind_param("ssss", $name, $email, $hashedPassword, $registration_date);
+       
+       if ($stmt->execute()) {
+           // After successful insert, get the customerID
+           $customerIDs = "SELECT Email, customerID FROM Customer";
+           $customerIDsResult = $conn->query($customerIDs);
+           
+           if ($customerIDsResult->num_rows > 0) {
+               while ($row = $customerIDsResult->fetch_assoc()) {
+                   if ($row['Email'] == $email) {
+                       $customerID = $row['customerID'];
+                       setcookie('customerID', $customerID, time() + (86400 * 30), "/");
+                   }
+               }
+           }
+           
+           header("Location: homepage.php");
+           exit();
+       } else {
+           throw new Exception("Error creating account");
+       }
+   }
+   catch (Exception $e) {
+       $error_message = $e->getMessage();
+   }
 }
+
+include 'header.php';
 ?>
 
-
-
-<!DOCTYPE html>
-<html lang="en">
-<link rel="stylesheet" href="HTML/ps5styles.css">
-<head>
-
-    <head>
-        <link rel="stylesheet" href="HTML/ps5styles.css">
-        <!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"> -->
-    </head>
-
-<body>
-
-<div class="grad3">
-    <img src="images/GamePointLogo.png" class="logo" alt="GamePoint Logo">
-    <h2>GamePoint</h2>
-</div>
-
-<style>
-    .grad3 {
-        height: 100px;
-        background-color: red;
-        /* For browsers that do not support gradients */
-        background-image: linear-gradient(180deg, rgb(49, 43, 43), rgb(248, 244, 249));
-    }
-</style>
-
-
-<!-- Navigation Bar  -->
-<div class="navbar">
-    <!-- Left Section: Navigation Links -->
-    <ul>
-        <li><a href="HTML/Home Page.html">Home</a></li>
-        <li><a href="HTML/ps5.html">PlayStation</a></li>
-        <li><a href="HTML/XBOX Product Page.html">XBOX</a></li>
-        <li><a href="HTML/VR.html">VR</a></li>
-        <li><a href="HTML/PC Product Page.html">PC</a></li>
-        <li><a href="HTML/sb.html">Special Bundle</a></li>
-        <li><a href="HTML/preorder.html">Preorder</a></li>
-    </ul>
-
-
-    <!-- Right Section: Sign In and Basket -->
-    <div class="right-section">
-        <div class="search-box">
-            <input type="text" placeholder="Search...">
-        </div>
-        <a href="signup.php">Sign up</a>
-        <a href="login.php">Login</a>
-        <a href="HTML/wishlist.html"><i class="fa-regular fa-heart"></i></a>
-        <a href="HTML/basket.html"><i class="fa-solid fa-cart-shopping"></i></a>
-    </div>
-</div>
-
-
-<meta charset="UTF-8" />
-<link rel="stylesheet" href="HTML/CSS/HomePage.css" />
-<script defer src="JS/script.js"></script>
-</head>
-</body>
-<header id="main-header">
-</header>
 <section id="sign-up">
-    <h2>Register</h2>
-    <form id="login-form" class="form-login">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+   <h2>Register</h2>
+   <?php if(isset($error_message)): ?>
+       <div class='error'><?php echo $error_message; ?></div>
+   <?php endif; ?>
+   <form id="login-form" class="form-login" method="POST" action="">
+       <label for="name">Full name:</label>
+       <input type="text" id="name" name="name" required>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+       <label for="email">Email:</label>
+       <input type="email" id="email" name="email" required>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+       <label for="password">Password:</label>
+       <input type="password" id="password" name="password" required>
 
-        <label for="confirm-password">Confirm Password:</label>
-        <input type="password" id="confirm-password" name="confirm-password" required>
+       <label for="confirm_password">Confirm Password:</label>
+       <input type="password" id="confirm-password" name="confirm_password" required>
 
-        <button class="login-button" type="submit">Login</button>
-    </form>
-    <div class="register-user">
-        <p>Already have an account? <a href="login.php">Login here</a></p>
-    </div>
+       <button class="login-button" type="submit" name="submit">Sign Up</button>
+   </form>
+   <div class="register-user">
+       <p>Already have an account? <a href="login.php">Login here</a></p>
+   </div>
 </section>
 
-
-
-<!-- FOOTER -->
-<style>
-    .footer {
-        height: 200px;
-        background-color: red;
-        /* For browsers that do not support gradients */
-        background-image: linear-gradient(180deg, rgb(249, 244, 244), rgb(50, 50, 50));
-    }
-</style>
-<!-- Section: Links -->
-<section class="footer">
-    <!-- Section: Form -->
-    <section class="">
-        <form action="">
-            <!--Grid row-->
-            <div class="row d-flex justify-content-center">
-                <!--Grid column-->
-                <div class="col-auto">
-                    <p class="pt-2">
-                        <strong>Sign up to our newsletter by entering your email address</strong>
-                    </p>
-                </div>
-                <div class="col-md-5 col-12">
-                    <!-- Email input -->
-                    <div class="form-outline form-white mb-4">
-                        <input type="email" id="form5Example21" class="form-control" />
-                        <label class="form-label" for="form5Example21">            <button type="submit" class="btn btn-outline-light mb-4">
-                                Subscribe
-                            </button></label>
-                    </div>
-                    <!--Grid column-->
-                </div>
-        </form>
-    </section>
-    <!-- Section: Form -->
-
-    <!-- Section: Text -->
-    <div class="mb-4">
-        <p>
-            Thank you for visiting our website ! Please checkout our products and get the most exclusive and trending
-            games at the best and most affordable prices !
-
-        </p>
-
-
-        <!-- Social Media Section -->
-        <div class="social-media">
-            <h5>Follow Us on Social Media</h5>
-            <div class="social-icons">
-                <a href="https://www.instagram.com" target="_blank">
-                    <img src="Images/insta logo.webp" alt="Instagram" class="social-icon">
-                </a>
-                <a href="https://www.twitter.com" target="_blank">
-                    <img src="Images/twitter logo.png" alt="Twitter" class="social-icon">
-                </a>
-                <a href="https://www.facebook.com" target="_blank">
-                    <img src="Images/facebook logo.png" alt="Facebook" class="social-icon">
-                </a>
-                <a href="https://www.tiktok.com" target="_blank">
-                    <img src="Images/tiktok logo.webp" alt="TikTok" class="social-icon">
-                </a>
-            </div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="copyright" style="background-color: rgba(0, 0, 0, 0.2);">
-            © 2024 Copyright:
-            <a class="text-white" href="#">GamePoint</a>
-        </div>
-        <!-- Copyright -->
-    </div>
-</section>
-</html>
+<?php
+include 'footer.php';
+?>
