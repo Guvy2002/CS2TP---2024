@@ -1,79 +1,138 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>GamePoint | Login</title>
-  <link rel="icon" href="images/favicon1.ico" type="image/x-icon" />
-  <link rel="stylesheet" href="ps5styles.css" />
-  <script defer src="script.js"></script>
-</head>
-<body>
-  <header id="main-header">
-    <div class="logo">
-        <img src="images/favicon1.ico" alt="GamePoint Logo" class="logo-img">
-        GamePoint
-      </div>
-  </header>
-  <section id="sign-in">
-    <h2>Login</h2>
-    <form id="login-form" method="POST" action="">
-      <input type="email" name="email" placeholder="Email" required/>
-      <input type="password" name="password" placeholder="Password" required/>
-      <input type="submit" name="submit" value="Login"/>
-    </form>
-  </section>
+<?php
+require_once('dbconnection.php');
 
-<?php 
+$error_message = '';
 
-if (isset($_POST['submit'])){
-    $email = $_POST['email'];
-    $password = $_POST['password'];
+if (isset($_POST['submit'])) {
+   try {
+       $email = trim($_POST['email']);
+       $password = $_POST['password'];
 
-    $conn = mysqli_connect("localhost", "cs2team8", "ZAUzatil5V99EcF", "cs2team8_db");
+       if (empty($email) || empty($password)) {
+           throw new Exception("All fields are required");
+       }
 
-    if(!$conn){
-        die("Database Failed to Connect: " . mysqli_connect_error());
-    }
+       $sql = $conn->prepare("SELECT customerID, Email, Password FROM Customer WHERE Email = ?");
+       $sql->bind_param("s", $email);
+       $sql->execute();
+       $result = $sql->get_result();
 
-    try{
-        // will replace with actual table names
-        
-        $sql = $conn->prepare("SELECT email, password FROM users WHERE email = ?");
-        $sql->bind_param("s", $email);
-        $sql->execute();
-        $result = $sql->get_result();
-
-        if ($result->num_rows > 0){
-            $row = $result->fetch_assoc();
-            if (password_verify($password, $row["password"])){
-                header("Location: Home Page.html");
-                exit();
-            } else{
-                echo "password incorrect, try again";
-            }
-        } else{
-            echo "email not found";
-        }
-        $customerIDs = "SELECT Email, customerID FROM RegisteredCustomer";
-        $customerIDsResult = $conn->query($customerIDs);
-        if ($customerIDsResult->num_rows > 0) {
-          while ($row = $customerIDsResult->fetch_assoc()) {
-            if ($row['Email'] == $email) {
-              $customerID = $row['customerID'];
-              echo "<script type=\"text/javascript\">
-              document.cookie = 'customerID=" . $customerID . ";path=/';
-              </script>";
-    
-            }
-          }
-        }
-
-    } catch (exception $ex){
-        echo "Error: " . $ex->getMessage();
-    } mysqli_close($conn);
-
+       if ($result->num_rows > 0) {
+           $row = $result->fetch_assoc();
+           if (password_verify($password, $row["Password"])) {
+               setcookie('customerID', $row['customerID'], time() + (86400 * 30), "/");
+               header("Location: homepage.php"); 
+               exit();
+           } else {
+               $error_message = "Incorrect password, please try again";
+           }
+       } else {
+           $error_message = "Email not found";
+       }
+   } catch (Exception $ex) {
+       $error_message = "Error: " . $ex->getMessage();
+   }
 }
 
+include 'header.php';
 ?>
-</body>
-</html>
+
+<section id="sign-in">
+   <h2>Login</h2>
+   <?php
+   if (!empty($error_message)) {
+       echo '<div class="error-message">' . $error_message . '</div>';
+   }
+   ?>
+   <form id="login-form" method="POST" action="">
+       <input type="email" name="email" placeholder="Email" required/>
+       <input type="password" name="password" placeholder="Password" required/>
+       <input type="submit" name="submit" value="Login"/>
+   </form>
+   <div class="register-link">
+       <p>Don't have an account? <a href="signup.php">Sign up here</a></p>
+   </div>
+</section>
+<style>
+    #login-form input[type="email"],
+    #login-form input[type="password"],
+    #login-form input[type="text"] {
+        width: 100%;
+        max-width: 400px;
+        padding: 12px 15px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        box-sizing: border-box;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #login-form input[type="email"]:focus,
+    #login-form input[type="password"]:focus,
+    #login-form input[type="text"]:focus {
+        border-color: #0078d7;
+        box-shadow: 0 0 8px rgba(0, 120, 215, 0.3);
+    }
+
+    #login-form input::placeholder {
+        color: #aaa;
+        font-style: italic;
+    }
+
+    #login-form input[type="submit"] {
+        width: 100%;
+        max-width: 400px;
+        padding: 12px 15px;
+        margin: 10px 0;
+        background-color: #0078d7;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #login-form input[type="submit"]:hover {
+        background-color: #005bb5;
+        transform: translateY(-2px);
+    }
+
+    #login-form input[type="submit"]:active {
+        transform: translateY(0);
+    }
+
+    #login-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #sign-in h2{
+      padding-left: 100px;
+    }
+
+    .register-link {
+        font-size: 14px;
+        text-align: center;
+        margin: -5px 0 5px 0;
+    }
+
+    .register-link a {
+        color: #0078d7;
+        text-decoration: none;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+
+<?php
+include 'footer.php';
+?>
