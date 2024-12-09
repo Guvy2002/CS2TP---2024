@@ -1,9 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "cs2team8", "ZAUzatil5V99EcF", "cs2team8_db");
-
-if (!$conn) {
-    die("Database Failed to Connect: " . mysqli_connect_error());
-}
+require_once('DBconnection.php');
 
 // Get the JSON input from JavaScript
 try {
@@ -25,9 +21,12 @@ try {
     $customerID = $_COOKIE["customerID"];
 
     // Check if the customer has an existing basket
-    $basketQuery = $conn->prepare("SELECT basketID FROM Basket WHERE customerID = ?");
-    $basketQuery->bind_param("i", $customerID);
-    $basketQuery->execute();
+    $basketQuery = "SELECT basketID, customerID FROM Basket";
+    $basketQueryResults = mysqli_query->query($conn, $basketQuery);
+    if (mysqli_num_rows($basketQueryResults) > 0) {
+        while ($row = mysli__fetch_assoc($basketQueryResults)){
+            if ($row[customerID] == $customerID){
+                $basketID = $row['basketID'];
     $basketResult = $basketQuery->get_result();
 
     $basketID = null;
@@ -47,8 +46,7 @@ try {
     // Add  product to BasketItems table
     $addItemQuery = $conn->prepare(
         "INSERT INTO BasketItems (basketID, productID, quantity) VALUES (?, ?, 1) 
-        ON DUPLICATE KEY UPDATE quantity = quantity + 1"
-    );
+        ON DUPLICATE KEY UPDATE quantity = quantity + 1");
     $addItemQuery->bind_param("ii", $basketID, $productID);
     $addItemQuery->execute();
     $addItemQuery->close();
