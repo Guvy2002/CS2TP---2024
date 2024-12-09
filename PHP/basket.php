@@ -25,7 +25,6 @@ if (isset($_COOKIE["customerID"])){
                             }
                         }
                     }
-
                 }
             }
         }
