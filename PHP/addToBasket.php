@@ -19,10 +19,27 @@ try{
     $name = $data['name'];
     $price = $data['price'];
 
-    $sql = $conn->prepare("INSERT INTO basket (id, name, price) VALUES (?, ?, ?)");
-    $sql->bind_param("s",$id);
-    $sql->execute();
-
+    $basketIDs = "SELECT basketID, customerID FROM Basket";
+    $product = "SELECT productID, imgURL, fullName, Price FROM Products";
+    $basket = "SELECT basketID, productID, Quantity FROM BasketItems";
+    $basketIDsResult = mysqli_query->query($conn, $basketIDs);
+    if (isset($_COOKIE["customerID"])){
+        $customerID = $_COOKIE["customerID"];
+        if (mysqli_num_rows($basketIDsResult) > 0) {
+            while ($row = mysqli_fetch_assoc($basketIDsResult)) {
+                if ($row['customerID'] == $customerID) {
+                    $basketID = $row['basketID'];
+                }    
+                $sql = $conn->prepare("INSERT INTO BasketItem (basketID, productID) VALUES ($basketID, $id)");
+                $sql->bind_param("s",$id);
+                $sql->execute();
+            }
+        }else{
+            $message = 'Basket is empty';
+        }
+    }else{
+        $message = 'Not Logged in';
+    }
     //$sql2 = $conn->prepare("DELETE FROM inventory WHERE id = ?");
     //$sql2->bind_param("s",$id);
     //$sql2->execute();
