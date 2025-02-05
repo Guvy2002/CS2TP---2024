@@ -23,11 +23,11 @@ $mail->addAddress('cameronmacdonald673@example.com', 'Cameron Macdonald');
 $mail->Subject = 'Testing stuff';
 //Read an HTML message body from an external file, convert referenced images to embedded,
 //convert HTML into a basic plain-text alternative body
-$mail->msgHTML(file_get_contents('contents.html'), __DIR__);
+$mail->msgHTML(file_get_contents('testemail.html'), __DIR__);
 //Replace the plain text body with one created manually
 $mail->AltBody = 'This is a plain-text message body';
 //Attach an image file
-$mail->addAttachment('images/phpmailer_mini.png');
+//$mail->addAttachment('images/phpmailer_mini.png');
 
 //send the message, check for errors
 if (!$mail->send()) {
@@ -46,6 +46,7 @@ if (!$mail->send()) {
 //Function to call which uses the PHP imap_*() functions to save messages: https://php.net/manual/en/book.imap.php
 //You can use imap_getmailboxes($imapStream, '/imap/ssl', '*' ) to get a list of available folders or labels, this can
 //be useful if you are trying to get this working on a non-Gmail IMAP server.
+/*
 function save_mail($mail)
 {
     //You can change 'Sent Mail' to any other folder or tag
@@ -59,3 +60,4 @@ function save_mail($mail)
 
     return $result;
 }
+*/
