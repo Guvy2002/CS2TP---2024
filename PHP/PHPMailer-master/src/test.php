@@ -1,15 +1,14 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
-require '../vendor/autoload.php';
+use PHPMailer\PHPMailer\Exception;
 
-$mail = new PHPMailer();
+require 'PHPMailer.php';
+require 'SMTP.php';
+require 'Exception.php';
+
+$mail = new PHPMailer(true);
 $mail->isSMTP();
-
-//Enable SMTP debugging
-//SMTP::DEBUG_OFF = off (for production use)
-//SMTP::DEBUG_CLIENT = client messages
-//SMTP::DEBUG_SERVER = client and server messages
 $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 $mail->Host = 'smtp.gmail.com';
 $mail->Port = 465;
@@ -27,18 +26,16 @@ $mail->msgHTML(file_get_contents('testemail.html'), __DIR__);
 //Replace the plain text body with one created manually
 $mail->AltBody = 'This is a plain-text message body';
 //Attach an image file
-//$mail->addAttachment('images/phpmailer_mini.png');
+$mail->addAttachment('a.jpg');
 
 //send the message, check for errors
 if (!$mail->send()) {
     echo 'Mailer Error: ' . $mail->ErrorInfo;
 } else {
     echo 'Message sent!';
-    //Section 2: IMAP
-    //Uncomment these to save your message in the 'Sent Mail' folder.
-    #if (save_mail($mail)) {
-    #    echo "Message saved!";
-    #}
+    if (save_mail($mail)) {
+        echo "Message saved!";
+    }
 }
 
 //Section 2: IMAP
