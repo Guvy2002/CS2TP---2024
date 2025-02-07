@@ -38,14 +38,8 @@ namespace PHPMailer\PHPMailer;
  * Plenty to choose from here:
  * @see https://oauth2-client.thephpleague.com/providers/thirdparty/
  */
-//@see https://github.com/thephpleague/oauth2-google
 use League\OAuth2\Client\Provider\Google;
-//@see https://packagist.org/packages/hayageek/oauth2-yahoo
-use Hayageek\OAuth2\Client\Provider\Yahoo;
-//@see https://github.com/stevenmaguire/oauth2-microsoft
-use Stevenmaguire\OAuth2\Client\Provider\Microsoft;
-//@see https://github.com/greew/oauth2-azure-provider
-use Greew\OAuth2\Client\Provider\Azure;
+
 
 if (!isset($_GET['code']) && !isset($_POST['provider'])) {
     ?>
@@ -55,18 +49,19 @@ if (!isset($_GET['code']) && !isset($_POST['provider'])) {
     <h1>Select Provider</h1>
     <input type="radio" name="provider" value="Google" id="providerGoogle">
     <label for="providerGoogle">Google</label><br>
-    <input type="radio" name="provider" value="Yahoo" id="providerYahoo">
+    <!--<input type="radio" name="provider" value="Yahoo" id="providerYahoo">
     <label for="providerYahoo">Yahoo</label><br>
     <input type="radio" name="provider" value="Microsoft" id="providerMicrosoft">
     <label for="providerMicrosoft">Microsoft</label><br>
     <input type="radio" name="provider" value="Azure" id="providerAzure">
     <label for="providerAzure">Azure</label><br>
+    -->
     <h1>Enter id and secret</h1>
     <p>These details are obtained by setting up an app in your provider's developer console.
     </p>
     <p>ClientId: <input type="text" name="clientId"><p>
     <p>ClientSecret: <input type="text" name="clientSecret"></p>
-    <p>TenantID (only relevant for Azure): <input type="text" name="tenantId"></p>
+    <!--<p>TenantID (only relevant for Azure): <input type="text" name="tenantId"></p>-->
     <input type="submit" value="Continue">
 </form>
 </body>
@@ -75,13 +70,14 @@ if (!isset($_GET['code']) && !isset($_POST['provider'])) {
     exit;
 }
 
-require 'vendor/autoload.php';
+require 'oauth2-google-main/src/Provider.Google.php';
 
 session_start();
 
-$providerName = '';
-$clientId = '';
-$clientSecret = '';
+$providerName = 'Google';
+$redirectUri = 'https://cs2team8.cs2410-web01pvm.aston.ac.uk/PHPMailer-master/src/get_oauth_token.php';
+$clientId = '361054273833-rgn8thi674gacp82vb4sbngdpepfetjv.apps.googleusercontent.com';
+$clientSecret = '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';
 $tenantId = '';
 
 if (array_key_exists('provider', $_POST)) {
@@ -127,7 +123,7 @@ switch ($providerName) {
             ]
         ];
         break;
-    case 'Yahoo':
+    /*case 'Yahoo':
         $provider = new Yahoo($params);
         break;
     case 'Microsoft':
@@ -149,7 +145,7 @@ switch ($providerName) {
                 'offline_access'
             ]
         ];
-        break;
+        break;*/
 }
 
 if (null === $provider) {
