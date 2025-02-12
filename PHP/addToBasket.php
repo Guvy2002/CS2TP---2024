@@ -1,16 +1,18 @@
 <?php
 require_once('dbconnection.php');
 
+session_start();
+
 try {
     $data = json_decode(file_get_contents("php://input"), true);
-    if (!isset($_COOKIE['customerID'])) {
+    if (!isset($_SESSION['customerID'])) {
         throw new Exception("Please log in to add items to the basket.");
     }
     $productID = $data['id'];
     if (!$productID) {
         throw new Exception("Product ID is missing.");
     }
-    $customerID = $_COOKIE['customerID'];
+    $customerID = $_SESSION['customerID'];
     $date = date("Y-m-d");
     $quantity = 1;
     $stmt = $conn->prepare("SELECT basketID FROM Basket WHERE customerID = ? ORDER BY createdDate DESC LIMIT 1");
