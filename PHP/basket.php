@@ -4,16 +4,18 @@ ini_set('display_errors', 1);
 
 require_once('dbconnection.php');
 include 'header.php';
+
 ?>
 
 <div class="basket-container">
     <h1>Your Shopping Basket</h1>
     <?php
+	session_start();
     $total = 0;
-    if (!isset($_COOKIE["customerID"])) {
+    if (!isset($_SESSION["customerID"])) {
         echo '<div class="empty-basket-message">Please log in to view your basket</div>';
     } else {
-        $customerID = $_COOKIE["customerID"];
+        $customerID = $_SESSION["customerID"];
         $basketQuery = "SELECT b.basketID, bi.productID, bi.Quantity, p.fullName, p.Price, p.imgURL 
                        FROM Basket b
                        LEFT JOIN BasketItem bi ON b.basketID = bi.basketID
