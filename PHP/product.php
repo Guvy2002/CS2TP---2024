@@ -285,4 +285,4 @@ async function addToWishlist(productId, productName, productPrice) {
 
 <?php
 include 'footer.php';
-?>
+?> 
