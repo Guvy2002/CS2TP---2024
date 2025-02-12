@@ -1,12 +1,5 @@
 <?php
-session_start();
 require_once("dbconnection.php");
-
-if (!isset($_SESSION['customerID'])) {
-    header("Location: login.php");
-    exit();
-}
-
 include 'header.php';
 
 ?>
@@ -17,24 +10,23 @@ include 'header.php';
         <h1>Trending Deals</h1>
 
         <div class="slideshow-container">
-            <div class="mySlides fade">
-                <img src="images/Nitendo deal.jpeg" >
+            <div class="mySlides">
+                <img src="images/Nitendo deal.jpeg" alt="Nintendo Deal">
             </div>
 
-            <div class="mySlides fade">
-                <img src="images/ps5 deal.png" >
+            <div class="mySlides">
+                <img src="images/ps5 deal.png" alt="PS5 Deal">
             </div>
 
-            <div class="mySlides fade">
-                <img src="images/xbox deal.png" >
+            <div class="mySlides">
+                <img src="images/xbox deal.png" alt="Xbox Deal">
             </div>
 
-            <br>
-
-            <div style="text-align:center">
-                <span class="dot" onclick="currentSlide(1)"></span>
-                <span class="dot" onclick="currentSlide(2)"></span>
-                <span class="dot" onclick="currentSlide(3)"></span>
+            <!-- Dots Navigation -->
+            <div class="dots-container">
+                <span class="dot" data-index="0"></span>
+                <span class="dot" data-index="1"></span>
+                <span class="dot" data-index="2"></span>
             </div>
         </div>
 
@@ -250,25 +242,52 @@ include 'header.php';
     </main>
 
     <script>
-        let slideIndex = 0;
-        showSlides();
+        class Slideshow {
+            constructor() {
+                this.slideIndex = 0;
+                this.slides = document.getElementsByClassName("mySlides");
+                this.dots = document.getElementsByClassName("dot");
+                this.interval = null;
+                this.intervalDuration = 5000; 
 
-        function showSlides() {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            let dots = document.getElementsByClassName("dot");
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
+                this.setupEventListeners();
+                this.startSlideshow();
+                this.showSlide(0);
             }
-            slideIndex++;
-            if (slideIndex > slides.length) { slideIndex = 1 }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
+
+            setupEventListeners() {
+                Array.from(this.dots).forEach((dot, index) => {
+                    dot.addEventListener('click', () => this.showSlide(index));
+                });
             }
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-            setTimeout(showSlides, 2000); // Change image every 2 seconds
+
+            showSlide(n) {
+                
+                Array.from(this.slides).forEach(slide => slide.classList.remove('active'));
+                Array.from(this.dots).forEach(dot => dot.classList.remove('active'));
+
+                this.slideIndex = n;
+                if (this.slideIndex >= this.slides.length) this.slideIndex = 0;
+                if (this.slideIndex < 0) this.slideIndex = this.slides.length - 1;
+
+                this.slides[this.slideIndex].classList.add('active');
+                this.dots[this.slideIndex].classList.add('active');
+            }
+
+            changeSlide(direction) {
+                this.showSlide(this.slideIndex + direction);
+            }
+
+            startSlideshow() {
+                this.interval = setInterval(() => {
+                    this.changeSlide(1);
+                }, this.intervalDuration);
+            }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new Slideshow();
+        });
 
         async function addToBasket(button) {
             try {
