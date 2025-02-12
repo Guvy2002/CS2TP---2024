@@ -127,25 +127,108 @@ include 'header.php';
    }
 </style>
 <section id="sign-up">
-   <h2>Register</h2>
-   <?php if(isset($error_message)): ?>
-       <div class='error'><?php echo $error_message; ?></div>
-   <?php endif; ?>
-   <form id="login-form" class="form-login" method="POST" action="">
-       <label for="name">Full name:</label>
-       <input type="text" id="name" name="name" required>
-       <label for="email">Email:</label>
-       <input type="email" id="email" name="email" required>
-       <label for="password">Password:</label>
-       <input type="password" id="password" name="password" required>
-       <label for="confirm_password">Confirm Password:</label>
-       <input type="password" id="confirm-password" name="confirm_password" required>
-       <button class="login-button" type="submit" name="submit">Sign Up</button>
-   </form>
-   <div class="register-user">
-       <p>Already have an account? <a href="login.php">Login here</a></p>
-   </div>
+    <h2>Register</h2>
+    <?php
+    if (!empty($error_message)) {
+        echo '<div class="error-message">' . $error_message . '</div>';
+    }
+    ?>
+    <form id="Register-form" method="POST" action="">
+        <input type="text" name="name" placeholder="Full Name" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+        <input type="submit" name="submit" value="Sign Up" />
+    </form>
+    <div class="register-link">
+        <p>Already have an account? <a href="login.php">Login here</a></p>
+    </div>
 </section>
+
+<style>
+    #Register-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px; 
+        padding: 20px;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto; 
+    }
+
+    #Register-form input[type="text"],
+    #Register-form input[type="email"],
+    #Register-form input[type="password"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin: 5px 0; 
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        box-sizing: border-box;
+        outline: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #Register-form input[type="text"]:focus,
+    #Register-form input[type="email"]:focus,
+    #Register-form input[type="password"]:focus {
+        border-color: #0078d7;
+        box-shadow: 0 0 8px rgba(0, 120, 215, 0.3);
+    }
+
+    #Register-form input::placeholder {
+        color: #aaa;
+        font-style: italic;
+    }
+
+    /* Submit button styles */
+    #Register-form input[type="submit"] {
+        width: 100%;
+        padding: 12px 15px;
+        margin-top: 10px;
+        background-color: #0078d7;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #Register-form input[type="submit"]:hover {
+        background-color: #005bb5;
+        transform: translateY(-2px);
+    }
+
+    #Register-form input[type="submit"]:active {
+        transform: translateY(0);
+    }
+
+    /* Register link styling */
+    .register-link {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .register-link a {
+        color: #0078d7;
+        text-decoration: none;
+    }
+
+    .register-link a:hover {
+        text-decoration: underline;
+    }
+
+    /* Section title alignment */
+    #sign-up h2 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+</style>
 
 <?php
 include 'footer.php';
