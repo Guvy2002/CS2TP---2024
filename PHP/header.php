@@ -2,6 +2,7 @@
 <html>
 
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="ps5styles.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css">
 </head>
@@ -105,7 +106,7 @@
             <a href="basket.php">
                 <i class="bi bi-cart3"></i>
             </a>
-            <a href="login.php">
+            <a href="<?php echo isset($_SESSION['customerID']) ? 'myaccount.php' : 'login.php'; ?>"> 
                 <i class="bi bi-person-circle"></i>
             </a>
         </div>
