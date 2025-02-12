@@ -1,9 +1,10 @@
 <?php
 
 require_once('dbconnection.php');
+session_start();
 
 if (isset($_POST['submit'])) {
-    $customerID = $_COOKIE["customerID"];
+    $customerID = $_SESSION["customerID"];
     $fullName = $_POST['full-name'];
     $contactNumber = $_POST['number'];
     $address = $_POST['address'];
@@ -157,7 +158,7 @@ include 'header.php';
 
         <!-- Shipping Information -->
         <div class="section">
-            <h3>Shipping Information</h3>
+            <h3>Billing Information</h3>
             <form>
                 <div class="input-group">
                     <label for="full-name">Full Name*</label>
