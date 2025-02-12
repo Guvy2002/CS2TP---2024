@@ -3,7 +3,7 @@ require_once("dbconnection.php");
 
 if (isset($_GET['query'])) {
     $query = $_GET['query'];
-    $stmt = $conn->prepare("SELECT productID, fullName FROM Products WHERE fullName LIKE ?");
+   	$stmt = $conn->prepare("SELECT productID, fullName FROM Products WHERE fullName LIKE ? ORDER BY fullName ASC");
     $searchTerm = "%$query%";
     $stmt->bind_param("s", $searchTerm);
     $stmt->execute();
