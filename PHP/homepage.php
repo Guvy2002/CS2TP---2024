@@ -321,13 +321,22 @@ include 'header.php';
             }
         }
 
-        async function addToWishlist(button) {
-            const gallery = button.closest('.gallery');
-            const description = gallery.querySelector('.description[data-id]');
-            const id = description.getAttribute('data-id');
-            const Data_Wishlist = { id: id.querySelector("a").getAttribute("href").split("data-id=")[1] };
+		async function addToWishlist(button) {
             try {
-                const resp = await fetch('addToWishlist.php', {
+                const gallery = button.closest('.gallery');
+                if (!gallery) {
+                    throw new Error("Gallery container not found");
+                }
+                const description = gallery.querySelector('div[data-id]');
+                if (!description) {
+                    throw new Error("Product data not found");
+                }
+                const id = description.getAttribute('data-id');
+                if (!id) {
+                    throw new Error("Product ID not found");
+                }
+                const Data_Wishlist = { id: id };
+                const resp = await fetch('/addToWishlist.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(Data_Wishlist)
@@ -336,12 +345,14 @@ include 'header.php';
                 if (data.status === "success") {
                     alert("Item has been added to wishlist");
                 } else {
-                    alert("error : " + data.message);
+                    alert(data.message || "Error adding item to wishlist");
                 }
             } catch (error) {
-                console.error("error : " + error);
+                console.error("Error:", error);
+                alert("Error adding item to wishlist: " + error.message);
             }
         }
+
     </script>
     <!-- Include Footer -->
     <?php include 'footer.php'; ?>
