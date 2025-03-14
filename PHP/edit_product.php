@@ -2,17 +2,9 @@
 session_start();
 require_once("dbconnection.php");
 
-// Check if user is admin
-if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
-    header('Location: login.php');
-    exit();
-}
-
-// Initialize variables
 $errors = [];
 $product = null;
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $productId = (int)$_POST['productId'];
     $productName = trim($_POST['productName']);
@@ -24,7 +16,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $currentImgURL = $_POST['current_image'];
     $deleteImage = isset($_POST['delete_image']);
 
-    // Validate input
     if (empty($productName)) {
         $errors[] = "Product name is required";
     }
@@ -38,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Stock cannot be negative";
     }
 
-    // Check if ModelNo already exists (excluding current product)
     $checkSql = "SELECT productID FROM Products WHERE ModelNo = ? AND productID != ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("si", $modelNo, $productId);
@@ -48,17 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $checkStmt->close();
 
-    // Handle image upload or deletion
     $imgURL = $currentImgURL;
-    
-    // Handle image deletion if requested
+
     if ($deleteImage) {
         if (!empty($currentImgURL) && file_exists($currentImgURL)) {
             unlink($currentImgURL);
         }
         $imgURL = null;
     }
-    // Handle new image upload
     else if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
         $allowedTypes = [
             'image/jpeg' => 'jpg',
@@ -74,18 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($_FILES['product_image']['size'] > $maxSize) {
             $errors[] = "File is too large. Maximum size is 5MB.";
         } else {
-            // Create images directory if it doesn't exist
             $uploadDir = 'images/';
             if (!file_exists($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
 
-            // Generate filename based on ModelNo and file extension
             $fileExtension = $allowedTypes[$_FILES['product_image']['type']];
             $fileName = strtolower(str_replace(['/', '\\', ' '], '-', $modelNo)) . '.' . $fileExtension;
             $targetPath = $uploadDir . $fileName;
 
-            // Delete old image if exists and is different
             if (!empty($currentImgURL) && file_exists($currentImgURL) && $currentImgURL !== $targetPath) {
                 unlink($currentImgURL);
             }
@@ -114,7 +98,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         } else {
             $errors[] = "Error updating product: " . $conn->error;
-            // If update fails and we uploaded a new image, remove it
             if ($imgURL !== $currentImgURL && !empty($imgURL) && file_exists($imgURL)) {
                 unlink($imgURL);
             }
@@ -122,7 +105,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
     }
 } else if (isset($_GET['id'])) {
-    // Fetch product data for editing
     $productId = (int)$_GET['id'];
     
     $sql = "SELECT p.*, c.categoryName 
@@ -149,7 +131,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-// Fetch categories for dropdown
 $categorySql = "SELECT categoryID, categoryName FROM Category ORDER BY categoryName";
 $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
 ?>
@@ -529,7 +510,6 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
             }
         }
 
-        // Handle delete image checkbox
         const deleteImageCheckbox = document.getElementById('deleteImage');
         if (deleteImageCheckbox) {
             deleteImageCheckbox.addEventListener('change', function(e) {
@@ -542,7 +522,6 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
             });
         }
 
-        // Form validation
         document.getElementById('editProductForm').addEventListener('submit', function(e) {
             const productName = document.getElementById('productName').value.trim();
             const modelNo = document.getElementById('ModelNo').value.trim();
@@ -577,7 +556,6 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
                 hasError = true;
             }
 
-            // Validate image if a new one is selected
             const imageInput = document.getElementById('product_image');
             if (imageInput.files.length > 0) {
                 const file = imageInput.files[0];
@@ -601,12 +579,10 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
             }
         });
 
-        // Model number format validation
         document.getElementById('ModelNo').addEventListener('input', function(e) {
             const input = e.target;
             const value = input.value;
-            
-            // Remove any characters that aren't alphanumeric or hyphen
+
             const sanitized = value.replace(/[^a-zA-Z0-9-]/g, '');
             
             if (value !== sanitized) {
@@ -615,12 +591,10 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
             }
         });
 
-        // Price format validation
         document.getElementById('price').addEventListener('input', function(e) {
             const input = e.target;
             const value = input.value;
-            
-            // Ensure only numbers and one decimal point
+
             if (!/^\d*\.?\d{0,2}$/.test(value)) {
                 input.value = value.substring(0, value.length - 1);
             }
