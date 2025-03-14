@@ -10,7 +10,6 @@ include 'header.php';
 <div class="basket-container">
     <h1>Your Shopping Basket</h1>
     <?php
-	session_start();
     $total = 0;
     if (!isset($_SESSION["customerID"])) {
         echo '<div class="empty-basket-message">Please log in to view your basket</div>';
@@ -38,7 +37,9 @@ include 'header.php';
                 $subtotal = $row['Price'] * $row['Quantity'];
                 $total += $subtotal;
                 ?>
-                <div class="basket-item">
+                <div class="basket-item"
+                	data-basket-id="<?php echo htmlspecialchars($row['basketID']); ?>"
+     				data-product-id="<?php echo htmlspecialchars($row['productID']); ?>">
                     <img src="<?php echo htmlspecialchars($row['imgURL']); ?>"
                         alt="<?php echo htmlspecialchars($row['fullName']); ?>">
                     <div class="item-details">
@@ -214,15 +215,36 @@ include 'header.php';
         updateTotals();
     }
 
-    function removeItem(button) {
-        const item = button.closest('.basket-item');
-        item.style.opacity = '0';
-        setTimeout(() => {
-            item.remove();
-            updateTotals();
-            checkEmptyBasket();
-        }, 300);
-    }
+	async function removeItem(button) {
+    	try {
+        	const container = button.closest('.basket-item');
+        	const basketId = container.dataset.basketId;
+        	const productId = container.dataset.productId;
+
+    	    if (!basketId || !productId) {
+	            throw new Error("Required IDs not found");
+        	}
+        	const Data_Basket = { 
+    	        id: productId,
+	            basket_id: basketId
+        	};
+        	const resp = await fetch('/removeFromBasket.php', {
+            	method: 'POST',
+            	headers: { 'Content-Type': 'application/json' },
+            	body: JSON.stringify(Data_Basket)
+        	});
+        	const data = await resp.json();
+        	if (data.status === "success") {
+            	container.remove();
+            	updateTotals();
+            	checkEmptyBasket();
+        	} else {
+            	consoler.error(data.message || "Error removing item from basket");
+        	}
+    	} catch (error) {
+        	console.error("Error:", error);
+    	}
+	}
 
     function updateTotals() {
         let subtotal = 0;
