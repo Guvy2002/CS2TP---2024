@@ -9,68 +9,81 @@ require_once ('dbconnection.php');
 <head>
   <style>
     .container {
-      max-width: 500px;
-      margin: 20px auto;
-      padding: 20px;
-      background-color: #f4f4f4;
-      border-radius: 8px;
-    }
+    background-color: #f8f8f8;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 450px;
+    margin: 40px auto;
+    text-align: center;
+}
 
-    .container label {
-      display: block;
-      margin: 10px 0 5px;
-      font-weight: bold;
-    }
+.container input,
+.container textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
 
-    .container input,
-    .container textarea {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
+.container input:focus,
+.container textarea:focus {
+    border-color: #0078d7;
+    box-shadow: 0 0 8px rgba(0, 120, 215, 0.3);
+}
 
-    .container button {
-      display: block;
-      width: 150px;
-      margin: 10px auto 0;
-      padding: 10px 20px;
-      background-color: white;
-      color: black;
-      font-size: 16px;
-      font-weight: bold;
-      border: 2px solid black;
-      border-radius: 5px;
-      cursor: pointer;
-      text-align: center;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
+.container input::placeholder,
+.container textarea::placeholder {
+    color: #aaa;
+    font-style: italic;
+}
 
-    .container button:hover {
-      background-color: black;
-      color: white;
-    }
+.container button {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 10px;
+    background-color: #0078d7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.container button:hover {
+    background-color: #005bb5;
+    transform: translateY(-2px);
+}
+
+.container button:active {
+    transform: translateY(0);
+}
+
+h1 {
+    text-align: center;
+    padding-left: 10px;
+    font-size: 32px;
+    color: #0078d7;
+}
   </style>
 </head>
 
 <body>
     
-<!-- Main Content -->
+
 <h1>Contact Us</h1>
 <div class="container">
-    <form
-            action="https://formspree.io/f/xeoellqo"
-            method="POST"
-    >
-        <label>
-            Your email:
-            <input type="email" name="email">
-        </label>
-        <label>
-            Your message:
-            <textarea name="message"></textarea>
-        </label>
+    <form action="https://formspree.io/f/xeoellqo" method="POST">
+        <input type="email" name="email" placeholder="Your email" required>
+        <textarea name="message" placeholder="Your message" required></textarea>
         <button type="submit">Send</button>
     </form>
 </div>
