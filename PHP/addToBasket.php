@@ -1,8 +1,6 @@
 <?php
 require_once('dbconnection.php');
-
 session_start();
-
 try {
     $data = json_decode(file_get_contents("php://input"), true);
     if (!isset($_SESSION['customerID'])) {
@@ -14,7 +12,17 @@ try {
     }
     $customerID = $_SESSION['customerID'];
     $date = date("Y-m-d");
-    $quantity = 1;
+    $quantity = isset($data['quantity']) ? intval($data['quantity']) : 1;
+    
+    
+    $prodStmt = $conn->prepare("SELECT fullName, imgURL FROM Products WHERE productID = ?");
+    $prodStmt->bind_param("i", $productID);
+    $prodStmt->execute();
+    $prodResult = $prodStmt->get_result();
+    $productInfo = $prodResult->fetch_assoc();
+    $productName = $productInfo['fullName'];
+    $productImage = $productInfo['imgURL'];
+    
     $stmt = $conn->prepare("SELECT basketID FROM Basket WHERE customerID = ? ORDER BY createdDate DESC LIMIT 1");
     $stmt->bind_param("i", $customerID);
     $stmt->execute();
@@ -28,10 +36,40 @@ try {
         $basket = $result->fetch_assoc();
         $basketID = $basket['basketID'];
     }
-    $stmt = $conn->prepare("INSERT INTO BasketItem (basketID, productID, Quantity) VALUES (?, ?, ?)");
-    $stmt->bind_param("iii", $basketID, $productID, $quantity);
+    
+    $stmt = $conn->prepare("SELECT basketItemID, Quantity FROM BasketItem WHERE basketID = ? AND productID = ?");
+    $stmt->bind_param("ii", $basketID, $productID);
     $stmt->execute();
-    echo json_encode(["status" => "success", "message" => "Item has been added to the basket."]);
+    $existingItem = $stmt->get_result();
+    
+    if ($existingItem->num_rows > 0) {
+        $item = $existingItem->fetch_assoc();
+        $newQuantity = $item['Quantity'] + 1;
+        $itemID = $item['basketItemID'];
+        
+        $stmt = $conn->prepare("UPDATE BasketItem SET Quantity = ? WHERE basketItemID = ?");
+        $stmt->bind_param("ii", $newQuantity, $itemID);
+        $stmt->execute();
+        
+        echo json_encode([
+            "status" => "success", 
+            "message" => "Item quantity updated in your basket.",
+            "quantity" => $newQuantity,
+            "productName" => $productName,
+            "productImage" => $productImage
+        ]);
+    } else {
+        $stmt = $conn->prepare("INSERT INTO BasketItem (basketID, productID, Quantity) VALUES (?, ?, ?)");
+        $stmt->bind_param("iii", $basketID, $productID, $quantity);
+        $stmt->execute();
+        
+        echo json_encode([
+            "status" => "success", 
+            "message" => "Item has been added to the basket.",
+            "productName" => $productName,
+            "productImage" => $productImage
+        ]);
+    }
 } catch (Exception $e) {
     http_response_code(400);
     echo json_encode(["status" => "error", "message" => $e->getMessage()]);
