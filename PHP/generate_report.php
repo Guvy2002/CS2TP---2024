@@ -2,146 +2,188 @@
 session_start();
 require_once("dbconnection.php");
 
-// Check if user is admin
-if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
-    $_SESSION['error_message'] = "Unauthorized access";
-    header('Location: inventory_dashboard.php');
+//security check for admin
+if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] != 1) {
+    header("Location: admin_login.php");
+    exit;
+}
+
+$generateReport = isset($_GET['type']);
+
+if ($generateReport) {
+    $validTypes = ['full', 'low_stock', 'sales', 'category'];
+    $validFormats = ['csv', 'excel'];
+
+    $reportType = isset($_GET['type']) && in_array($_GET['type'], $validTypes) ? $_GET['type'] : 'full';
+    $format = isset($_GET['format']) && in_array($_GET['format'], $validFormats) ? $_GET['format'] : 'csv';
+
+    $timestamp = date('Y-m-d_H-i-s');
+    $filename = "inventory_report_{$reportType}_{$timestamp}";
+
+    if ($format === 'excel') {
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="' . $filename . '.xls"');
+    } else {
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '.csv"');
+    }
+
+    $output = fopen('php://output', 'w');
+
+    if ($format === 'excel') {
+        fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
+    }
+
+    try {
+        switch ($reportType) {
+            case 'low_stock':
+                $sql = "SELECT p.productID, p.ModelNo, p.fullName, c.categoryName, 
+                        p.stockQuantity, p.Price, p.Description,
+                        (SELECT COUNT(*) FROM OrderItem oi 
+                         JOIN Orders o ON oi.orderID = o.orderID 
+                         WHERE oi.productID = p.productID 
+                         AND o.orderDate >= DATE_SUB(NOW(), INTERVAL 30 DAY)) as monthly_sales
+                        FROM Products p
+                        LEFT JOIN Category c ON p.categoryID = c.categoryID
+                        WHERE p.stockQuantity < 10
+                        ORDER BY p.stockQuantity ASC";
+
+                fputcsv($output, [
+                    'Product ID',
+                    'Model No',
+                    'Product Name',
+                    'Category',
+                    'Stock Quantity',
+                    'Price (£)',
+                    'Monthly Sales',
+                    'Description'
+                ]);
+                break;
+
+            case 'sales':
+                $sql = "SELECT p.productID, p.ModelNo, p.fullName, c.categoryName,
+        p.stockQuantity, p.Price,
+        (SELECT COUNT(*) FROM OrderItem oi 
+         JOIN Orders o ON oi.orderID = o.orderID 
+         WHERE oi.productID = p.productID 
+         AND o.orderDate >= DATE_SUB(NOW(), INTERVAL 30 DAY)) as monthly_sales,
+        p.Description
+        FROM Products p
+        LEFT JOIN Category c ON p.categoryID = c.categoryID
+        ORDER BY c.categoryName, p.fullName";
+
+                fputcsv($output, [
+                    'Product ID',
+                    'Model No',
+                    'Product Name',
+                    'Category',
+                    'Current Stock',
+                    'Current Price (£)',
+                    'Total Sales',
+                    'Units Sold',
+                    'Revenue (£)'
+                ]);
+                break;
+
+            case 'category':
+                $sql = "SELECT c.categoryName,
+                        COUNT(p.productID) as total_products,
+                        SUM(p.stockQuantity) as total_stock,
+                        AVG(p.Price) as avg_price,
+                        SUM(CASE WHEN p.stockQuantity < 10 THEN 1 ELSE 0 END) as low_stock_items
+                        FROM Category c
+                        LEFT JOIN Products p ON c.categoryID = p.categoryID
+                        GROUP BY c.categoryID
+                        ORDER BY total_products DESC";
+
+                fputcsv($output, [
+                    'Category',
+                    'Total Products',
+                    'Total Stock',
+                    'Average Price (£)',
+                    'Low Stock Items'
+                ]);
+                break;
+
+            default: 
+                $sql = "SELECT p.productID, p.ModelNo, p.fullName, c.categoryName,
+                        p.stockQuantity, p.Price, p.Description,
+                        (SELECT COUNT(*) FROM OrderItem oi 
+                         JOIN Orders o ON oi.orderID = o.orderID 
+                         WHERE oi.productID = p.productID 
+                         AND o.orderDate >= DATE_SUB(NOW(), INTERVAL 30 DAY)) as monthly_sales
+                        FROM Products p
+                        LEFT JOIN Category c ON p.categoryID = c.categoryID
+                        ORDER BY c.categoryName, p.fullName";
+
+               
+                fputcsv($output, [
+                    'Product ID',
+                    'Model No',
+                    'Product Name',
+                    'Category',
+                    'Stock Quantity',
+                    'Price (£)',
+                    'Monthly Sales',
+                    'Description'
+                ]);
+        }
+
+      
+        $result = $conn->query($sql);
+
+        if (!$result) {
+            throw new Exception("Database query error: " . $conn->error);
+        }
+
+        while ($row = $result->fetch_assoc()) {
+            $cleanRow = [];
+
+            foreach ($row as $key => $value) {
+                if (is_numeric($value) && in_array($key, ['Price', 'avg_price', 'revenue'])) {
+                    $value = number_format((float) $value, 2);
+                }
+
+                if ($value === null) {
+                    $value = 'N/A';
+                }
+
+                if (is_string($value)) {
+                    $value = str_replace(["\r", "\n", "\t"], ' ', $value);
+
+                    if (strlen($value) > 0 && in_array($value[0], ['=', '+', '-', '@'])) {
+                        $value = "'" . $value;
+                    }
+                }
+
+                $cleanRow[] = $value;
+            }
+
+            fputcsv($output, $cleanRow);
+        }
+
+    } catch (Exception $e) {
+        error_log("Report generation error: " . $e->getMessage());
+
+        fputcsv($output, ['Error generating report']);
+        fputcsv($output, [$e->getMessage()]);
+    }
+
+    fclose($output);
     exit();
 }
 
-// Get report type from request
-$reportType = isset($_GET['type']) ? $_GET['type'] : 'full';
-$format = isset($_GET['format']) ? $_GET['format'] : 'csv';
-
-// Define the filename
-$timestamp = date('Y-m-d_H-i-s');
-$filename = "inventory_report_{$reportType}_{$timestamp}";
-
-// Set headers based on format
-if ($format === 'csv') {
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="' . $filename . '.csv"');
-} else {
-    // Default to CSV if invalid format
-    header('Content-Type: text/csv');
-    header('Content-Disposition: attachment; filename="' . $filename . '.csv"');
-}
-
-// Create output handle
-$output = fopen('php://output', 'w');
-
-// Get report data based on type
-switch ($reportType) {
-    case 'low_stock':
-        $sql = "SELECT p.productID, p.ModelNo, p.fullName, c.categoryName, 
-                p.stockQuantity, p.Price, p.Description,
-                (SELECT COUNT(*) FROM OrderItem oi 
-                 JOIN Orders o ON oi.orderID = o.orderID 
-                 WHERE oi.productID = p.productID 
-                 AND o.orderDate >= DATE_SUB(NOW(), INTERVAL 30 DAY)) as monthly_sales
-                FROM Products p
-                LEFT JOIN Category c ON p.categoryID = c.categoryID
-                WHERE p.stockQuantity < 10
-                ORDER BY p.stockQuantity ASC";
-        
-        // Headers for low stock report
-        fputcsv($output, [
-            'Product ID', 'Model No', 'Product Name', 'Category', 
-            'Stock Quantity', 'Price (£)', 'Monthly Sales', 'Description'
-        ]);
-        break;
-        
-    case 'sales':
-        $sql = "SELECT p.productID, p.ModelNo, p.fullName, c.categoryName,
-                p.stockQuantity, p.Price,
-                COUNT(oi.orderItemID) as total_sales,
-                SUM(oi.quantity) as units_sold,
-                SUM(oi.quantity * oi.priceAtTime) as revenue
-                FROM Products p
-                LEFT JOIN Category c ON p.categoryID = c.categoryID
-                LEFT JOIN OrderItem oi ON p.productID = oi.productID
-                LEFT JOIN Orders o ON oi.orderID = o.orderID
-                WHERE o.orderDate >= DATE_SUB(NOW(), INTERVAL 30 DAY)
-                GROUP BY p.productID
-                ORDER BY units_sold DESC";
-        
-        // Headers for sales report
-        fputcsv($output, [
-            'Product ID', 'Model No', 'Product Name', 'Category',
-            'Current Stock', 'Current Price (£)', 'Total Sales',
-            'Units Sold', 'Revenue (£)'
-        ]);
-        break;
-        
-    case 'category':
-        $sql = "SELECT c.categoryName,
-                COUNT(p.productID) as total_products,
-                SUM(p.stockQuantity) as total_stock,
-                AVG(p.Price) as avg_price,
-                SUM(CASE WHEN p.stockQuantity < 10 THEN 1 ELSE 0 END) as low_stock_items
-                FROM Category c
-                LEFT JOIN Products p ON c.categoryID = p.categoryID
-                GROUP BY c.categoryID
-                ORDER BY total_products DESC";
-        
-        // Headers for category report
-        fputcsv($output, [
-            'Category', 'Total Products', 'Total Stock',
-            'Average Price (£)', 'Low Stock Items'
-        ]);
-        break;
-        
-    default: // full inventory report
-        $sql = "SELECT p.productID, p.ModelNo, p.fullName, c.categoryName,
-                p.stockQuantity, p.Price, p.Description,
-                (SELECT COUNT(*) FROM OrderItem oi 
-                 JOIN Orders o ON oi.orderID = o.orderID 
-                 WHERE oi.productID = p.productID 
-                 AND o.orderDate >= DATE_SUB(NOW(), INTERVAL 30 DAY)) as monthly_sales
-                FROM Products p
-                LEFT JOIN Category c ON p.categoryID = c.categoryID
-                ORDER BY c.categoryName, p.fullName";
-        
-        // Headers for full report
-        fputcsv($output, [
-            'Product ID', 'Model No', 'Product Name', 'Category',
-            'Stock Quantity', 'Price (£)', 'Monthly Sales', 'Description'
-        ]);
-}
-
-// Execute query
-$result = $conn->query($sql);
-
-// Write data rows
-while ($row = $result->fetch_assoc()) {
-    // Clean the data before writing
-    array_walk($row, function(&$value) {
-        // Remove any potential CSV injection characters
-        if (is_string($value)) {
-            $value = str_replace(["\r", "\n", "\t"], ' ', $value);
-            // Remove any potential formula injection for spreadsheet software
-            if (strlen($value) > 0 && in_array($value[0], ['=', '+', '-', '@'])) {
-                $value = "'" . $value;
-            }
-        }
-    });
-    
-    fputcsv($output, $row);
-}
-
-// Close the output handle
-fclose($output);
-exit();
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generate Inventory Report</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Same CSS as other pages */
         :root {
             --primary-color: #4361ee;
             --secondary-color: #3f37c9;
@@ -149,6 +191,12 @@ exit();
             --danger-color: #ff4d6d;
             --light-color: #f8f9fa;
             --dark-color: #212529;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
@@ -161,7 +209,7 @@ exit();
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 40px auto;
             padding: 30px;
             background: white;
@@ -169,10 +217,24 @@ exit();
             box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
         }
 
+        h1 {
+            margin-bottom: 20px;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #6c757d;
+        }
+
         .btn-group {
             display: flex;
+            flex-wrap: wrap;
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 30px;
         }
 
         .btn {
@@ -194,95 +256,151 @@ exit();
             color: white;
         }
 
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
         .btn-secondary {
             background-color: #6c757d;
             color: white;
         }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .card {
+            border: 1px solid #e1e1e1;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .card-description {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .format-selector {
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .format-options {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .format-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .format-option input {
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1><i class="fas fa-file-export"></i> Generate Inventory Report</h1>
-        
-        <p>Select the type of report you want to generate:</p>
-        
-        <div class="btn-group">
-            <a href="?type=full" class="btn btn-primary">
-                <i class="fas fa-file-alt"></i> Full Inventory Report
-            </a>
-            <a href="?type=low_stock" class="btn btn-primary">
-                <i class="fas fa-exclamation-triangle"></i> Low Stock Report
-            </a>
-            <a href="?type=sales" class="btn btn-primary">
-                <i class="fas fa-chart-line"></i> Sales Report
-            </a>
-            <a href="?type=category" class="btn btn-primary">
-                <i class="fas fa-tags"></i> Category Report
+
+        <p>Select the type of report you want to generate and download. Each report provides different insights into
+            your inventory status.</p>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-file-alt"></i> Full Inventory Report</div>
+            <div class="card-description">
+                Comprehensive overview of all products in your inventory, including stock levels, prices, and recent
+                sales activity.
+            </div>
+            <a href="?type=full&format=csv" class="btn btn-primary">
+                <i class="fas fa-download"></i> Generate Full Report
             </a>
         </div>
-        
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-exclamation-triangle"></i> Low Stock Report</div>
+            <div class="card-description">
+                Lists all products with stock levels below the threshold (10 units), helping you identify items that
+                need restocking.
+            </div>
+            <a href="?type=low_stock&format=csv" class="btn btn-primary">
+                <i class="fas fa-download"></i> Generate Low Stock Report
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-chart-line"></i> Sales Report</div>
+            <div class="card-description">
+                Details of product sales for the last 30 days, including units sold, revenue, and current stock levels.
+            </div>
+            <a href="?type=sales&format=csv" class="btn btn-primary">
+                <i class="fas fa-download"></i> Generate Sales Report
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-title"><i class="fas fa-tags"></i> Category Report</div>
+            <div class="card-description">
+                Summary of your inventory organized by product categories, showing product counts, average prices, and
+                stock status.
+            </div>
+            <a href="?type=category&format=csv" class="btn btn-primary">
+                <i class="fas fa-download"></i> Generate Category Report
+            </a>
+        </div>
+
+        <div class="format-selector">
+            <p><strong>Download Format:</strong></p>
+            <div class="format-options">
+                <label class="format-option">
+                    <input type="radio" name="format" value="csv" checked onclick="updateReportLinks('csv')"> CSV
+                </label>
+                <label class="format-option">
+                    <input type="radio" name="format" value="excel" onclick="updateReportLinks('excel')"> Excel
+                </label>
+            </div>
+        </div>
+
         <div style="margin-top: 30px;">
             <a href="inventory_dashboard.php" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Back to Dashboard
             </a>
         </div>
     </div>
+
+    <script>
+        function updateReportLinks(format) {
+            const reportLinks = document.querySelectorAll('.card .btn-primary');
+            reportLinks.forEach(link => {
+                const url = new URL(link.href, window.location.origin);
+                const type = url.searchParams.get('type');
+
+                link.href = `?type=${type}&format=${format}`;
+            });
+        }
+    </script>
 </body>
-</html><?php
-session_start();
-require_once("dbconnection.php");
 
-// Check if user is admin
-if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
-    header('Location: login.php');
-    exit();
-}
-
-// Set headers for CSV download
-header('Content-Type: text/csv');
-header('Content-Disposition: attachment; filename="inventory_report_' . date('Y-m-d') . '.csv"');
-
-// Create output stream
-$output = fopen('php://output', 'w');
-
-// Add CSV headers
-fputcsv($output, array(
-    'Product ID',
-    'Model No',
-    'Name',
-    'Category',
-    'Stock Quantity',
-    'Price',
-    'Monthly Sales',
-    'Stock Status'
-));
-
-// Fetch all products with their details
-$sql = "SELECT p.*, c.categoryName,
-        (SELECT COUNT(*) FROM OrderItem oi 
-         JOIN Orders o ON oi.orderID = o.orderID 
-         WHERE oi.productID = p.productID 
-         AND o.orderDate >= DATE_SUB(NOW(), INTERVAL 30 DAY)) as monthly_sales
-        FROM Products p
-        LEFT JOIN Category c ON p.categoryID = c.categoryID";
-
-$result = $conn->query($sql);
-
-// Add data rows
-while ($row = $result->fetch_assoc()) {
-    $stockStatus = $row['stockQuantity'] == 0 ? 'Out of Stock' : 
-                  ($row['stockQuantity'] < 10 ? 'Low Stock' : 'In Stock');
-    
-    fputcsv($output, array(
-        $row['productID'],
-        $row['ModelNo'],
-        $row['fullName'],
-        $row['categoryName'],
-        $row['stockQuantity'],
-        $row['Price'],
-        $row['monthly_sales'],
-        $stockStatus
-    ));
-}
-
-fclose($output);
+</html>
