@@ -2,13 +2,12 @@
 session_start();
 require_once("dbconnection.php");
 
-// Check if user is admin
-if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
-    header('Location: login.php');
-    exit();
+//security check for admin
+if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] != 1) {
+    header("Location: admin_login.php");
+    exit;
 }
 
-// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $productName = trim($_POST['productName']);
     $modelNo = trim($_POST['ModelNo']);
@@ -17,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stock = (int)$_POST['stock'];
     $description = trim($_POST['description']);
 
-    // Validate input
+    
     $errors = [];
     if (empty($productName)) {
         $errors[] = "Product name is required";
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Stock cannot be negative";
     }
 
-    // Check if ModelNo already exists
+    
     $checkSql = "SELECT productID FROM Products WHERE ModelNo = ?";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bind_param("s", $modelNo);
@@ -42,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $checkStmt->close();
 
-    // Handle image upload
+    
     $imgURL = '';
     if (isset($_FILES['product_image']) && $_FILES['product_image']['error'] === UPLOAD_ERR_OK) {
         $allowedTypes = [
@@ -59,13 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($_FILES['product_image']['size'] > $maxSize) {
             $errors[] = "File is too large. Maximum size is 5MB.";
         } else {
-            // Create images directory if it doesn't exist
+            
             $uploadDir = 'images/';
             if (!file_exists($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
 
-            // Generate filename based on ModelNo and file extension
+           
             $fileExtension = $allowedTypes[$_FILES['product_image']['type']];
             $fileName = strtolower(str_replace(['/', '\\', ' '], '-', $modelNo)) . '.' . $fileExtension;
             $targetPath = $uploadDir . $fileName;
@@ -91,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         } else {
             $errors[] = "Error adding product: " . $conn->error;
-            // If insert fails, remove uploaded image
+            
             if (!empty($imgURL) && file_exists($imgURL)) {
                 unlink($imgURL);
             }
@@ -100,7 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch categories for dropdown
+
 $categorySql = "SELECT categoryID, categoryName FROM Category ORDER BY categoryName";
 $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
 ?>
@@ -394,7 +393,7 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
     </div>
 
     <script>
-        // Image preview function
+        
         function previewImage(input) {
             const preview = document.getElementById('imagePreview');
             const img = preview.querySelector('img');
@@ -419,7 +418,7 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
             }
         }
 
-        // Form validation
+        
         document.getElementById('addProductForm').addEventListener('submit', function(e) {
             const productName = document.getElementById('productName').value.trim();
             const modelNo = document.getElementById('ModelNo').value.trim();
@@ -477,7 +476,7 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
             }
         });
 
-        // Model number validation
+        
         document.getElementById('ModelNo').addEventListener('input', function(e) {
             const input = e.target;
             const value = input.value;
@@ -489,7 +488,7 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
             }
         });
 
-        // Price validation
+        
         document.getElementById('price').addEventListener('input', function(e) {
             const input = e.target;
             const value = input.value;
