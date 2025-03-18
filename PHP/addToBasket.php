@@ -13,15 +13,19 @@ try {
     $customerID = $_SESSION['customerID'];
     $date = date("Y-m-d");
     $quantity = isset($data['quantity']) ? intval($data['quantity']) : 1;
-    
-    
-    $prodStmt = $conn->prepare("SELECT fullName, imgURL FROM Products WHERE productID = ?");
+    $prodStmt = $conn->prepare("SELECT fullName, imgURL, stockQuantity FROM Products WHERE productID = ?");
     $prodStmt->bind_param("i", $productID);
     $prodStmt->execute();
     $prodResult = $prodStmt->get_result();
     $productInfo = $prodResult->fetch_assoc();
+    
     $productName = $productInfo['fullName'];
     $productImage = $productInfo['imgURL'];
+    $stockQuantity = $productInfo['stockQuantity'];
+
+    if ($stockQuantity <= 0) {
+        throw new Exception("This product is out of stock.");
+    }
     
     $stmt = $conn->prepare("SELECT basketID FROM Basket WHERE customerID = ? ORDER BY createdDate DESC LIMIT 1");
     $stmt->bind_param("i", $customerID);
@@ -44,28 +48,47 @@ try {
     
     if ($existingItem->num_rows > 0) {
         $item = $existingItem->fetch_assoc();
-        $newQuantity = $item['Quantity'] + 1;
-        $itemID = $item['basketItemID'];
+        $currentQuantity = $item['Quantity'];
+        $requestedNewQuantity = $currentQuantity + $quantity;
+
+        if ($requestedNewQuantity > $stockQuantity) {
+            if ($currentQuantity == $stockQuantity) {
+                throw new Exception("You already have the maximum available quantity in your basket.");
+            }
+            $newQuantity = $stockQuantity;
+            $message = "Only {$stockQuantity} items are available. Your basket has been updated to the maximum available quantity.";
+        } else {
+            $newQuantity = $requestedNewQuantity;
+            $message = "Item quantity updated in your basket.";
+        }
         
+        $itemID = $item['basketItemID'];
         $stmt = $conn->prepare("UPDATE BasketItem SET Quantity = ? WHERE basketItemID = ?");
         $stmt->bind_param("ii", $newQuantity, $itemID);
         $stmt->execute();
         
         echo json_encode([
             "status" => "success", 
-            "message" => "Item quantity updated in your basket.",
+            "message" => $message,
             "quantity" => $newQuantity,
             "productName" => $productName,
             "productImage" => $productImage
         ]);
     } else {
+        if ($quantity > $stockQuantity) {
+            $quantity = $stockQuantity;
+            $message = "Only {$stockQuantity} items are available. Added the maximum available quantity to your basket.";
+        } else {
+            $message = "Item has been added to the basket.";
+        }
+        
         $stmt = $conn->prepare("INSERT INTO BasketItem (basketID, productID, Quantity) VALUES (?, ?, ?)");
         $stmt->bind_param("iii", $basketID, $productID, $quantity);
         $stmt->execute();
         
         echo json_encode([
             "status" => "success", 
-            "message" => "Item has been added to the basket.",
+            "message" => $message,
             "productName" => $productName,
             "productImage" => $productImage
         ]);
