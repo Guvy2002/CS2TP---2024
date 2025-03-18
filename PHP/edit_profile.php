@@ -94,8 +94,6 @@ if (isset($_POST['submit'])){
     margin: 40px auto;
     text-align: center;
 }
-
-/* Input field styles */
 #Password-form {
     display: flex;
     flex-direction: column;
@@ -135,8 +133,6 @@ if (isset($_POST['submit'])){
     gap: 10px;
     justify-content: space-between;
 }
-
-/* Button styles */
 #Password-form input[type="button"],
 #Password-form input[type="submit"] {
     flex: 1;
@@ -170,8 +166,6 @@ if (isset($_POST['submit'])){
 #Password-form input[type="submit"]:active {
     transform: translateY(0);
 }
-
-/* Error message styling */
 .error-message {
     color: #dc3545;
     background-color: #f8d7da;
@@ -179,8 +173,6 @@ if (isset($_POST['submit'])){
     border-radius: 4px;
     margin-bottom: 15px;
 }
-
-/* Success message styling */
 .success-message {
     color: #28a745;
     background-color: #d4edda;
@@ -189,7 +181,6 @@ if (isset($_POST['submit'])){
     margin-bottom: 15px;
 }
 
-/* Customer login link styling */
 .customer-link {
     font-size: 14px;
     text-align: center;
@@ -207,7 +198,6 @@ if (isset($_POST['submit'])){
     text-decoration: underline;
 }
 
-/* Admin Login Header Styling */
 .login-container h2 {
     text-align: center;
     padding-left: 95px;
