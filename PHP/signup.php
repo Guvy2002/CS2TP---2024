@@ -1,11 +1,12 @@
 <?php
 require_once("dbconnection.php");
+session_start();
 
 if (isset($_POST['submit'])) {
    $name = trim($_POST['name']);
    $email = trim($_POST['email']);
    $password = $_POST['password'];
-   $confirm_password = $_POST['confirm_password'];
+   $confirm_password = $_POST['confirmPassword'];
    $registration_date = date("Y-m-d");
 
    try {
@@ -35,7 +36,7 @@ if (isset($_POST['submit'])) {
                while ($row = $customerIDsResult->fetch_assoc()) {
                    if ($row['Email'] == $email) {
                        $customerID = $row['customerID'];
-                       setcookie('customerID', $customerID, time() + (86400 * 30), "/");
+                  	   $_SESSION['customerID'] = $row['customerID'];
                    }
                }
            }
@@ -53,79 +54,7 @@ if (isset($_POST['submit'])) {
 
 include 'header.php';
 ?>
-<style>
-    #sign-up {
-       max-width: 500px;
-       margin: 0 auto;
-       padding: 20px;
-       border: 1px solid #ccc;
-       border-radius: 8px;
-       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-   }
 
-   #sign-up h2 {
-       text-align: center;
-       margin-bottom: 20px;
-       font-family: Arial, sans-serif;
-   }
-
-   #sign-up .error {
-       color: red;
-       margin-bottom: 15px;
-       text-align: center;
-   }
-
-   #login-form label {
-       font-weight: bold;
-       margin-top: 10px;
-       display: block;
-       font-family: Arial, sans-serif;
-   }
-
-   #login-form input {
-       width: 100%;
-       padding: 10px;
-       margin: 8px 0;
-       border: 1px solid #ccc;
-       border-radius: 6px;
-       font-size: 14px;
-   }
-
-   #login-form input:focus {
-       border-color: #0078d7;
-       box-shadow: 0 0 8px rgba(0, 120, 215, 0.3);
-   }
-
-   .login-button {
-       width: 100%;
-       background-color: #0078d7;
-       color: white;
-       padding: 10px 15px;
-       border: none;
-       border-radius: 6px;
-       font-size: 16px;
-       cursor: pointer;
-       transition: background-color 0.3s ease;
-   }
-
-   .login-button:hover {
-       background-color: #005bb5;
-   }
-
-   .register-user {
-       text-align: center;
-       margin-top: 10px;
-   }
-
-   .register-user a {
-       color: #0078d7;
-       text-decoration: none;
-   }
-
-   .register-user a:hover {
-       text-decoration: underline;
-   }
-</style>
 <section id="sign-up">
     <h2>Register</h2>
     <?php
@@ -146,90 +75,108 @@ include 'header.php';
 </section>
 
 <style>
-    #Register-form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 15px; 
-        padding: 20px;
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto; 
-    }
+#sign-up {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px var(--card-shadow);
+    width: 90%;
+    max-width: 450px;
+    margin: 40px auto;
+    text-align: center;
+}
 
-    #Register-form input[type="text"],
-    #Register-form input[type="email"],
-    #Register-form input[type="password"] {
-        width: 100%;
-        padding: 12px 15px;
-        margin: 5px 0; 
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 16px;
-        box-sizing: border-box;
-        outline: none;
-        transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    }
+#Register-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
 
-    #Register-form input[type="text"]:focus,
-    #Register-form input[type="email"]:focus,
-    #Register-form input[type="password"]:focus {
-        border-color: #0078d7;
-        box-shadow: 0 0 8px rgba(0, 120, 215, 0.3);
-    }
+#Register-form input[type="text"],
+#Register-form input[type="email"],
+#Register-form input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 5px 0;
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
 
-    #Register-form input::placeholder {
-        color: #aaa;
-        font-style: italic;
-    }
+#Register-form input[type="text"]:focus,
+#Register-form input[type="email"]:focus,
+#Register-form input[type="password"]:focus {
+    border-color: var(--heading-color);
+    box-shadow: 0 0 8px rgba(var(--heading-color), 0.3);
+}
 
-    /* Submit button styles */
-    #Register-form input[type="submit"] {
-        width: 100%;
-        padding: 12px 15px;
-        margin-top: 10px;
-        background-color: #0078d7;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-size: 16px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
+#Register-form input::placeholder {
+    color: var(--text-color);
+    opacity: 0.5;
+    font-style: italic;
+}
 
-    #Register-form input[type="submit"]:hover {
-        background-color: #005bb5;
-        transform: translateY(-2px);
-    }
+#Register-form input[type="submit"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-top: 10px;
+    background-color: var(--heading-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-    #Register-form input[type="submit"]:active {
-        transform: translateY(0);
-    }
+#Register-form input[type="submit"]:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
 
-    /* Register link styling */
-    .register-link {
-        font-size: 14px;
-        text-align: center;
-        margin-top: 10px;
-    }
+#Register-form input[type="submit"]:active {
+    transform: translateY(0);
+}
 
-    .register-link a {
-        color: #0078d7;
-        text-decoration: none;
-    }
+.register-link {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 10px;
+    color: var(--text-color);
+}
 
-    .register-link a:hover {
-        text-decoration: underline;
-    }
+.register-link a {
+    color: var(--heading-color);
+    text-decoration: none;
+}
 
-    /* Section title alignment */
-    #sign-up h2 {
-        text-align: center;
-        margin-bottom: 15px;
-    }
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+#sign-up h2 {
+    text-align: center;
+    padding-left: 95px;
+    color: var(--heading-color);
+}
+
+.error-message {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: left;
+}
 </style>
-
 <?php
 include 'footer.php';
 ?>
