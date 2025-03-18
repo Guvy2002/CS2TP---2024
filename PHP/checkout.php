@@ -97,8 +97,8 @@ if (isset($_POST['submit']) && !empty($basketItems)) {
 
         $conn->commit();
 
-        header("Location: /order_confirmation.php?order=" . $orderID);
-        exit();
+        header("Location: sendEmail.php?contents=order_confirmation&orderID=" . $orderID . "&redirect=" . urlencode("/order_confirmation.php?order=" . $orderID));
+		exit();
 
     } catch (Exception $e) {
         $conn->rollback();
