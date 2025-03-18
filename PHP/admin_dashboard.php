@@ -8,6 +8,7 @@ if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] != 1) {
     exit;
 }
 
+$_GET['page'] = 'dashboard';
 
 $totalProductsQuery = $conn->query("SELECT COUNT(*) as count FROM Products");
 $totalProducts = $totalProductsQuery->fetch_assoc()['count'];
@@ -30,10 +31,8 @@ $pendingOrders = $pendingOrdersQuery->fetch_assoc()['count'];
 $totalRevenueQuery = $conn->query("SELECT SUM(totalPrice) as total FROM Orders");
 $totalRevenue = $totalRevenueQuery->fetch_assoc()['total'] ?? 0;
 
-
 $recentProductsQuery = $conn->query("SELECT productID, fullName, Price, stockQuantity FROM Products ORDER BY productID DESC LIMIT 5");
 $recentProducts = $recentProductsQuery->fetch_all(MYSQLI_ASSOC);
-
 
 $recentOrdersQuery = $conn->query("
     SELECT o.orderID, o.orderDate, o.totalPrice, o.orderStatus, c.fullName 
@@ -42,11 +41,6 @@ $recentOrdersQuery = $conn->query("
     ORDER BY o.orderDate DESC LIMIT 5
 ");
 $recentOrders = $recentOrdersQuery->fetch_all(MYSQLI_ASSOC);
-
-$activePage = 'dashboard';
-if (isset($_GET['page'])) {
-    $activePage = $_GET['page'];
-}
 ?>
 
 <!DOCTYPE html>
@@ -78,121 +72,6 @@ if (isset($_GET['page'])) {
             background-color: #f0f2f5;
         }
 
-        /* Sidebar styles */
-        .sidebar {
-            width: var(--sidebar-width);
-            background-color: var(--dark-color);
-            color: white;
-            height: 100vh;
-            position: fixed;
-            left: 0;
-            top: 0;
-            transition: width var(--transition-speed) ease;
-            overflow-x: hidden;
-            z-index: 1000;
-        }
-
-        .sidebar.collapsed {
-            width: var(--sidebar-collapsed-width);
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            transition: opacity var(--transition-speed);
-        }
-
-        .sidebar.collapsed .sidebar-title {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .toggle-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
-        /* Sidebar links */
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-item {
-            padding: 0;
-        }
-
-        .sidebar-link {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            color: white;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: background-color 0.2s;
-            position: relative;
-        }
-
-        .sidebar-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-link.active {
-            background-color: var(--primary-color);
-        }
-
-        .sidebar-icon {
-            font-size: 1.2rem;
-            margin-right: 10px;
-            min-width: 25px;
-            text-align: center;
-        }
-
-        .sidebar-text {
-            transition: opacity var(--transition-speed);
-        }
-
-        .sidebar.collapsed .sidebar-text {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-       
-        .sidebar.collapsed .sidebar-link:hover::after {
-            content: attr(title);
-            position: absolute;
-            left: 80px;
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            white-space: nowrap;
-        }
-
-        
-        .sidebar.collapsed:hover {
-            width: var(--sidebar-width);
-        }
-
-        .sidebar.collapsed:hover .sidebar-title,
-        .sidebar.collapsed:hover .sidebar-text {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        
         .main-content {
             margin-left: var(--sidebar-width);
             padding: 20px;
@@ -202,7 +81,6 @@ if (isset($_GET['page'])) {
         .admin-container.sidebar-collapsed .main-content {
             margin-left: var(--sidebar-collapsed-width);
         }
-
         
         .dashboard-title {
             margin-bottom: 20px;
@@ -211,7 +89,6 @@ if (isset($_GET['page'])) {
             padding-bottom: 10px;
             border-bottom: 1px solid #dee2e6;
         }
-
         
         .stats-grid {
             display: grid;
@@ -219,7 +96,6 @@ if (isset($_GET['page'])) {
             gap: 20px;
             margin-bottom: 30px;
         }
-
         
         .stat-card {
             background: white;
@@ -240,7 +116,6 @@ if (isset($_GET['page'])) {
             align-items: center;
             justify-content: center;
         }
-
         
         .products-icon {
             color: var(--primary-color);
@@ -292,7 +167,6 @@ if (isset($_GET['page'])) {
             color: #6c757d;
             font-size: 0.9rem;
         }
-
         
         .table-container {
             background: white;
@@ -338,7 +212,6 @@ if (isset($_GET['page'])) {
         .admin-table tbody tr:hover {
             background-color: #f8f9fa;
         }
-
         
         .stock-status {
             display: inline-block;
@@ -362,7 +235,6 @@ if (isset($_GET['page'])) {
             background-color: rgba(220, 53, 69, 0.1);
             color: var(--danger-color);
         }
-
         
         .status-badge {
             display: inline-block;
@@ -391,56 +263,8 @@ if (isset($_GET['page'])) {
             background-color: rgba(220, 53, 69, 0.1);
             color: var(--danger-color);
         }
-
-        /* Quick Actions */
-        .quick-actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .quick-action-btn {
-            padding: 12px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            color: white;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-
-        .quick-action-btn:hover {
-            transform: translateY(-3px);
-            opacity: 0.9;
-        }
-
-        .btn-inventory {
-            background-color: var(--primary-color);
-        }
-
-        .btn-customers {
-            background-color: var(--success-color);
-        }
-
-        /* Responsive */
+        
         @media (max-width: 768px) {
-            .sidebar {
-                width: var(--sidebar-collapsed-width);
-            }
-
-            .sidebar-title {
-                opacity: 0;
-                visibility: hidden;
-            }
-
-            .sidebar-text {
-                opacity: 0;
-                visibility: hidden;
-            }
-
             .main-content {
                 margin-left: var(--sidebar-collapsed-width);
             }
@@ -448,83 +272,13 @@ if (isset($_GET['page'])) {
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-
-            .sidebar.expanded {
-                width: var(--sidebar-width);
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            }
-
-            .sidebar.expanded .sidebar-title,
-            .sidebar.expanded .sidebar-text {
-                opacity: 1;
-                visibility: visible;
-            }
         }
     </style>
 </head>
 
 <body>
     <div class="admin-container" id="adminContainer">
-        <!-- Sidebar -->
-        <div class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <div class="sidebar-title">Admin Panel</div>
-                <button class="toggle-btn" id="toggleBtn">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-            </div>
-            <ul class="sidebar-menu">
-                <li class="sidebar-item">
-                    <a href="admin_dashboard.php" title="Dashboard"
-                        class="sidebar-link <?php echo $activePage === 'dashboard' ? 'active' : ''; ?>">
-                        <i class="bi bi-speedometer2 sidebar-icon"></i>
-                        <span class="sidebar-text">Dashboard</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="inventory_dashboard.php" title="Inventory Management"
-                        class="sidebar-link <?php echo $activePage === 'inventory' ? 'active' : ''; ?>">
-                        <i class="bi bi-box-seam sidebar-icon"></i>
-                        <span class="sidebar-text">Inventory Management</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="customer_management.php" title="Customer Management"
-                        class="sidebar-link <?php echo $activePage === 'customers' ? 'active' : ''; ?>">
-                        <i class="bi bi-people sidebar-icon"></i>
-                        <span class="sidebar-text">Customer Management</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="admin_orders.php" title="Order Management"
-                        class="sidebar-link <?php echo $activePage === 'orders' ? 'active' : ''; ?>">
-                        <i class="bi bi-cart3 sidebar-icon"></i>
-                        <span class="sidebar-text">Order Management</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="reports.php" title="Reports & Analytics"
-                        class="sidebar-link <?php echo $activePage === 'reports' ? 'active' : ''; ?>">
-                        <i class="bi bi-bar-chart sidebar-icon"></i>
-                        <span class="sidebar-text">Reports & Analytics</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="settings.php" title="Settings"
-                        class="sidebar-link <?php echo $activePage === 'settings' ? 'active' : ''; ?>">
-                        <i class="bi bi-gear sidebar-icon"></i>
-                        <span class="sidebar-text">Settings</span>
-                    </a>
-                </li>
-                <li class="sidebar-item logout-btn">
-                    <a href="myaccount.php" title="Back to Account" class="sidebar-link">
-                        <i class="bi bi-arrow-left sidebar-icon"></i>
-                        <span class="sidebar-text">Back to Account</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
+        <?php include 'admin_sidebar.php'; ?>
         
         <main class="main-content">
             <h1 class="dashboard-title">Admin Dashboard</h1>
@@ -596,7 +350,7 @@ if (isset($_GET['page'])) {
                 </div>
             </div>
 
-            
+            <!-- Recently Added Products -->
             <div class="table-container">
                 <div class="table-header">
                     <h2 class="table-title">Recently Added Products</h2>
@@ -635,7 +389,7 @@ if (isset($_GET['page'])) {
                 </div>
             </div>
 
-            
+            <!-- Recent Orders -->
             <div class="table-container">
                 <div class="table-header">
                     <h2 class="table-title">Recent Orders</h2>
@@ -683,84 +437,7 @@ if (isset($_GET['page'])) {
                     </table>
                 </div>
             </div>
-
-           
-            <div class="quick-actions">
-                <a href="inventory_dashboard.php" class="quick-action-btn btn-inventory">
-                    <i class="bi bi-box-seam"></i> Manage Inventory
-                </a>
-                <a href="customer_management.php" class="quick-action-btn btn-customers">
-                    <i class="bi bi-people"></i> Manage Customers
-                </a>
-            </div>
         </main>
     </div>
-
-    <script>
-        
-        document.addEventListener('DOMContentLoaded', function () {
-            const toggleBtn = document.getElementById('toggleBtn');
-            const sidebar = document.getElementById('sidebar');
-            const adminContainer = document.getElementById('adminContainer');
-
-           
-            const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-
-            
-            if (sidebarCollapsed) {
-                sidebar.classList.add('collapsed');
-                adminContainer.classList.add('sidebar-collapsed');
-                toggleBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
-            }
-
-            toggleBtn.addEventListener('click', function () {
-                sidebar.classList.toggle('collapsed');
-                adminContainer.classList.toggle('sidebar-collapsed');
-
-               
-                if (sidebar.classList.contains('collapsed')) {
-                    toggleBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
-                    localStorage.setItem('sidebarCollapsed', 'true');
-                } else {
-                    toggleBtn.innerHTML = '<i class="bi bi-chevron-left"></i>';
-                    localStorage.setItem('sidebarCollapsed', 'false');
-                }
-            });
-
-            
-            if (window.innerWidth <= 768) {
-                const sidebarLinks = document.querySelectorAll('.sidebar-link');
-
-                
-                sidebarLinks.forEach(link => {
-                    link.addEventListener('click', function () {
-                        if (window.innerWidth <= 768 && !sidebar.classList.contains('collapsed')) {
-                            sidebar.classList.add('collapsed');
-                            adminContainer.classList.add('sidebar-collapsed');
-                            toggleBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
-                            localStorage.setItem('sidebarCollapsed', 'true');
-                        }
-                    });
-                });
-
-                
-                toggleBtn.addEventListener('click', function () {
-                    sidebar.classList.toggle('expanded');
-                });
-            }
-
-            
-            window.addEventListener('resize', function () {
-                if (window.innerWidth <= 768) {
-                    if (!sidebar.classList.contains('collapsed')) {
-                        sidebar.classList.add('collapsed');
-                        adminContainer.classList.add('sidebar-collapsed');
-                        toggleBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
-                    }
-                }
-            });
-        });
-    </script>
 </body>
-
 </html>
