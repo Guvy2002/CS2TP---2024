@@ -14,7 +14,7 @@ if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] != 1) {
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $customerId = $_GET['delete'];
 
-    
+
     $checkOrders = $conn->prepare("SELECT COUNT(*) as orderCount FROM Orders WHERE customerID = ?");
     $checkOrders->bind_param("i", $customerId);
     $checkOrders->execute();
@@ -93,7 +93,7 @@ if (isset($_POST['update_customer'])) {
         if ($emailResult->num_rows > 0) {
             $_SESSION['error_message'] = "Email address is already in use by another customer.";
         } else {
-          
+
             $updateCustomer = $conn->prepare("UPDATE Customer SET fullName = ?, Email = ? WHERE customerID = ?");
             $updateCustomer->bind_param("ssi", $fullName, $email, $customerId);
 
@@ -207,6 +207,9 @@ function getNextOrder($currentColumn, $currentOrder, $orderBy)
             --dark-color: #212529;
             --gray-color: #6c757d;
             --transition: all 0.3s ease;
+            --sidebar-width: 250px;
+            --sidebar-collapsed-width: 70px;
+            --transition-speed: 0.3s;
         }
 
         * {
@@ -243,6 +246,26 @@ function getNextOrder($currentColumn, $currentOrder, $orderBy)
             font-size: 1.8rem;
             color: var(--dark-color);
             margin: 0;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            transition: margin-left var(--transition-speed) ease;
+            width: calc(100% - var(--sidebar-width));
+            padding: 0;
+        }
+
+        .admin-container.sidebar-collapsed .main-content {
+            margin-left: var(--sidebar-collapsed-width);
+            width: calc(100% - var(--sidebar-collapsed-width));
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: var(--sidebar-collapsed-width);
+                width: calc(100% - var(--sidebar-collapsed-width));
+            }
         }
 
         .admin-controls {
@@ -747,321 +770,316 @@ function getNextOrder($currentColumn, $currentOrder, $orderBy)
 </head>
 
 <body>
-    <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h1><i class="fas fa-users"></i> Customer Management</h1>
-            <div class="admin-controls">
-                <a href="homepage.php" class="btn btn-primary">
-                    <i class="fas fa-home"></i> Back to Homepage
-                </a>
-                <a href="admin_orders.php" class="btn btn-primary">
-                    <i class="fas fa-shopping-cart"></i> Manage Orders
-                </a>
-                <a href="inventory_dashboard.php" class="btn btn-primary">
-                    <i class="fas fa-boxes"></i> Inventory Dashboard
-                </a>
-                <a href="myaccount.php" class="btn btn-secondary">
-                    <i class="fas fa-tachometer-alt"></i> Admin Panel
-                </a>
-            </div>
-        </div>
+    <div class="admin-container" id="adminContainer">
+        <?php
+        $_GET['page'] = 'customers';
+        include 'admin_sidebar.php';
+        ?>
+        <div class="main-content">
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <h1><i class="fas fa-users"></i> Customer Management</h1>
+                </div>
 
-        <?php if (isset($_SESSION['success_message'])): ?>
-            <div class="alert alert-success">
-                <?php
-                echo htmlspecialchars($_SESSION['success_message']);
-                unset($_SESSION['success_message']);
-                ?>
-            </div>
-        <?php endif; ?>
+                <?php if (isset($_SESSION['success_message'])): ?>
+                    <div class="alert alert-success">
+                        <?php
+                        echo htmlspecialchars($_SESSION['success_message']);
+                        unset($_SESSION['success_message']);
+                        ?>
+                    </div>
+                <?php endif; ?>
 
-        <?php if (isset($_SESSION['error_message'])): ?>
-            <div class="alert alert-danger">
-                <?php
-                echo htmlspecialchars($_SESSION['error_message']);
-                unset($_SESSION['error_message']);
-                ?>
-            </div>
-        <?php endif; ?>
+                <?php if (isset($_SESSION['error_message'])): ?>
+                    <div class="alert alert-danger">
+                        <?php
+                        echo htmlspecialchars($_SESSION['error_message']);
+                        unset($_SESSION['error_message']);
+                        ?>
+                    </div>
+                <?php endif; ?>
 
-        <form method="GET" class="search-filter-container">
-            <div class="search-wrapper">
-                <i class="fas fa-search"></i>
-                <input type="text" name="search" class="search-box"
-                    placeholder="Search customers by name, email or ID..."
-                    value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-            </div>
-            <button type="submit" class="btn btn-primary">Search</button>
-            <?php if (!empty($search)): ?>
-                <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="btn btn-secondary">Clear</a>
-            <?php endif; ?>
-        </form>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <i class="fas fa-users fa-2x"></i>
-                <h3>Total Customers</h3>
-                <p><?php echo $totalCustomers; ?></p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-shopping-cart fa-2x"></i>
-                <h3>Customers with Orders</h3>
-                <p><?php echo $customersWithOrders; ?></p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-user-plus fa-2x"></i>
-                <h3>New Customers (30 days)</h3>
-                <p><?php echo $recentCustomers; ?></p>
-            </div>
-            <div class="stat-card">
-                <i class="fas fa-pound-sign fa-2x"></i>
-                <h3>Total Revenue</h3>
-                <p>£<?php echo number_format($totalRevenue, 2); ?></p>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <div class="table-header">
-                <h2><i class="fas fa-list"></i> Customer List</h2>
-                <form method="GET" class="entries-control">
-                    <label>
-                        Show
-                        <select name="entries" onchange="this.form.submit()">
-                            <option value="10" <?php echo $itemsPerPage == 10 ? 'selected' : ''; ?>>10</option>
-                            <option value="25" <?php echo $itemsPerPage == 25 ? 'selected' : ''; ?>>25</option>
-                            <option value="50" <?php echo $itemsPerPage == 50 ? 'selected' : ''; ?>>50</option>
-                        </select>
-                        entries
-                    </label>
+                <form method="GET" class="search-filter-container">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" name="search" class="search-box"
+                            placeholder="Search customers by name, email or ID..."
+                            value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
                     <?php if (!empty($search)): ?>
-                        <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                        <a href="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="btn btn-secondary">Clear</a>
                     <?php endif; ?>
-                    <input type="hidden" name="orderBy" value="<?php echo htmlspecialchars($orderBy); ?>">
-                    <input type="hidden" name="order" value="<?php echo htmlspecialchars($order); ?>">
                 </form>
-            </div>
 
-            <div class="table-responsive">
-                <table class="customers-table">
-                    <thead>
-                        <tr>
-                            <th width="5%">
-                                <a
-                                    href="<?php echo buildPaginationUrl($currentPage, $itemsPerPage, 'customerID', getNextOrder('customerID', $order, $orderBy), $search); ?>">
-                                    ID
-                                    <?php if ($orderBy === 'customerID'): ?>
-                                        <i
-                                            class="fas fa-sort-<?php echo strtolower($order) === 'asc' ? 'up' : 'down'; ?>"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th width="20%">
-                                <a
-                                    href="<?php echo buildPaginationUrl($currentPage, $itemsPerPage, 'fullName', getNextOrder('fullName', $order, $orderBy), $search); ?>">
-                                    Name
-                                    <?php if ($orderBy === 'fullName'): ?>
-                                        <i
-                                            class="fas fa-sort-<?php echo strtolower($order) === 'asc' ? 'up' : 'down'; ?>"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th width="25%">
-                                <a
-                                    href="<?php echo buildPaginationUrl($currentPage, $itemsPerPage, 'Email', getNextOrder('Email', $order, $orderBy), $search); ?>">
-                                    Email
-                                    <?php if ($orderBy === 'Email'): ?>
-                                        <i
-                                            class="fas fa-sort-<?php echo strtolower($order) === 'asc' ? 'up' : 'down'; ?>"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th width="15%">
-                                <a
-                                    href="<?php echo buildPaginationUrl($currentPage, $itemsPerPage, 'RegistrationDate', getNextOrder('RegistrationDate', $order, $orderBy), $search); ?>">
-                                    Registration Date
-                                    <?php if ($orderBy === 'RegistrationDate'): ?>
-                                        <i
-                                            class="fas fa-sort-<?php echo strtolower($order) === 'asc' ? 'up' : 'down'; ?>"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </th>
-                            <th width="10%" class="text-center">Orders</th>
-                            <th width="15%" class="text-right">Total Spent</th>
-                            <th width="10%" class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if ($customers->num_rows === 0): ?>
-                            <tr>
-                                <td colspan="7" class="no-results">
-                                    <?php if (!empty($search)): ?>
-                                        <p>No customers found matching "<?php echo htmlspecialchars($search); ?>".</p>
-                                    <?php else: ?>
-                                        <p>No customers found in the database.</p>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                        <?php else: ?>
-                            <?php while ($customer = $customers->fetch_assoc()): ?>
-                                <tr id="customer-<?php echo $customer['customerID']; ?>">
-                                    <td><?php echo htmlspecialchars($customer['customerID']); ?></td>
-                                    <td data-field="fullName" data-id="<?php echo $customer['customerID']; ?>">
-                                        <?php echo htmlspecialchars($customer['fullName']); ?>
-                                    </td>
-                                    <td data-field="email" data-id="<?php echo $customer['customerID']; ?>">
-                                        <?php echo htmlspecialchars($customer['Email']); ?>
-                                    </td>
-                                    <td><?php echo date('M j, Y', strtotime($customer['RegistrationDate'])); ?></td>
-                                    <td class="orders-column">
-                                        <?php if ($customer['orderCount'] > 0): ?>
-                                            <span
-                                                class="orders-badge <?php echo $customer['orderCount'] > 5 ? 'orders-high' : 'orders-medium'; ?>">
-                                                <?php echo $customer['orderCount']; ?>
-                                                <a href="admin_orders.php?customer=<?php echo $customer['customerID']; ?>"
-                                                    class="view-orders-btn" title="View Orders">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                            </span>
-                                        <?php else: ?>
-                                            <span class="orders-badge orders-none">0</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td style="text-align: right;">
-                                        <?php echo $customer['totalSpent'] ? '£' . number_format($customer['totalSpent'], 2) : '£0.00'; ?>
-                                    </td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button
-                                                onclick="editCustomer(<?php echo $customer['customerID']; ?>, '<?php echo htmlspecialchars(addslashes($customer['fullName'])); ?>', '<?php echo htmlspecialchars(addslashes($customer['Email'])); ?>')"
-                                                class="action-btn edit-btn" title="Edit Customer">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <?php if ($customer['orderCount'] == 0): ?>
-                                                <button onclick="confirmDelete(<?php echo $customer['customerID']; ?>)"
-                                                    class="action-btn delete-btn" title="Delete Customer">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            <?php else: ?>
-                                                <button disabled class="action-btn delete-btn disabled"
-                                                    title="Cannot delete customer with orders">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <i class="fas fa-users fa-2x"></i>
+                        <h3>Total Customers</h3>
+                        <p><?php echo $totalCustomers; ?></p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-shopping-cart fa-2x"></i>
+                        <h3>Customers with Orders</h3>
+                        <p><?php echo $customersWithOrders; ?></p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-plus fa-2x"></i>
+                        <h3>New Customers (30 days)</h3>
+                        <p><?php echo $recentCustomers; ?></p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-pound-sign fa-2x"></i>
+                        <h3>Total Revenue</h3>
+                        <p>£<?php echo number_format($totalRevenue, 2); ?></p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2><i class="fas fa-list"></i> Customer List</h2>
+                        <form method="GET" class="entries-control">
+                            <label>
+                                Show
+                                <select name="entries" onchange="this.form.submit()">
+                                    <option value="10" <?php echo $itemsPerPage == 10 ? 'selected' : ''; ?>>10</option>
+                                    <option value="25" <?php echo $itemsPerPage == 25 ? 'selected' : ''; ?>>25</option>
+                                    <option value="50" <?php echo $itemsPerPage == 50 ? 'selected' : ''; ?>>50</option>
+                                </select>
+                                entries
+                            </label>
+                            <?php if (!empty($search)): ?>
+                                <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                            <?php endif; ?>
+                            <input type="hidden" name="orderBy" value="<?php echo htmlspecialchars($orderBy); ?>">
+                            <input type="hidden" name="order" value="<?php echo htmlspecialchars($order); ?>">
+                        </form>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="customers-table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">
+                                        <a
+                                            href="<?php echo buildPaginationUrl($currentPage, $itemsPerPage, 'customerID', getNextOrder('customerID', $order, $orderBy), $search); ?>">
+                                            ID
+                                            <?php if ($orderBy === 'customerID'): ?>
+                                                <i
+                                                    class="fas fa-sort-<?php echo strtolower($order) === 'asc' ? 'up' : 'down'; ?>"></i>
                                             <?php endif; ?>
-                                        </div>
-                                    </td>
+                                        </a>
+                                    </th>
+                                    <th width="20%">
+                                        <a
+                                            href="<?php echo buildPaginationUrl($currentPage, $itemsPerPage, 'fullName', getNextOrder('fullName', $order, $orderBy), $search); ?>">
+                                            Name
+                                            <?php if ($orderBy === 'fullName'): ?>
+                                                <i
+                                                    class="fas fa-sort-<?php echo strtolower($order) === 'asc' ? 'up' : 'down'; ?>"></i>
+                                            <?php endif; ?>
+                                        </a>
+                                    </th>
+                                    <th width="25%">
+                                        <a
+                                            href="<?php echo buildPaginationUrl($currentPage, $itemsPerPage, 'Email', getNextOrder('Email', $order, $orderBy), $search); ?>">
+                                            Email
+                                            <?php if ($orderBy === 'Email'): ?>
+                                                <i
+                                                    class="fas fa-sort-<?php echo strtolower($order) === 'asc' ? 'up' : 'down'; ?>"></i>
+                                            <?php endif; ?>
+                                        </a>
+                                    </th>
+                                    <th width="15%">
+                                        <a
+                                            href="<?php echo buildPaginationUrl($currentPage, $itemsPerPage, 'RegistrationDate', getNextOrder('RegistrationDate', $order, $orderBy), $search); ?>">
+                                            Registration Date
+                                            <?php if ($orderBy === 'RegistrationDate'): ?>
+                                                <i
+                                                    class="fas fa-sort-<?php echo strtolower($order) === 'asc' ? 'up' : 'down'; ?>"></i>
+                                            <?php endif; ?>
+                                        </a>
+                                    </th>
+                                    <th width="10%" class="text-center">Orders</th>
+                                    <th width="15%" class="text-right">Total Spent</th>
+                                    <th width="10%" class="text-center">Actions</th>
                                 </tr>
-                            <?php endwhile; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                                <?php if ($customers->num_rows === 0): ?>
+                                    <tr>
+                                        <td colspan="7" class="no-results">
+                                            <?php if (!empty($search)): ?>
+                                                <p>No customers found matching "<?php echo htmlspecialchars($search); ?>".</p>
+                                            <?php else: ?>
+                                                <p>No customers found in the database.</p>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php while ($customer = $customers->fetch_assoc()): ?>
+                                        <tr id="customer-<?php echo $customer['customerID']; ?>">
+                                            <td><?php echo htmlspecialchars($customer['customerID']); ?></td>
+                                            <td data-field="fullName" data-id="<?php echo $customer['customerID']; ?>">
+                                                <?php echo htmlspecialchars($customer['fullName']); ?>
+                                            </td>
+                                            <td data-field="email" data-id="<?php echo $customer['customerID']; ?>">
+                                                <?php echo htmlspecialchars($customer['Email']); ?>
+                                            </td>
+                                            <td><?php echo date('M j, Y', strtotime($customer['RegistrationDate'])); ?></td>
+                                            <td class="orders-column">
+                                                <?php if ($customer['orderCount'] > 0): ?>
+                                                    <span
+                                                        class="orders-badge <?php echo $customer['orderCount'] > 5 ? 'orders-high' : 'orders-medium'; ?>">
+                                                        <?php echo $customer['orderCount']; ?>
+                                                        <a href="admin_orders.php?customer=<?php echo $customer['customerID']; ?>"
+                                                            class="view-orders-btn" title="View Orders">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                    </span>
+                                                <?php else: ?>
+                                                    <span class="orders-badge orders-none">0</span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <?php echo $customer['totalSpent'] ? '£' . number_format($customer['totalSpent'], 2) : '£0.00'; ?>
+                                            </td>
+                                            <td>
+                                                <div class="action-buttons">
+                                                    <button
+                                                        onclick="editCustomer(<?php echo $customer['customerID']; ?>, '<?php echo htmlspecialchars(addslashes($customer['fullName'])); ?>', '<?php echo htmlspecialchars(addslashes($customer['Email'])); ?>')"
+                                                        class="action-btn edit-btn" title="Edit Customer">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                    <?php if ($customer['orderCount'] == 0): ?>
+                                                        <button onclick="confirmDelete(<?php echo $customer['customerID']; ?>)"
+                                                            class="action-btn delete-btn" title="Delete Customer">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    <?php else: ?>
+                                                        <button disabled class="action-btn delete-btn disabled"
+                                                            title="Cannot delete customer with orders">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <?php if ($totalCustomers > 0): ?>
+                        <div class="pagination">
+                            <div class="pagination-info">
+                                Showing <?php echo $offset + 1; ?> to
+                                <?php echo min($offset + $itemsPerPage, $totalCustomers); ?>
+                                of
+                                <?php echo $totalCustomers; ?> customers
+                            </div>
+                            <div class="pagination-controls">
+                                <?php if ($totalPages > 1): ?>
+                                    <?php if ($currentPage > 1): ?>
+                                        <a href="<?php echo buildPaginationUrl($currentPage - 1, $itemsPerPage, $orderBy, $order, $search); ?>"
+                                            class="btn">
+                                            <i class="fas fa-chevron-left"></i> Previous
+                                        </a>
+                                    <?php endif; ?>
+
+                                    <?php
+
+                                    $startPage = max(1, $currentPage - 2);
+                                    $endPage = min($totalPages, $currentPage + 2);
+
+                                    if ($startPage > 1) {
+                                        echo '<a href="' . buildPaginationUrl(1, $itemsPerPage, $orderBy, $order, $search) . '" class="btn">1</a>';
+                                        if ($startPage > 2) {
+                                            echo '<span class="ellipsis">...</span>';
+                                        }
+                                    }
+
+                                    for ($i = $startPage; $i <= $endPage; $i++) {
+                                        echo '<a href="' . buildPaginationUrl($i, $itemsPerPage, $orderBy, $order, $search) . '" 
+                                    class="btn ' . ($i === $currentPage ? 'active' : '') . '">' . $i . '</a>';
+                                    }
+
+                                    if ($endPage < $totalPages) {
+                                        if ($endPage < $totalPages - 1) {
+                                            echo '<span class="ellipsis">...</span>';
+                                        }
+                                        echo '<a href="' . buildPaginationUrl($totalPages, $itemsPerPage, $orderBy, $order, $search) . '" class="btn">' . $totalPages . '</a>';
+                                    }
+                                    ?>
+
+                                    <?php if ($currentPage < $totalPages): ?>
+                                        <a href="<?php echo buildPaginationUrl($currentPage + 1, $itemsPerPage, $orderBy, $order, $search); ?>"
+                                            class="btn">
+                                            Next <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
             </div>
 
-            <?php if ($totalCustomers > 0): ?>
-                <div class="pagination">
-                    <div class="pagination-info">
-                        Showing <?php echo $offset + 1; ?> to <?php echo min($offset + $itemsPerPage, $totalCustomers); ?>
-                        of
-                        <?php echo $totalCustomers; ?> customers
-                    </div>
-                    <div class="pagination-controls">
-                        <?php if ($totalPages > 1): ?>
-                            <?php if ($currentPage > 1): ?>
-                                <a href="<?php echo buildPaginationUrl($currentPage - 1, $itemsPerPage, $orderBy, $order, $search); ?>"
-                                    class="btn">
-                                    <i class="fas fa-chevron-left"></i> Previous
-                                </a>
-                            <?php endif; ?>
 
-                            <?php
-                            
-                            $startPage = max(1, $currentPage - 2);
-                            $endPage = min($totalPages, $currentPage + 2);
-
-                            if ($startPage > 1) {
-                                echo '<a href="' . buildPaginationUrl(1, $itemsPerPage, $orderBy, $order, $search) . '" class="btn">1</a>';
-                                if ($startPage > 2) {
-                                    echo '<span class="ellipsis">...</span>';
-                                }
-                            }
-
-                            for ($i = $startPage; $i <= $endPage; $i++) {
-                                echo '<a href="' . buildPaginationUrl($i, $itemsPerPage, $orderBy, $order, $search) . '" 
-                                    class="btn ' . ($i === $currentPage ? 'active' : '') . '">' . $i . '</a>';
-                            }
-
-                            if ($endPage < $totalPages) {
-                                if ($endPage < $totalPages - 1) {
-                                    echo '<span class="ellipsis">...</span>';
-                                }
-                                echo '<a href="' . buildPaginationUrl($totalPages, $itemsPerPage, $orderBy, $order, $search) . '" class="btn">' . $totalPages . '</a>';
-                            }
-                            ?>
-
-                            <?php if ($currentPage < $totalPages): ?>
-                                <a href="<?php echo buildPaginationUrl($currentPage + 1, $itemsPerPage, $orderBy, $order, $search); ?>"
-                                    class="btn">
-                                    Next <i class="fas fa-chevron-right"></i>
-                                </a>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    </div>
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h2>Edit Customer</h2>
+                    <form id="edit-form" method="POST" action="">
+                        <input type="hidden" id="customer_id" name="customer_id">
+                        <div class="form-group">
+                            <label for="fullName">Full Name:</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
+                            <button type="submit" name="update_customer" class="save-btn">Save Changes</button>
+                        </div>
+                    </form>
                 </div>
-            <?php endif; ?>
+            </div>
+
         </div>
     </div>
-
-    
-    <div id="editModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2>Edit Customer</h2>
-            <form id="edit-form" method="POST" action="">
-                <input type="hidden" id="customer_id" name="customer_id">
-                <div class="form-group">
-                    <label for="fullName">Full Name:</label>
-                    <input type="text" id="fullName" name="fullName" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="cancel-btn" onclick="closeModal()">Cancel</button>
-                    <button type="submit" name="update_customer" class="save-btn">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        
-        const modal = document.getElementById('editModal');
-
-        function editCustomer(customerId, name, email) {
-            
-            document.getElementById('customer_id').value = customerId;
-            document.getElementById('fullName').value = name;
-            document.getElementById('email').value = email;
-
-            modal.style.display = 'block';
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-        }
-
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                closeModal();
-            }
-        }
-
-        function confirmDelete(customerId) {
-            if (confirm('Are you sure you want to delete this customer? This action cannot be undone.')) {
-                window.location.href = '<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?delete=' + customerId;
-            }
-        }
-    </script>
 </body>
+<script>
+
+    const modal = document.getElementById('editModal');
+
+    function editCustomer(customerId, name, email) {
+
+        document.getElementById('customer_id').value = customerId;
+        document.getElementById('fullName').value = name;
+        document.getElementById('email').value = email;
+
+        modal.style.display = 'block';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            closeModal();
+        }
+    }
+
+    function confirmDelete(customerId) {
+        if (confirm('Are you sure you want to delete this customer? This action cannot be undone.')) {
+            window.location.href = '<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>?delete=' + customerId;
+        }
+    }
+</script>
 
 </html>
