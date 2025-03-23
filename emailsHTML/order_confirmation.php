@@ -201,8 +201,9 @@
                 </thead>
                 <tbody>
                     <?php foreach ($items as $item): ?>
+                    <?php $imageID = 'productImage' . $item['productID']; ?>
                     <tr>
-                        <td><img src="<?php echo htmlspecialchars($item['imgURL']); ?>" alt="<?php echo htmlspecialchars($item['fullName']); ?>" class="product-img"></td>
+                    	<td><img src="cid:<?php echo $imageID; ?>" class="product-img" alt="<?php echo htmlspecialchars($item['fullName']); ?>"></td> 
                         <td class="product-name"><?php echo htmlspecialchars($item['fullName']); ?></td>
                         <td><?php echo $item['Quantity']; ?></td>
                         <td>£<?php echo number_format($item['itemPrice'], 2); ?></td>
@@ -239,13 +240,7 @@
         </div>
         
         <div class="email-footer">
-            <div class="social-links">
-                <a href="#" class="social-link">Facebook</a>
-                <a href="#" class="social-link">Twitter</a>
-                <a href="#" class="social-link">Instagram</a>
-            </div>
             <p>© 2025 GamePoint. All rights reserved.</p>
-            <p>This email was sent to <?php echo htmlspecialchars($row["Email"]); ?></p>
             <p>Please do not reply to this email. This mailbox is not monitored.</p>
         </div>
     </div>
