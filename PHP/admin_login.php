@@ -165,4 +165,5 @@ if (isset($_POST['submit'])) {
 
 <?php
 include 'footer.php';
+ob_end_flush();
 ?>

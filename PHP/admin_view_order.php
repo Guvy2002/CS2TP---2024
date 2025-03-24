@@ -821,4 +821,7 @@ if (empty($history)) {
     }
 </style>
 
-<?php include 'footer.php'; ?>
+<?php 
+include 'footer.php'; 
+ob_end_flush();
+?>

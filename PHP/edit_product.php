@@ -559,7 +559,7 @@ $categories = $conn->query($categorySql)->fetch_all(MYSQLI_ASSOC);
             const imageInput = document.getElementById('product_image');
             if (imageInput.files.length > 0) {
                 const file = imageInput.files[0];
-                const fileSize = file.size / 1024 / 1024; // Convert to MB
+                const fileSize = file.size / 1024 / 1024;
                 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/avif'];
                 
                 if (!allowedTypes.includes(file.type)) {

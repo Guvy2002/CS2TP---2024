@@ -1,5 +1,6 @@
 <?php
 require_once('dbconnection.php');
+ob_start();
 include 'header.php';
 ?>
 <style>
@@ -85,9 +86,11 @@ include 'header.php';
             <p>Zuber Kazi 220402701</p>
         </div>
     </div>
-    <!-- Back to Top Button -->
     <div class="back-to-top-container">
         <a href="experts.php" class="back-to-top-button">BACK TO TOP ↑</a>
     </div>
-    <?php include 'footer.php'; ?>
+    <?php 
+    include 'footer.php'; 
+	ob_end_flush();
+	?>
 </body>

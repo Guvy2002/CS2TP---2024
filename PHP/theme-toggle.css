@@ -1,6 +1,4 @@
-/* Theme Variables */
 :root {
-    /* Light theme (default) */
     --background-color: #f7f9fc;
     --text-color: #333;
     --header-gradient-start: rgb(49, 43, 43);
@@ -34,7 +32,6 @@
     --card-border: #444;
 }
 
-/* Apply theme variables */
 body {
     background-color: var(--background-color);
     color: var(--text-color);
@@ -69,7 +66,6 @@ h1, h2 {
     color: var(--footer-text);
 }
 
-/* Sun/Moon Toggle Switch */
 .theme-container {
     --color: white;
     --size: 24px;
@@ -95,7 +91,6 @@ h1, h2 {
     animation: keyframes-fill .5s;
 }
 
-/* On check event */
 .theme-container input:checked ~ .moon {
     display: none;
 }
@@ -104,7 +99,6 @@ h1, h2 {
     display: block;
 }
 
-/* Hide the default checkbox */
 .theme-container input {
     position: absolute;
     opacity: 0;
@@ -113,7 +107,6 @@ h1, h2 {
     width: 0;
 }
 
-/* Animation */
 @keyframes keyframes-fill {
     0% {
         transform: rotate(-360deg) scale(0);
@@ -124,7 +117,6 @@ h1, h2 {
     }
 }
 
-/* Additional dark mode adjustments */
 [data-theme="dark"] .gallery:hover {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
 }
@@ -155,7 +147,6 @@ h1, h2 {
     color: #f0f0f0;
 }
 
-/* Login page dark mode support */
 [data-theme="dark"] .login-container {
     background-color: #2d2d2d;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
@@ -200,7 +191,6 @@ h1, h2 {
     color: #f08080;
 }
 
-/* Wishlist page dark mode support */
 [data-theme="dark"] .wishlist-container h1,
 [data-theme="dark"] .basket-container h1,
 [data-theme="dark"] .basket-summary h2 {
@@ -280,7 +270,6 @@ h1, h2 {
     color: #999;
 }
 
-/* Checkout page dark mode support */
 [data-theme="dark"] .checkout-title {
     color: #f0f0f0;
 }
@@ -453,7 +442,6 @@ h1, h2 {
     border-left-color: #dc3545;
 }
 
-/* Fix for section headings in checkout page */
 [data-theme="dark"] .section h2 {
     color: #f0f0f0;
 }
@@ -462,7 +450,6 @@ h1, h2 {
     color: #f0f0f0;
 }
 
-/* Fix for shipping title and labels */
 [data-theme="dark"] #shipping-review,
 [data-theme="dark"] #shipping-method-review,
 [data-theme="dark"] #payment-review,
@@ -470,14 +457,12 @@ h1, h2 {
     color: #f0f0f0;
 }
 
-/* Make zip code and city fields more visible */
 [data-theme="dark"] #postal-code,
 [data-theme="dark"] #city {
     background-color: #1a1a1a;
     color: #f0f0f0;
 }
 
-/* Make form labels and headings more visible */
 [data-theme="dark"] label[for="first-name"],
 [data-theme="dark"] label[for="last-name"],
 [data-theme="dark"] label[for="address1"],
@@ -491,7 +476,6 @@ h1, h2 {
     color: #f0f0f0;
 }
 
-/* Title for each section */
 [data-theme="dark"] .section[data-section="1"] h2,
 [data-theme="dark"] .section[data-section="2"] h2,
 [data-theme="dark"] .section[data-section="3"] h2,
@@ -500,7 +484,6 @@ h1, h2 {
     font-weight: bold;
 }
 
-/* Order History Page dark mode support */
 [data-theme="dark"] .history-container {
     color: #f0f0f0;
 }
@@ -587,7 +570,6 @@ h1, h2 {
     background-color: #3d8ed7;
 }
 
-/* Status badges in dark mode */
 [data-theme="dark"] .status-pending {
     background-color: rgba(255, 193, 7, 0.2);
     color: #ffc107;
@@ -608,7 +590,6 @@ h1, h2 {
     color: #dc3545;
 }
 
-/* Order Details Page dark mode support */
 [data-theme="dark"] .details-container {
     color: #f0f0f0;
 }
@@ -725,7 +706,6 @@ h1, h2 {
     color: #f0f0f0;
 }
 
-/* Order Confirmation Page dark mode support */
 [data-theme="dark"] .confirmation-container {
     background-color: #2d2d2d;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
@@ -768,8 +748,6 @@ h1, h2 {
 [data-theme="dark"] .order-item {
     border-bottom-color: #444;
 }
-
-
 
 [data-theme="dark"] .item-image {
     background-color: #333;
@@ -831,7 +809,6 @@ h1, h2 {
     background-color: #222;
 }
 
-/* Account page dark mode support */
 [data-theme="dark"] .account-box {
     background-color: #2d2d2d;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
@@ -864,4 +841,3 @@ h1, h2 {
 [data-theme="dark"] .account-btn.logout:hover {
     background-color: #c82333;
 }
-

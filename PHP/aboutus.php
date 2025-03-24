@@ -1,4 +1,5 @@
 <?php 
+ob_start();
 require_once('dbconnection.php');
 include 'header.php';
 ?>
@@ -54,17 +55,18 @@ include 'header.php';
     <div class="about-section">
       <h2 style="text-align: center; margin-top: 40px; margin-bottom: 20px; padding-left: 25px;">Our Mission</h2>
       <p>
-        At GamePoint, our mission is to empower gamers of all skill levels by providing top-notch products and unparalleled service. We aim to create a community where gamers feel inspired and supported, offering not only the tools they need but also fostering connections within the gaming world.
+        At GamePoint, our mission is to empower gamers of all skill levels by providing top notch products and unparalleled service. We aim to create a community where gamers feel inspired and supported, offering not only the tools they need but also fostering connections within the gaming world.
       </p>
       <p>
-        The goal isn’t about making a lot of money; it’s about creating something meaningful—a place where visitors can step onto our website and feel a wave of nostalgia, like the joy of a child experiencing their first video game.
+        The goal isnt about making a lot of money; it’s about creating something meaningful,a place where visitors can step onto our website and feel a wave of nostalgia, like the joy of a child experiencing their first video game.
       </p>
     </div>
   </div>
   
 <?php 
      include 'footer.php'; 
+	 ob_end_flush();
 ?>
 </body>
 
-</html> 
+</html>

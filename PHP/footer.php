@@ -1,14 +1,20 @@
-<!-- Footer -->
+<?php 
+if (isset($_POST['footerSubmit'])){
+	$email = $_POST['email'];
+	header("Location: sendEmail.php?contents=newsletter&email=" . urlencode($email) . "&redirect=" . urlencode("/homepage.php"));	
+	exit();
+}
+?>
+
 <footer class="footer-container">
     <div class="newsletter-section">
         <p>Sign up for the latest Tech news and offers!</p>
-
-        <form class="signup-form">
+        <form class="signup-form" method="POST">
             <div class="form-group">
                 <label for="email">EMAIL ADDRESS*</label>
-                <input type="email" id="email" placeholder="Enter Your Email Address" required>
+                <input type="email" id="email" name="email" placeholder="Enter Your Email Address" required>
             </div>
-            <button type="submit" class="signup-button">SIGN UP</button>
+            <button type="submit" name="footerSubmit" class="signup-button">SIGN UP</button>
         </form>
 
         <p class="disclaimer"> *By signing up, you understand and agree that your data will be collected and used
@@ -22,8 +28,6 @@
             <a href="https://uk.pinterest.com/" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
         </div>
     </div>
-
-    <!-- Footer Links -->
     <div class="footer-links">
         <div class="footer-column">
             <h3>COMPANY</h3>
@@ -38,18 +42,14 @@
             <ul>
                 <li><a href="contactus.php">Contact Us</a></li>
                 <li><a href="myaccount.php">My Account</a></li>
-                <li><a href="#">Store Location</a></li>
-                <li><a href="#">Redeem rewards</a></li>
             </ul>
         </div>
     </div>
 
-    <!-- Back to Top Button -->
     <div class="back-to-top-container">
         <a href="#top" class="back-to-top-button">BACK TO TOP ↑</a>
     </div>
 </footer>
-<!-- Cookie Disclaimer HTML -->
 <div id="cookie-disclaimer" class="cookie-disclaimer">
     <div class="cookie-disclaimer-content">
         <div class="cookie-text">

@@ -76,7 +76,7 @@ if (isset($_POST['submit'])){
             <input type="email" name="email" value="<?php echo htmlspecialchars($email); ?>" required />
         	<input type="password" name="password" placeholder="Password" required />
             <div class="button-group">
-                <input type="button" name="cancel" value="Cancel"/>
+                <input type="button" name="cancel" value="Cancel" onclick="window.location.href='myaccount.php';"/>
                 <input type="submit" name="submit" value="Save" />
             </div>
         </form>
@@ -85,7 +85,7 @@ if (isset($_POST['submit'])){
 
 <style>
     .login-container {
-    background-color: #f8f8f8; /* Light gray background */
+    background-color: #f8f8f8;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -94,6 +94,7 @@ if (isset($_POST['submit'])){
     margin: 40px auto;
     text-align: center;
 }
+
 #Password-form {
     display: flex;
     flex-direction: column;
@@ -133,6 +134,7 @@ if (isset($_POST['submit'])){
     gap: 10px;
     justify-content: space-between;
 }
+
 #Password-form input[type="button"],
 #Password-form input[type="submit"] {
     flex: 1;
@@ -166,6 +168,7 @@ if (isset($_POST['submit'])){
 #Password-form input[type="submit"]:active {
     transform: translateY(0);
 }
+
 .error-message {
     color: #dc3545;
     background-color: #f8d7da;
@@ -173,6 +176,7 @@ if (isset($_POST['submit'])){
     border-radius: 4px;
     margin-bottom: 15px;
 }
+
 .success-message {
     color: #28a745;
     background-color: #d4edda;
@@ -206,6 +210,7 @@ if (isset($_POST['submit'])){
 
 <?php
 include 'footer.php';
+ob_end_flush();
 ?>
             
 </html>

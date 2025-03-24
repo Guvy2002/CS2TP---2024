@@ -1,14 +1,155 @@
-HTTP/1.0 500 Perl execution failed
-Server: MiniServ/2.202
-Date: Mon, 9 Dec 2024 10:14:17 GMT
-Content-type: text/html; Charset=utf-8
-Connection: close
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-<html>
-<head>
-<style data-err type="text/css">.err-head,.err-content,.err-body { font-family: Lucida Console, Courier, monospace;}.err-head { color: #f12b2b; font-size: 14px; font-weight: 500; padding: 5px 2.5px 0; text-transform: uppercase; transform: scale(1, 1.5); white-space: pre-wrap;}.err-content { padding-left: 2.5px; white-space: pre-wrap;}.err-content,.err-body { font-size: 12.5px;}.err-head[data-fatal-error-text] { padding: 0;}.err-stack caption,.err-stack > tbody > tr:first-child > td > b { color: #151515; font-weight: bold; text-align: left;}.err-stack > tbody > tr:first-child > td > b { border-bottom: 1px solid #151515;}.err-stack > tbody > tr:first-child>td { font-family: unset; font-size: 14px; height: 25px; text-transform: uppercase; transform: scale(1, 1.2); vertical-align: top;}.err-stack { border: 1px dashed #151515}.err-stack.captured { margin-left: 12px; width: auto}.err-stack tr td { font-family: Lucida Console, Courier, monospace; font-size: 13px; padding: 1px 10px; transform: scale(1, 1.15);}.err-stack tr:not(:first-child) td.captured { font-size: 90%;}.err-stack > tr:first-child > td.captured { font-size: 96%; padding-bottom: 7px; padding-top: 3px;}.err-stack caption.err-head { padding:0 0 10px 0;}.err-stack caption.err-head.captured { color: #222; font-size:98%;}</style>
-<title>500 &mdash; Perl execution failed</title></head>
-<body class="err-body"><h2 class="err-head">Error &mdash; Perl execution failed</h2>
-<p class="err-content">can't open /home/cs2team8/public_html/wishlist.php: No such file or directory at /usr/share/webmin/authentic-theme/extensions/file-manager/download.cgi line 40.
-</p>
-</body></html>
+require_once('dbconnection.php');
+ob_start();
+include 'header.php';
+
+if (!isset($conn)) {
+    die("Database connection failed.");
+}
+?>
+
+<div class="page-container">
+    <div class="main-content">
+        <div class="wishlist-container">
+            <h1>Your Wishlist</h1>
+            <?php
+            if (!isset($_SESSION["customerID"])) {
+                echo '<div class="empty-wishlist-message">Please log in to view your wishlist</div>';
+            } else {
+                $customerID = $_SESSION["customerID"];
+                $wishlistQuery = "SELECT b.wishlistID, bi.productID, p.fullName, p.Price, p.imgURL 
+                           FROM Wishlist b
+                           LEFT JOIN WishlistItem bi ON b.wishlistID = bi.wishlistID
+                           LEFT JOIN Products p ON bi.productID = p.productID
+                           WHERE b.customerID = ?
+                           ORDER BY b.createdDate DESC";
+                $stmt = $conn->prepare($wishlistQuery);
+                if ($stmt === false) {
+                    die('prepare() failed: ' . htmlspecialchars($conn->error));
+                }
+                $stmt->bind_param("i", $customerID);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                
+                $wishlistIsEmpty = true;
+                while ($row = $result->fetch_assoc()) {
+                    if ($row['productID'] !== null) {
+                        $wishlistIsEmpty = false;
+                        ?>
+                        <div class="wishlist-item"
+                             data-wishlist-id="<?php echo htmlspecialchars($row['wishlistID']); ?>"
+                             data-product-id="<?php echo htmlspecialchars($row['productID']); ?>">
+                            <img src="<?php echo htmlspecialchars($row['imgURL']); ?>"
+                                 alt="<?php echo htmlspecialchars($row['fullName']); ?>">
+                            <div class="item-details">
+                                <div class="item-title"><?php echo htmlspecialchars($row['fullName']); ?></div>
+                                <div class="item-price">£<?php echo number_format($row['Price'], 2); ?></div>
+                            </div>
+                            <button onclick="removeItem(this)" class="remove-button">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            <button onclick="addToBasket(this)" class="basket-button">
+                                <i class="bi bi-cart3"></i>
+                            </button>
+                        </div>
+                        <?php
+                    }
+                }
+                if ($wishlistIsEmpty) {
+                    echo '<div class="empty-wishlist-message">Your wishlist is empty</div>';
+                }
+            }
+            ?>
+        </div>
+    </div>
+</div>
+            
+
+<?php 
+include 'footer.php'; 
+ob_end_flush();
+?> 
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+    .page-container {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    .main-content {
+        flex: 1;
+    }
+    .footer {
+        background-color: #333;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-top: auto;
+    }
+</style>
+
+ <script>
+    async function removeItem(buttonOrData) {
+        try {
+            const container = buttonOrData.closest('.wishlist-item');
+            const productId = container.dataset.productId;
+            const wishlistId = container.dataset.wishlistId;
+            if (!wishlistId || !productId) {
+                throw new Error("Required IDs not found");
+            }
+            const Data_Wishlist = { id: productId, wishlist_id: wishlistId };
+            const resp = await fetch('/removeFromWishlist.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(Data_Wishlist)
+            });
+            const data = await resp.json();
+            if (data.status === "success") {
+                container.remove();
+                checkEmptyWishlist();
+            } else {
+                console.error(data.message || "Error removing item from wishlist");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+      async function addToBasket(button) {
+        try {
+            const container = button.closest('.wishlist-item');
+            const productId = container.dataset.productId;
+            const wishlistId = container.dataset.wishlistId;
+            if (!productId || !wishlistId) {
+                throw new Error("Required IDs not found");
+            }
+            const Data_Basket = { id: productId };
+            const resp = await fetch('/addToBasket.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(Data_Basket)
+            });
+            const data = await resp.json();
+            if (data.status === "success") {
+                removeItem(button);
+            } else {
+                console.error(data.message || "Error adding item to basket");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    function checkEmptyWishlist() {
+        if (document.querySelectorAll('.wishlist-item').length === 0) {
+            document.querySelector('.wishlist-container').innerHTML += '<div class="empty-wishlist-message">Your wishlist is empty</div>';
+        }
+    }
+</script>

@@ -283,7 +283,6 @@ $recentOrders = $recentOrdersQuery->fetch_all(MYSQLI_ASSOC);
         <main class="main-content">
             <h1 class="dashboard-title">Admin Dashboard</h1>
 
-            <!-- Stats Overview -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-icon products-icon">
@@ -350,7 +349,6 @@ $recentOrders = $recentOrdersQuery->fetch_all(MYSQLI_ASSOC);
                 </div>
             </div>
 
-            <!-- Recently Added Products -->
             <div class="table-container">
                 <div class="table-header">
                     <h2 class="table-title">Recently Added Products</h2>
@@ -389,7 +387,6 @@ $recentOrders = $recentOrdersQuery->fetch_all(MYSQLI_ASSOC);
                 </div>
             </div>
 
-            <!-- Recent Orders -->
             <div class="table-container">
                 <div class="table-header">
                     <h2 class="table-title">Recent Orders</h2>

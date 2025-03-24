@@ -78,10 +78,7 @@ session_start();
         }
     </style>
 
-
-    <!-- Navigation Bar  -->
     <div class="navbar">
-        <!-- Left Section: Navigation Links -->
         <ul>
             <li><a href="homepage.php">Home</a></li>
             <li><a href="ps5.php">PlayStation</a></li>
@@ -90,11 +87,8 @@ session_start();
             <li><a href="VR.php">VR</a></li>
             <li><a href="pc.php">PC</a></li>
             <li><a href="sb.php">Special Bundles</a></li>
-            <li><a href="preorder.php">Pre order</a></li>
         </ul>
 
-
-        <!-- Right Section: Sign In and Basket -->
         <div class="right-section">
             <div class="search-box" style="position: relative;">
                 <input type="text" id="search-bar" class="search-bar" placeholder="Search..."
@@ -106,7 +100,6 @@ session_start();
                 </button>
             </div>
 
-            <!-- Theme toggle - Sun/Moon -->
             <label class="theme-container">
                 <input type="checkbox" id="theme-toggle">
                 <svg viewBox="0 0 384 512" height="1em" xmlns="http://www.w3.org/2000/svg" class="moon">

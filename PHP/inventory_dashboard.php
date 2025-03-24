@@ -2,7 +2,6 @@
 session_start();
 require_once("dbconnection.php");
 
-//security check for admin
 if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] != 1) {
     header("Location: admin_login.php");
     exit;
@@ -428,7 +427,6 @@ if (isset($_GET['stock_filter']) && !empty($_GET['stock_filter'])) {
     width: calc(100% - var(--sidebar-collapsed-width));
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .main-content {
         margin-left: var(--sidebar-collapsed-width);

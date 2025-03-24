@@ -227,4 +227,4 @@ async function addToWishlist(button) {
         console.error("Error:", error);
         showErrorNotification("Error adding item to wishlist: " + error.message);
     }
-}
+} 

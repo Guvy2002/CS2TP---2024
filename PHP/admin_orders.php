@@ -325,7 +325,6 @@ function getNextOrder($currentColumn, $currentOrder, $orderBy)
             width: calc(100% - var(--sidebar-collapsed-width));
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             .main-content {
                 margin-left: var(--sidebar-collapsed-width);

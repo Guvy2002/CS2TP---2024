@@ -48,8 +48,6 @@ $reviewCount = $ratingData['count'];
 if (isset($_POST["submit_review"])) {
     $inputReview = trim($_POST["review"]);
     $inputRating = isset($_COOKIE["rating"]) ? intval($_COOKIE["rating"]) : 0;
-
-    // Modified condition to only require a rating
     if ($inputRating == 0) {
         $error_message = "Please select a rating.";
     } else {
@@ -57,7 +55,6 @@ if (isset($_POST["submit_review"])) {
             setcookie("rating", "", time() - 3600, "/");
             $stmt = $conn->prepare("INSERT INTO ItemReview (productID, rating, review) VALUES (?, ?, ?)");
             $stmt->bind_param("iis", $productId, $inputRating, $inputReview);
-
             if ($stmt->execute()) {
                 $success_message = "Thank you! Your rating" . ($inputReview ? " and review" : "") . " has been submitted.";
                 header("Refresh: 2; URL=" . $_SERVER['REQUEST_URI']);
@@ -71,6 +68,7 @@ if (isset($_POST["submit_review"])) {
     }
 }
 
+ob_start();
 include 'header.php';
 ?>
 
@@ -719,7 +717,6 @@ include 'header.php';
         opacity: 0.9;
     }
 
-    /* Review Form */
     .review-form-container {
         background-color: var(--background-color);
         border-radius: 8px;
@@ -913,7 +910,6 @@ include 'header.php';
         opacity: 0.7;
     }
 
-    /* Related Products */
     .related-products {
         margin-top: 50px;
     }
@@ -1006,7 +1002,6 @@ include 'header.php';
         transform: translateX(5px);
     }
 
-    /* Notification Toast */
     .notification-toast {
         position: fixed;
         bottom: 20px;
@@ -1075,7 +1070,6 @@ include 'header.php';
         opacity: 1;
     }
 
-    /* Responsive Styles */
     @media (max-width: 992px) {
         .product-main {
             grid-template-columns: 1fr;
@@ -1129,7 +1123,6 @@ include 'header.php';
         }
     }
 
-    /* Scrollbar Styling */
     .review-list::-webkit-scrollbar {
         width: 8px;
     }
@@ -1353,4 +1346,7 @@ include 'header.php';
     }
 </script>
 
-<?php include 'footer.php'; ?>
+<?php 
+include 'footer.php'; 
+ob_end_flush();
+?>

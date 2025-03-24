@@ -37,6 +37,8 @@ if (isset($_POST['submit'])) {
                    if ($row['Email'] == $email) {
                        $customerID = $row['customerID'];
                   	   $_SESSION['customerID'] = $row['customerID'];
+                   	   header("Location: sendEmail.php?contents=newusers&redirect=" . urlencode("/homepage.php"));	
+					   exit();
                    }
                }
            }
@@ -51,7 +53,7 @@ if (isset($_POST['submit'])) {
        $error_message = $e->getMessage();
    }
 }
-
+ob_start();
 include 'header.php';
 ?>
 
@@ -179,4 +181,5 @@ include 'header.php';
 </style>
 <?php
 include 'footer.php';
+ob_end_flush();
 ?>

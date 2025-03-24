@@ -2,7 +2,6 @@
 session_start();
 require_once("dbconnection.php");
 
-//security check for admin
 if (!isset($_SESSION['isAdmin']) || $_SESSION['isAdmin'] != 1) {
     header("Location: admin_login.php");
     exit;

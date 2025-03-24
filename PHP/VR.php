@@ -1,54 +1,63 @@
 <?php
 require_once 'dbconnection.php';
+ob_start();
 include 'header.php';
 ?>
-
 <body>
+<?php
 
-    <div class="video-container">
-        <video autoplay muted loop>
-            <source src="images/vr.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <?php include("sort.php"); ?>
-
-    <?php
-    function fetchProducts($categoryID, $conn) {
-        $stmt = $conn->prepare("SELECT productID, fullName, Price, imgURL FROM Products WHERE categoryID = ?");
-        $stmt->bind_param("s", $categoryID);
-        $stmt->execute();
-        return $stmt->get_result();
-    }
-
-    $categories = [
-        "FEATURED VR HEADSETS & BUNDLES" => "18",
-        "LATEST VR GAMES" => "19",
+$categories = [
+        "VR HEADSETS" => "18",
+        "VR GAMES" => "19",
         "VR ACCESSORIES" => "20"
     ];
 
-    foreach ($categories as $title => $categoryID) :
-        $products = fetchProducts($categoryID, $conn);
-    ?>
-        <h1><?php echo $title; ?></h1>
-        <div class="section-container">
-            <?php while ($row = $products->fetch_assoc()) : ?>
-                <div class="gallery">
-                    <a href="product.php?id=<?php echo $row['productID']; ?>">
-                        <img src="<?php echo $row['imgURL']; ?>" alt="<?php echo htmlspecialchars($row['fullName']); ?>">
-                    </a>
-                    <div data-id="<?php echo $row['productID']; ?>" class="description"><?php echo htmlspecialchars($row['fullName']); ?></div>
-                    <div class="description">£<?php echo number_format($row['Price'], 2); ?></div>
-                    <div class="buttons">
-                        <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
-                        <button onclick="addToWishlist(this)" class="btn add-to-wishlist">Add to Wishlist</button>
-                    </div>
-                </div>
-            <?php endwhile; ?>
-        </div>
-    <?php endforeach; ?>
+include 'filters.php'; 
+?>
 
-    <?php include 'footer.php'; ?>
+<div class="video-container">
+    <video autoplay muted loop>
+        <source src="images/vr.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<?php
+include 'sort.php';
+
+foreach ($categories as $title => $category) {
+    echo "<h1>$title</h1>";
+    echo "<div class='section-container'>";
+    
+    $stmt = getFilteredProducts($category, $conn);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo "<div class='gallery'>
+                    <a href='product.php?id={$row['productID']}'>
+                        <img src='{$row['imgURL']}' alt='{$row['fullName']}'>
+                    </a>
+                    <div data-id='{$row['productID']}' data-name='{$row['fullName']}' data-price='{$row['Price']}' class='description'>{$row['fullName']}</div>
+                    <div class='description'>£{$row['Price']}</div>
+                    <div class='buttons'>
+                        <button onclick='addToBasket(this)' class='btn add-to-basket'>Add to Basket</button>
+                        <button onclick='addToWishlist(this)' class='btn add-to-wishlist'>Add to Wishlist</button>
+                    </div>
+                  </div>";
+        }
+    } else {
+        echo "<p class='no-products'>No products found matching your filters.</p>";
+    }
+    
+    echo "</div>";
+}
+?>
+
+<?php 
+include 'footer.php';
+ob_end_flush();
+?>
+
 </body>
-</html>

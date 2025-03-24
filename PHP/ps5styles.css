@@ -717,7 +717,6 @@ h2 {
     background-color: #0056b3;
 }
 
-/* Cart Notification Popup */
 .cart-notification {
     position: fixed;
     top: 30px;
@@ -912,3 +911,4 @@ h2 {
 [data-theme="dark"] .view-cart-btn:hover {
     background-color: #3d8ed7;
 }
+

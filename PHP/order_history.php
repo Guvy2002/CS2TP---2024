@@ -251,4 +251,7 @@ $orders = $orderQuery->get_result()->fetch_all(MYSQLI_ASSOC);
     <?php endif; ?>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php 
+include 'footer.php'; 
+ob_end_flush();
+?>

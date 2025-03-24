@@ -1,4 +1,4 @@
-<?php 
+<?php
 ob_start();
 include 'header.php';
 require_once('dbconnection.php');
@@ -6,20 +6,35 @@ require_once('dbconnection.php');
 $error_message = '';
 $success_message = '';
 
-if (isset($_POST['submit'])){
-	$email = $_POST['email'];
-	$_SESSION["code"] = rand(0,100);
-	$sql = $conn->prepare("SELECT customerID FROM Customer WHERE Email = ?");
-    $sql->bind_param("s", $email);
-    $sql->execute();
-    $result = $sql->get_result();
-	if ($result->num_rows > 0) {
-    	$row = $result->fetch_assoc();
-		header("Location: sendEmail.php?contents=changepassword&customerID=" . $row['customerID'] . "&redirect=" . urlencode("/forgottenPassword.php"));
-		exit();
-    }
-}
+$code = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+$customerID = filter_input(INPUT_GET, 'customerID', FILTER_SANITIZE_NUMBER_INT);
 
+if($code == $_SESSION['code']){
+	if(isset($_POST['submit'])){
+    	$password = $_POST['password'];
+    	$confirmPassword = $_POST['confirmPassword'];
+    	$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+		try{
+    		if (empty($password) || empty($confirmPassword)) {
+           		throw new Exception("All fields are required");
+        	} elseif ($password !== $confirmPassword) {
+        		throw new Exception("New Passwords do not match");
+            } elseif (strlen($password) < 8) {
+            	throw new Exception("New password needs to be at least 8 characters long");	
+            } else {
+	        	$stmt = $conn->prepare("UPDATE Customer SET Password = ? WHERE customerID = ?");
+    	        $stmt->bind_param("ss", $hashedPassword, $customerID);
+	            $stmt->execute();
+    	        $success_message = "Password changed successfully!";
+        	}
+    	}
+    	catch (Exception $ex) {
+    		$error_message = "Error: " . $ex->getMessage();
+    	}
+    }
+} else { 
+	header('Location: homepage.php');
+}	
 ?>
 
 <section id="Forgotten Password">
@@ -34,7 +49,8 @@ if (isset($_POST['submit'])){
         }
         ?>
         <form id="Password-form" method="POST" action="">
-            <input type="email" name="email" placeholder="Email Address" required />
+            <input type="email" name="email" placeholder="Password" required />
+            <input type="email" name="email" placeholder="Confirm Password" required />
         	<input type="submit" name="submit" value="Send Email" />
         </form>
     </div>

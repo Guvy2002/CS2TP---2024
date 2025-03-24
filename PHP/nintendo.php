@@ -1,39 +1,19 @@
-<?php 
+<?php
+ob_start();
 require_once 'dbconnection.php';
 include 'header.php';
-
-$query = "SELECT * FROM Products";
-$result = $conn->query($query);
-$products = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $products[] = $row;
-    }
-}
+?>
+<body>
+<?php
 
 $categories = [
-    "Nintendo Consoles" => [],
-    "Latest Nintendo Games" => [],
-    "Nintendo Controllers" => [],
-    "Nintendo Digital" => []
+	"Nintendo Games" => "1",
+    "Nintendo Consoles" => "2",
+    "Nintendo Controllers" => "3",
+    "Nintendo Digital" => "4"
 ];
 
-foreach ($products as $product) {
-    switch ($product['categoryID']) {
-        case "2":
-            $categories["Nintendo Consoles"][] = $product;
-            break;
-        case "1":
-            $categories["Latest Nintendo Games"][] = $product;
-            break;
-        case "3":
-            $categories["Nintendo Controllers"][] = $product;
-            break;
-        case "4":
-            $categories["Nintendo Digital"][] = $product;
-            break;
-    }
-}
+include 'filters.php'; 
 ?>
 
 <div class="video-container">
@@ -43,28 +23,42 @@ foreach ($products as $product) {
     </video>
 </div>
 
-<?php include("sort.php"); ?>
+<?php
+include 'sort.php';
 
-<?php foreach ($categories as $category => $items): ?>
-    <h1><?= htmlspecialchars($category) ?></h1>
-    <div class="section-container">
-        <?php foreach ($items as $product): ?>
-            <div class="gallery">
-                <a href="product.php?id=<?= $product['productID'] ?>">
-                    <img src="<?= htmlspecialchars($product['imgURL']) ?>" alt="<?= htmlspecialchars($product['fullName']) ?>">
-                    <div data-id="<?= $product['productID'] ?>" data-name="<?= htmlspecialchars($product['fullName']) ?>" data-price="<?= $product['Price'] ?>" class="description"> <?= htmlspecialchars($product['fullName']) ?></div>
-                    <div class="description">£<?= number_format($product['Price'], 2) ?></div>
-                </a>
-                <div class="buttons">
-                    <button onclick="addToBasket(this)" class="btn add-to-basket">Add to Basket</button>
-                    <button onclick="addToWishlist(this)" class="btn add-to-wishlist">Add to Wishlist</button>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
-<?php endforeach; ?>
+foreach ($categories as $title => $category) {
+    echo "<h1>$title</h1>";
+    echo "<div class='section-container'>";
+    
+    $stmt = getFilteredProducts($category, $conn);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo "<div class='gallery'>
+                    <a href='product.php?id={$row['productID']}'>
+                        <img src='{$row['imgURL']}' alt='{$row['fullName']}'>
+                    </a>
+                    <div data-id='{$row['productID']}' data-name='{$row['fullName']}' data-price='{$row['Price']}' class='description'>{$row['fullName']}</div>
+                    <div class='description'>£{$row['Price']}</div>
+                    <div class='buttons'>
+                        <button onclick='addToBasket(this)' class='btn add-to-basket'>Add to Basket</button>
+                        <button onclick='addToWishlist(this)' class='btn add-to-wishlist'>Add to Wishlist</button>
+                    </div>
+                  </div>";
+        }
+    } else {
+        echo "<p class='no-products'>No products found matching your filters.</p>";
+    }
+    
+    echo "</div>";
+}
+?>
 
-<?php include 'footer.php'; ?>
+<?php 
+include 'footer.php';
+ob_end_flush();
+?>
+
 </body>
-
-</html>

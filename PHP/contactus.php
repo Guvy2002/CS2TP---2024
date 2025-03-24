@@ -1,6 +1,41 @@
 <?php 
+ob_start();
 include 'header.php';
 require_once ('dbconnection.php');
+
+
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $message = $_POST['message'];
+    
+    $_SESSION['submitted'] = true;
+    $_SESSION['email'] = $email;
+    $_SESSION['message'] = $message;
+    
+    header("Location: sendEmail.php?contents=responseemail&email=" . urlencode($email) . "&redirect=" . urlencode("/contactus.php?formspree=true"));
+    exit();
+}
+
+if (isset($_GET['formspree']) && $_GET['formspree'] == 'true' && isset($_SESSION['submitted']) && $_SESSION['submitted']) {
+    $email = $_SESSION['email'];
+    $message = $_SESSION['message'];
+    $_SESSION['submitted'] = false;
+    unset($_SESSION['email']);
+    unset($_SESSION['message']);
+    
+    echo '
+    <form id="formspreeForm" action="https://formspree.io/f/xeoellqo" method="POST" style="display:none;">
+        <input type="email" name="email" value="'.htmlspecialchars($email).'">
+        <textarea name="message">'.htmlspecialchars($message).'</textarea>
+    </form>
+    <script>
+        // Submit the form to Formspree
+        document.getElementById("formspreeForm").submit();
+    </script>
+    ';
+    
+    echo '<div class="success-message" style="color: green; padding: 10px; margin: 10px 0; background-color: #e8f5e9; border-radius: 5px;">Thank you for your message! Your form has been submitted.</div>';
+}
 ?>
 
 <!DOCTYPE html>
@@ -81,11 +116,15 @@ h1 {
 
 <h1>Contact Us</h1>
 <div class="container">
-    <form action="https://formspree.io/f/xeoellqo" method="POST">
-        <input type="email" name="email" placeholder="Your email" required>
-        <textarea name="message" placeholder="Your message" required></textarea>
-        <button type="submit">Send</button>
+    <form method="POST" action="">
+        <input type="email" id="email" name="email" placeholder="Your email" value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>" required>
+        <textarea name="message" placeholder="Your message" required><?php echo isset($message) ? htmlspecialchars($message) : ''; ?></textarea>
+        <button type="submit" name="submit">Send</button>
     </form>
 </div>
 </body>
-<?php include 'footer.php'?>
+  
+<?php 
+include 'footer.php';
+ob_end_flush();
+?>

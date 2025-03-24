@@ -280,16 +280,27 @@ $shippingCost = $order['totalPrice'] - $subtotal;
         border: 1px solid #0078d7;
     }
     
-    .continue-shopping:hover {
-        background-color: #005bb5;
+    .rate-order {
+        background-color: #28a745;
+        color: white;
+        border: none;
+    }
+    
+    .continue-shopping:hover, .view-orders:hover, .rate-order:hover {
         transform: translateY(-3px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     
+    .continue-shopping:hover {
+        background-color: #005bb5;
+    }
+    
     .view-orders:hover {
         background-color: #f0f7ff;
-        transform: translateY(-3px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .rate-order:hover {
+        background-color: #218838;
     }
     
     .order-message {
@@ -333,7 +344,7 @@ $shippingCost = $order['totalPrice'] - $subtotal;
         <div class="success-icon"><i class="bi bi-check-circle-fill"></i></div>
         <h1>Thank You for Your Order!</h1>
         <p>We've received your order and are working on processing it right away.</p>
-        <p><strong>Order Number:</strong> #<?php echo $orderID; ?></p>
+        <p><strong>Order Number:</strong> <?php echo $orderID; ?></p>
     </div>
     
     <div class="order-message">
@@ -399,11 +410,13 @@ $shippingCost = $order['totalPrice'] - $subtotal;
     <div class="action-buttons">
         <a href="homepage.php" class="action-button continue-shopping">Continue Shopping</a>
         <a href="order_history.php" class="action-button view-orders">View My Orders</a>
+        <a href="order_rating.php?order=<?php echo $orderID; ?>" class="action-button rate-order">
+            <i class="bi bi-star-fill"></i> Rate Your Experience
+        </a>
     </div>
 </div>
 
 <script>
-   
     function printOrder() {
         window.print();
     }
@@ -421,4 +434,7 @@ $shippingCost = $order['totalPrice'] - $subtotal;
     });
 </script>
 
-<?php include 'footer.php'; ?>
+<?php 
+include 'footer.php'; 
+ob_end_flush();
+?>

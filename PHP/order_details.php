@@ -462,4 +462,7 @@ if (empty($history)) {
     </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php 
+include 'footer.php'; 
+ob_end_flush();
+?>

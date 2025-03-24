@@ -1,4 +1,6 @@
 <?php
+
+ob_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -36,6 +38,7 @@ include 'header.php';
                 }
                 $subtotal = $row['Price'] * $row['Quantity'];
                 $total += $subtotal;
+            	$productID = $row['productID'];
                 ?>
                 <div class="basket-item"
                 	data-basket-id="<?php echo htmlspecialchars($row['basketID']); ?>"
@@ -197,23 +200,60 @@ include 'header.php';
 </style>
 
 <script>
-    function decreaseQuantity(button) {
-        const quantitySpan = button.parentElement.querySelector('.quantity');
-        let quantity = parseInt(quantitySpan.textContent);
-        if (quantity > 1) {
-            quantity--;
-            quantitySpan.textContent = quantity;
-            updateTotals();
-        }
-    }
 
-    function increaseQuantity(button) {
-        const quantitySpan = button.parentElement.querySelector('.quantity');
-        let quantity = parseInt(quantitySpan.textContent);
-        quantity++;
-        quantitySpan.textContent = quantity;
-        updateTotals();
-    }
+function decreaseQuantity(button) {
+    const container = button.closest('.basket-item');
+    const productID = container.dataset.productId; 
+    const quantitySpan = button.parentElement.querySelector('.quantity');
+    let quantity = parseInt(quantitySpan.textContent);
+
+if (quantity>1){
+    quantity--; 
+    quantitySpan.textContent = quantity; 
+}
+    updateTotals();
+    document.cookie = `product_${productID}_quantity=${quantity}; path=/; max-age=86400`; 
+    sendQuantityToPHP(productID, quantity);
+}
+
+
+function increaseQuantity(button) {
+    const container = button.closest('.basket-item');
+    const productID = container.dataset.productId;
+    const quantitySpan = button.parentElement.querySelector('.quantity');
+    let quantity = parseInt(quantitySpan.textContent);
+
+    quantity++; 
+    quantitySpan.textContent = quantity; 
+    updateTotals();
+
+
+    document.cookie = `product_${productID}_quantity=${quantity}; path=/; max-age=86400`; 
+
+    sendQuantityToPHP(productID, quantity);
+}
+
+
+
+function sendQuantityToPHP(productID, quantity) {
+    fetch('/updateQuantity.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productID: productID, quantity: quantity }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Server response:", data);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+}
+
+
+
 
 	async function removeItem(button) {
     	try {
@@ -273,4 +313,7 @@ include 'header.php';
     }
 </script>
 
-<?php include 'footer.php'; ?>
+<?php 
+include 'footer.php'; 
+ob_end_flush();
+?>

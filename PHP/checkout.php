@@ -61,7 +61,7 @@ if (isset($_POST['submit']) && !empty($basketItems)) {
     $conn->begin_transaction();
 
     try {
-        $paymentMethod = "Credit Card"; // Default payment method
+        $paymentMethod = "Credit Card";
         $paymentStmt = $conn->prepare("INSERT INTO Payment (paymentDate, Amount, paymentMethod) VALUES (?, ?, ?)");
         $paymentStmt->bind_param("sds", $orderDate, $total, $paymentMethod);
         $paymentStmt->execute();
@@ -987,4 +987,7 @@ if (isset($_POST['submit']) && !empty($basketItems)) {
     });
 </script>
 
-<?php include 'footer.php'; ?>
+<?php 
+include 'footer.php'; 
+ob_end_flush();
+?>
